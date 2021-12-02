@@ -1,0 +1,31 @@
+<div class="container">
+  <br>
+  <div class="row">
+    <div class="col-md-6">
+      <mat-form-field appearance="fill">
+        <mat-label>Mês e Ano</mat-label>
+        <input matInput [matDatepicker]="dp" [formControl]="date">
+        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+        <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
+          (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
+        </mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="row justify-content-md-left">
+      <button class="col-md-auto account-button" mat-button *ngFor="let account of accounts"
+        [ngStyle]="{backgroundColor: account.background, color: account.color}"
+        (click)=getAccount(account)>{{account.name}}</button>
+    </div>
+  </div>
+  <div class="row">
+    <span>Saldo Atual: {{totalBalance}}</span>
+  </div>
+  <div class="row">
+    <span>Saldo Anterior: {{previousBalance}}</span>
+  </div>
+  <div class="row">
+    <span>Rendimentos: {{totalYields}}</span>
+  </div>
+</div>

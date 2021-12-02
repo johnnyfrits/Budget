@@ -1,0 +1,21 @@
+.example-month-picker .mat-calendar-period-button {
+  pointer-events: none;
+}
+
+.example-month-picker .mat-calendar-arrow {
+  display: none;
+}
+
+
+/* mat-card {
+  margin: 20px 20px 20px 20px;
+} */
+
+.account-button {
+  margin: 0px 0px 5px 5px;
+}
+
+.account-button:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.3s ease-in-out;
+}
