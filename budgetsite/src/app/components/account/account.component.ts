@@ -14,7 +14,24 @@ import * as _moment from 'moment';
 // tslint:disable-next-line:no-duplicate-imports
 import { default as _rollupMoment, Moment } from 'moment';
 
-const moment = _rollupMoment || _moment;
+let moment = _rollupMoment || _moment;
+
+moment.updateLocale('pt-BR', {
+  months: [
+    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
+    "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+  ]
+});
+
+moment.updateLocale('pt-BR', {
+  monthsShort: [
+    "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
+    "Jul", "Ago", "Set", "Out", "Nov", "Dez"
+  ]
+});
+
+moment.locale('pt-BR');
+
 
 // See the Moment.js docs for the meaning of these formats:
 // https://momentjs.com/docs/#/displaying/format/
@@ -49,14 +66,20 @@ export const MY_FORMATS = {
 })
 export class AccountComponent implements OnInit {
 
-  accounts!: Accounts[];
-  totalBalance: number | undefined;
-  previousBalance: number | undefined;
-  totalYields: number | undefined;
+  accounts?: Accounts[];
+  totalBalance?: number;
+  previousBalance?: number;
+  totalYields?: number;
+  accountId?: number;
+  reference?: string;
+  account!: Accounts;
+  monthName: string = "";
 
   constructor(private accountService: AccountService) { }
 
   ngOnInit(): void {
+
+    this.monthName = this.date.value.format('MMMM');
 
     this.accountService.read().subscribe(accounts => {
 
@@ -77,17 +100,50 @@ export class AccountComponent implements OnInit {
     ctrlValue.month(normalizedMonth.month());
     this.date.setValue(ctrlValue);
     datepicker.close();
+
+    this.reference = this.date.value.format('YYYYMM');
+
+    if (this.account) {
+
+      this.getAccountTotals(this.account);
+    }
   }
 
-  getAccount(account: Accounts) {
-    console.log(account);
-    console.log(this.date.value.format('YYYYMM'));
+  getAccountTotals(account: Accounts) {
+    debugger;
 
-    this.accountService.getAccountTotals(account.id, this.date.value.format('YYYYMM')).subscribe(account => {
+    this.monthName = this.date.value.format('MMMM');
 
-      this.totalBalance = account.totalBalance;
-      this.previousBalance = account.previousBalance;
-      this.totalYields = account.totalYields;
-    });
+    if (account) {
+
+      this.accountId = account.id;
+      this.reference = this.date.value.format('YYYYMM');
+      this.account = account;
+
+      this.accountService.getAccountTotals(this.accountId, this.reference).subscribe(account => {
+
+        this.totalBalance = account.totalBalance;
+        this.previousBalance = account.previousBalance;
+        this.totalYields = account.totalYields;
+      });
+    }
+  }
+
+  setNextMonth() {
+
+    const nextMonth = this.date.value.clone().add(1, 'M');
+
+    this.date.setValue(nextMonth);
+
+    this.getAccountTotals(this.account);
+  }
+
+  setPreviousMonth() {
+
+    const previousMonth = this.date.value.clone().subtract(1, 'M');
+
+    this.date.setValue(previousMonth);
+
+    this.getAccountTotals(this.account);
   }
 }

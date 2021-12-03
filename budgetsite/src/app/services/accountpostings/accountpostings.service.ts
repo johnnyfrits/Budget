@@ -2,27 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EMPTY, Observable } from 'rxjs';
 import { ApiUrls } from 'src/app/common/api-urls'
-import { Accounts } from 'src/app/models/accounts.model';
+import { AccountsPostings } from 'src/app/models/accountspostings.model';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AccountService {
+export class AccountPostingsService {
 
   constructor(private http: HttpClient) { }
 
-  read(): Observable<Accounts[]> {
+  read(accountId: number, reference: string): Observable<AccountsPostings[]> {
 
-    return this.http.get<Accounts[]>(ApiUrls.accounts).pipe(
-      map(obj => obj),
-      catchError(e => this.errorHandler(e))
-    );
-  }
-
-  getAccountTotals(accountId: number | undefined, reference: string | undefined): Observable<Accounts> {
-
-    return this.http.get<Accounts>(`${ApiUrls.accounttotals}account=${accountId}&reference=${reference}`).pipe(
+    return this.http.get<AccountsPostings[]>(`${ApiUrls.accountspostings}/${accountId}/${reference}`).pipe(
       map(obj => obj),
       catchError(e => this.errorHandler(e))
     );

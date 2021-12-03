@@ -2,7 +2,7 @@
   <br>
   <div class="row">
     <div class="col-md-6">
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="fill" class="calendar">
         <mat-label>Mês e Ano</mat-label>
         <input matInput [matDatepicker]="dp" [formControl]="date">
         <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
@@ -10,22 +10,34 @@
           (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
         </mat-datepicker>
       </mat-form-field>
+      <button mat-icon-button (click)=setPreviousMonth() color="warn" aria-label="Mês anterior">
+           <mat-icon>arrow_back_ios</mat-icon>
+      </button>
+      <button mat-icon-button (click)=setNextMonth() color="warn" aria-label="Próximo mês">
+        <mat-icon>arrow_forward_ios</mat-icon>
+      </button>
     </div>
+  </div>
+  <div class="row ">
+    <p class="justify-content-start month-name">{{monthName}}</p>
   </div>
   <div class="row">
     <div class="row justify-content-md-left">
       <button class="col-md-auto account-button" mat-button *ngFor="let account of accounts"
         [ngStyle]="{backgroundColor: account.background, color: account.color}"
-        (click)=getAccount(account)>{{account.name}}</button>
+        (click)=getAccountTotals(account)>{{account.name}}</button>
     </div>
   </div>
   <div class="row">
-    <span>Saldo Atual: {{totalBalance}}</span>
+    <span>Saldo Atual: <b>{{totalBalance | currency : 'BRL'}}</b></span>
   </div>
   <div class="row">
-    <span>Saldo Anterior: {{previousBalance}}</span>
+    <span>Saldo Anterior: <b>{{previousBalance | currency : 'BRL'}}</b></span>
   </div>
   <div class="row">
-    <span>Rendimentos: {{totalYields}}</span>
+    <span>Rendimentos: <b>{{totalYields | currency : 'BRL'}}</b></span>
+  </div>
+  <div class="row">
+    <app-accountpostings [accountId]=accountId [reference]=reference></app-accountpostings>
   </div>
 </div>

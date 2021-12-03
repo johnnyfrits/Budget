@@ -6,6 +6,9 @@
   display: none;
 }
 
+.calendar {
+  margin-right: 10px;
+}
 
 /* mat-card {
   margin: 20px 20px 20px 20px;
@@ -13,9 +16,23 @@
 
 .account-button {
   margin: 0px 0px 5px 5px;
+  cursor: pointer;
 }
 
 .account-button:hover {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   transition: box-shadow 0.3s ease-in-out;
+}
+
+.arrow {
+  size: 12px;
+}
+
+.arrow:hover {
+  font-weight: bold;
+}
+
+.month-name {
+  font-weight: bold;
+  font-size: 20px;
 }

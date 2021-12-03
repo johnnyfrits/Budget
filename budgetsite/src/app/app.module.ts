@@ -1,9 +1,12 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 
 import { AppRoutingModule } from './app-routing.module';
+
+import localePt from '@angular/common/locales/pt';
+import { registerLocaleData } from '@angular/common';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,6 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './components/template/header/header.component';
 import { NavComponent } from './components/template/nav/nav.component';
 import { AccountComponent } from './components/account/account.component';
+import { AccountPostingsComponent } from './components/accountpostings/accountpostings.component';
 import { CardComponent } from './components/card/card.component';
 
 import { LayoutModule } from '@angular/cdk/layout';
@@ -27,6 +31,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTableModule } from '@angular/material/table';
+
+registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
@@ -34,6 +41,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     HeaderComponent,
     NavComponent,
     AccountComponent,
+    AccountPostingsComponent,
     CardComponent,
   ],
   imports: [
@@ -52,10 +60,14 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatFormFieldModule,
     MatInputModule,
     MatTabsModule,
+    MatTableModule,
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [{
+    provide: LOCALE_ID,
+    useValue: 'pt-BR',
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
