@@ -31,4 +31,14 @@ export class AccountPostingsComponent implements OnInit {
       });
     }
   }
+
+  getTotalAmount() {
+
+    if (this.accountpostings) {
+
+      return this.accountpostings.map(t => t.amount).reduce((acc, value) => acc + value, 0);
+    }
+
+    return 0;
+  }
 }

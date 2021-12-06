@@ -10,16 +10,16 @@
           (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
         </mat-datepicker>
       </mat-form-field>
-      <button mat-icon-button (click)=setPreviousMonth() color="warn" aria-label="Mês anterior">
+      <button mat-icon-button (click)=setPreviousMonth() color="primary" aria-label="Mês anterior">
            <mat-icon>arrow_back_ios</mat-icon>
       </button>
-      <button mat-icon-button (click)=setNextMonth() color="warn" aria-label="Próximo mês">
+      <button mat-icon-button (click)=setNextMonth() color="primary" aria-label="Próximo mês">
         <mat-icon>arrow_forward_ios</mat-icon>
       </button>
     </div>
   </div>
   <div class="row ">
-    <p class="justify-content-start month-name">{{monthName}}</p>
+    <p class="d-flex justify-content-center month-name">{{monthName}}</p>
   </div>
   <div class="row">
     <div class="row justify-content-md-left">
@@ -29,15 +29,22 @@
     </div>
   </div>
   <div class="row">
-    <span>Saldo Atual: <b>{{totalBalance | currency : 'BRL'}}</b></span>
+    <div class="d-flex justify-content-center">
+      <div class="row">
+        <span>Saldo Anterior:</span>
+        <span><b>{{previousBalance | currency : 'BRL'}}</b></span>
+      </div>
+      <div class="row">
+        <span>Saldo Atual:</span>
+        <span><b>{{totalBalance | currency : 'BRL'}}</b></span>
+      </div>
+      <div class="row">
+        <span>Rendimentos:</span>
+        <span><b>{{totalYields | currency : 'BRL'}}</b></span>
+      </div>
+    </div>
   </div>
-  <div class="row">
-    <span>Saldo Anterior: <b>{{previousBalance | currency : 'BRL'}}</b></span>
-  </div>
-  <div class="row">
-    <span>Rendimentos: <b>{{totalYields | currency : 'BRL'}}</b></span>
-  </div>
-  <div class="row">
-    <app-accountpostings [accountId]=accountId [reference]=reference></app-accountpostings>
-  </div>
+</div>
+<div class="row">
+  <app-accountpostings [accountId]=accountId [reference]=reference></app-accountpostings>
 </div>

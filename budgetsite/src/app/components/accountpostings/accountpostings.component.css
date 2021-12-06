@@ -1,3 +1,30 @@
-.table {
+.table-container {
+  width: 75%;
+  height: 450px;
+  overflow: auto;
+}
+
+table {
   width: 100%;
+}
+
+.mat-table-sticky {
+  border-top: 1px solid #e0e0e0;
+}
+
+.mat-column-date {
+  width: 125px;
+}
+
+.mat-column-description {
+  width: 500px;
+}
+
+.mat-column-amount {
+  width: 125px;
+  text-align: right;
+}
+
+tr.mat-footer-row {
+  font-weight: bold;
 }

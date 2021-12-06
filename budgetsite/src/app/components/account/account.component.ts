@@ -110,7 +110,6 @@ export class AccountComponent implements OnInit {
   }
 
   getAccountTotals(account: Accounts) {
-    debugger;
 
     this.monthName = this.date.value.format('MMMM');
 

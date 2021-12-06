@@ -32,6 +32,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
+import { AccountViewComponent } from './views/account-view/account-view.component';
+import { CardViewComponent } from './views/card-view/card-view.component';
 
 registerLocaleData(localePt);
 
@@ -43,6 +45,8 @@ registerLocaleData(localePt);
     AccountComponent,
     AccountPostingsComponent,
     CardComponent,
+    AccountViewComponent,
+    CardViewComponent,
   ],
   imports: [
     BrowserModule,
