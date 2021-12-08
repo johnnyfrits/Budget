@@ -21,12 +21,10 @@
   <div class="row ">
     <p class="d-flex justify-content-center month-name">{{monthName}}</p>
   </div>
-  <div class="row">
-    <div class="row justify-content-md-left">
-      <button class="col-md-auto account-button" mat-button *ngFor="let account of accounts"
-        [ngStyle]="{backgroundColor: account.background, color: account.color}"
-        (click)=getAccountTotals(account)>{{account.name}}</button>
-    </div>
+  <div class="">
+    <button class="account-button" mat-button *ngFor="let account of accounts"
+      [ngStyle]="{backgroundColor: account.background, color: account.color}"
+      (click)=getAccountTotals(account)>{{account.name}}</button>
   </div>
   <div class="row">
     <div class="d-flex justify-content-center">
