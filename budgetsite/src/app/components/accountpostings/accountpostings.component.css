@@ -12,6 +12,10 @@ table {
   border-top: 1px solid #e0e0e0;
 }
 
+.mat-column-index {
+  width: 50px;
+}
+
 .mat-column-date {
   width: 125px;
 }

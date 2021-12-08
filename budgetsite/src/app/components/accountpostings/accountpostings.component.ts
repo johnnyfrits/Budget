@@ -14,7 +14,7 @@ export class AccountPostingsComponent implements OnInit {
 
   accountpostings!: AccountsPostings[];
 
-  displayedColumns = ['date', 'description', 'amount'];
+  displayedColumns = ['index', 'date', 'description', 'amount'];
 
   constructor(private accountPostingsService: AccountPostingsService) { }
 
