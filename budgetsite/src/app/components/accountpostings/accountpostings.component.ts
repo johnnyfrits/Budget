@@ -16,29 +16,34 @@ export class AccountPostingsComponent implements OnInit {
 
   displayedColumns = ['index', 'date', 'description', 'amount'];
 
+  total: number = 0;
+
   constructor(private accountPostingsService: AccountPostingsService) { }
 
   ngOnInit(): void {
+
+    this.getTotalAmount();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-
     // if (changes['accountId']?.currentValue || changes['reference']?.currentValue) {
     if (this.accountId) {
 
       this.accountPostingsService.read(this.accountId!, this.reference!).subscribe(accountpostings => {
+
         this.accountpostings = accountpostings;
+
+        this.getTotalAmount();
       });
     }
+
   }
 
   getTotalAmount() {
 
-    if (this.accountpostings) {
-
-      return this.accountpostings.map(t => t.amount).reduce((acc, value) => acc + value, 0);
-    }
-
-    return 0;
+    this.total =
+      this.accountpostings ?
+        this.accountpostings.map(t => t.amount).reduce((acc, value) => acc + value, 0) :
+        0;
   }
 }
