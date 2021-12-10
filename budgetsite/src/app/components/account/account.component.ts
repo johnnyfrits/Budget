@@ -74,6 +74,7 @@ export class AccountComponent implements OnInit {
   reference?: string;
   account!: Accounts;
   monthName: string = "";
+  hideProgress: boolean = false;
 
   constructor(private accountService: AccountService) { }
 
@@ -84,6 +85,8 @@ export class AccountComponent implements OnInit {
     this.accountService.read().subscribe(accounts => {
 
       this.accounts = accounts;
+
+      this.hideProgress = true;
     });
   }
 
@@ -111,6 +114,8 @@ export class AccountComponent implements OnInit {
 
   getAccountTotals(account: Accounts) {
 
+    this.hideProgress = false;
+
     this.monthName = this.date.value.format('MMMM');
 
     if (account) {
@@ -124,6 +129,8 @@ export class AccountComponent implements OnInit {
         this.totalBalance = account.totalBalance;
         this.previousBalance = account.previousBalance;
         this.totalYields = account.totalYields;
+
+        this.hideProgress = true;
       });
     }
   }

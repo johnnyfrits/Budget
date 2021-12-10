@@ -15,8 +15,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { HeaderComponent } from './components/template/header/header.component';
 import { NavComponent } from './components/template/nav/nav.component';
+import { AccountViewComponent } from './views/account-view/account-view.component';
 import { AccountComponent } from './components/account/account.component';
 import { AccountPostingsComponent } from './components/accountpostings/accountpostings.component';
+import { CardViewComponent } from './views/card-view/card-view.component';
 import { CardComponent } from './components/card/card.component';
 
 import { LayoutModule } from '@angular/cdk/layout';
@@ -32,8 +34,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
-import { AccountViewComponent } from './views/account-view/account-view.component';
-import { CardViewComponent } from './views/card-view/card-view.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
 
 registerLocaleData(localePt);
 
@@ -65,6 +67,7 @@ registerLocaleData(localePt);
     MatInputModule,
     MatTabsModule,
     MatTableModule,
+    MatProgressBarModule,
     FormsModule,
     ReactiveFormsModule
   ],
