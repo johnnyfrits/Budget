@@ -17,10 +17,26 @@
   z-index: 1;
 }
 
+mat-nav-list a {
+  color: #fff;
+}
+
 mat-toolbar {
   color: #fff;
 }
 
-mat-nav-list a {
-  color: #fff;
+mat-toolbar a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #fff
+}
+
+/* .title-group {
+  padding-left: 25px;
+} */
+
+.title-group i {
+
+  padding-right: 5px;
 }

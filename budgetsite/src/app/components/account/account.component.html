@@ -10,10 +10,11 @@
           (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
         </mat-datepicker>
       </mat-form-field>
-      <button mat-icon-button (click)=setPreviousMonth() color="primary" aria-label="Mês anterior">
+      <button mat-icon-button (click)=setPreviousMonth() color="primary" class="previous-month"
+        aria-label="Mês anterior">
            <mat-icon>arrow_back_ios</mat-icon>
       </button>
-      <button mat-icon-button (click)=setNextMonth() color="primary" aria-label="Próximo mês">
+      <button mat-icon-button (click)=setNextMonth() color="primary" class="next-month" aria-label="Próximo mês">
         <mat-icon>arrow_forward_ios</mat-icon>
       </button>
     </div>

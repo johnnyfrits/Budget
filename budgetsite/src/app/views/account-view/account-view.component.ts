@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavService } from 'src/app/components/template/nav/nav.service';
 
 @Component({
   selector: 'app-account-view',
@@ -7,7 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AccountViewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private navService: NavService) {
+
+    navService.navData = {
+
+      title: 'Contas',
+      icon: 'account_balance',
+      routeUrl: '/accounts'
+    };
+  }
 
   ngOnInit(): void {
   }

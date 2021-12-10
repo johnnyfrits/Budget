@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavService } from 'src/app/components/template/nav/nav.service';
 
 @Component({
   selector: 'app-card-view',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CardViewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private navService: NavService) {
+
+    navService.navData = {
+
+      title: 'Cartões',
+      icon: 'credit_card',
+      routeUrl: '/cards'
+    };
+  }
 
   ngOnInit(): void {
   }
-
 }

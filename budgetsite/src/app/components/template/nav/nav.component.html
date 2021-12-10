@@ -14,7 +14,15 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <span>Budget</span>
+      <!-- <span>Budget - </span> -->
+      <span class="title-group">
+        <a routerLink={{routeUrl}}>
+          <i class="material-icons">
+            {{icon}}
+          </i>
+          {{title}}
+        </a>
+      </span>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
