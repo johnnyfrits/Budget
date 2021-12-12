@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { AccountService } from 'src/app/services/account/account.service';
 import { AccountsPostings } from '../../models/accountspostings.model'
 import { AccountPostingsService } from '../../services/accountpostings/accountpostings.service';
 
@@ -15,8 +16,12 @@ export class AccountPostingsComponent implements OnInit {
   accountpostings!: AccountsPostings[];
   displayedColumns = ['index', 'date', 'description', 'amount'];
   total: number = 0;
+  totalBalance?: number;
+  previousBalance?: number;
+  totalYields?: number;
+  hideProgress: boolean = true;
 
-  constructor(private accountPostingsService: AccountPostingsService) { }
+  constructor(private accountPostingsService: AccountPostingsService, private accountService: AccountService) { }
 
   ngOnInit(): void {
 
@@ -27,14 +32,24 @@ export class AccountPostingsComponent implements OnInit {
     // if (changes['accountId']?.currentValue || changes['reference']?.currentValue) {
     if (this.accountId) {
 
+      this.hideProgress = false;
+
       this.accountPostingsService.read(this.accountId!, this.reference!).subscribe(accountpostings => {
 
         this.accountpostings = accountpostings;
 
         this.getTotalAmount();
+
+        this.accountService.getAccountTotals(this.accountId, this.reference).subscribe(account => {
+
+          this.totalBalance = account.totalBalance;
+          this.previousBalance = account.previousBalance;
+          this.totalYields = account.totalYields;
+
+          this.hideProgress = true;
+        });
       });
     }
-
   }
 
   getTotalAmount() {

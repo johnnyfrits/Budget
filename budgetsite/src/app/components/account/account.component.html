@@ -20,28 +20,15 @@
     </div>
   </div>
   <div class="row ">
-    <p class="d-flex justify-content-center month-name">{{monthName}}</p>
+    <span class="d-flex justify-content-center month-name">{{monthName}}</span>
   </div>
   <div class="">
-    <button class="account-button" mat-button *ngFor="let account of accounts"
-      [ngStyle]="{backgroundColor: account.background, color: account.color}"
+    <hr>
+    <mat-progress-bar mode="query" color="accent" *ngIf="!hideProgress"></mat-progress-bar>
+    <button class="account-button" [ngClass]="{'line': buttonName === account.name}" mat-button
+      *ngFor="let account of accounts" [ngStyle]="{backgroundColor: account.background, color: account.color}"
       (click)=getAccountTotals(account)>{{account.name}}</button>
-  </div>
-  <div class="row">
-    <div class="d-flex justify-content-center text-center">
-      <div class="row ">
-        <span>Saldo Anterior:</span>
-        <span><b>{{previousBalance | currency : 'BRL'}}</b></span>
-      </div>
-      <div class="row">
-        <span>Saldo Atual:</span>
-        <span class="align-center"><b>{{totalBalance | currency : 'BRL'}}</b></span>
-      </div>
-      <div class="row">
-        <span>Rendimentos:</span>
-        <span><b>{{totalYields | currency : 'BRL'}}</b></span>
-      </div>
-    </div>
+    <hr>
   </div>
 </div>
 <div class="row">

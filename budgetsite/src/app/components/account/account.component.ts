@@ -67,14 +67,12 @@ export const MY_FORMATS = {
 export class AccountComponent implements OnInit {
 
   accounts?: Accounts[];
-  totalBalance?: number;
-  previousBalance?: number;
-  totalYields?: number;
   accountId?: number;
   reference?: string;
   account!: Accounts;
   monthName: string = "";
   hideProgress: boolean = false;
+  buttonName: string = "";
 
   constructor(private accountService: AccountService) { }
 
@@ -114,8 +112,8 @@ export class AccountComponent implements OnInit {
 
   getAccountTotals(account: Accounts) {
 
+    this.buttonName = account.name;
     this.hideProgress = false;
-
     this.monthName = this.date.value.format('MMMM');
 
     if (account) {
@@ -123,16 +121,9 @@ export class AccountComponent implements OnInit {
       this.accountId = account.id;
       this.reference = this.date.value.format('YYYYMM');
       this.account = account;
-
-      this.accountService.getAccountTotals(this.accountId, this.reference).subscribe(account => {
-
-        this.totalBalance = account.totalBalance;
-        this.previousBalance = account.previousBalance;
-        this.totalYields = account.totalYields;
-
-        this.hideProgress = true;
-      });
     }
+
+    this.hideProgress = true;
   }
 
   setNextMonth() {

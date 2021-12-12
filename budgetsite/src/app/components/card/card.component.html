@@ -20,13 +20,15 @@
     </div>
   </div>
   <div class="row ">
-    <p class="d-flex justify-content-center month-name">{{monthName}}</p>
+    <span class="d-flex justify-content-center month-name">{{monthName}}</span>
   </div>
   <div class="">
+    <hr>
     <mat-progress-bar mode="query" color="accent" *ngIf="!hideProgress"></mat-progress-bar>
     <button class="card-button" [ngClass]="{'line': buttonName === card.name}" mat-button *ngFor="let card of cards"
       [ngStyle]="{backgroundColor: card.background, color: card.color}"
       (click)=getCardTotals(card)>{{card.name}}</button>
+    <hr>
   </div>
 </div>
 <div class="row">

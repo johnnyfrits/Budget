@@ -1,19 +1,38 @@
 <div class="container">
   <div class="row">
+    <div class="row justify-content-center">
+      <mat-spinner color="accent" *ngIf="!hideProgress"></mat-spinner>
+    </div>
+    <div class="d-flex justify-content-center text-center" *ngIf="hideProgress">
+      <div class="row ">
+        <span>Saldo Anterior:</span>
+        <span><b>{{previousBalance | currency : 'BRL'}}</b></span>
+      </div>
+      <div class="row">
+        <span>Saldo Atual:</span>
+        <span class="align-center"><b>{{totalBalance | currency : 'BRL'}}</b></span>
+      </div>
+      <div class="row">
+        <span>Rendimentos:</span>
+        <span><b>{{totalYields | currency : 'BRL'}}</b></span>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="hideProgress">
     <div class="table-container mat-elevation-z8">
       <table mat-table [dataSource]="accountpostings">
         <!-- # Column -->
         <ng-container matColumnDef="index">
           <th mat-header-cell *matHeaderCellDef>#</th>
-          <td mat-cell *matCellDef="let row; let i = index" [ngStyle]="{color: row.amount < 0 ? '#e35e6b' : '#3f51b5'}">
+          <td mat-cell *matCellDef="let row; let i = index" [ngStyle]="{color: row.amount < 0 ? '#e35e6b' : 'black'}">
             {{i + 1}}</td>
-          <td mat-footer-cell *matFooterCellDef [ngStyle]="{color: total < 0 ? '#e35e6b' : '#3f51b5'}"> Total </td>
+          <td mat-footer-cell *matFooterCellDef [ngStyle]="{color: total < 0 ? '#e35e6b' : 'black'}"> Total </td>
         </ng-container>
 
         <!-- Data Column -->
         <ng-container matColumnDef="date">
           <th mat-header-cell *matHeaderCellDef>Data</th>
-          <td mat-cell *matCellDef="let row" [ngStyle]="{color: row.amount < 0 ? '#e35e6b' : '#3f51b5'}">
+          <td mat-cell *matCellDef="let row" [ngStyle]="{color: row.amount < 0 ? '#e35e6b' : 'black'}">
             {{row.date | date: 'dd/MM/yyyy'}}</td>
           <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
@@ -21,7 +40,7 @@
         <!-- Descrição Column -->
         <ng-container matColumnDef="description">
           <th mat-header-cell *matHeaderCellDef>Descrição</th>
-          <td mat-cell *matCellDef="let row" [ngStyle]="{color: row.amount < 0 ? '#e35e6b' : '#3f51b5'}">
+          <td mat-cell *matCellDef="let row" [ngStyle]="{color: row.amount < 0 ? '#e35e6b' : 'black'}">
             {{row.description}}
           </td>
           <td mat-footer-cell *matFooterCellDef> </td>
@@ -30,9 +49,9 @@
         <!-- Valor Column -->
         <ng-container matColumnDef="amount">
           <th mat-header-cell *matHeaderCellDef>Valor</th>
-          <td mat-cell *matCellDef="let row" [ngStyle]="{color: row.amount < 0 ? '#e35e6b' : '#3f51b5'}">
+          <td mat-cell *matCellDef="let row" [ngStyle]="{color: row.amount < 0 ? '#e35e6b' : 'black'}">
             {{row.amount | currency : 'BRL'}}</td>
-          <td mat-footer-cell *matFooterCellDef [ngStyle]="{color: total < 0 ? '#e35e6b' : '#3f51b5'}">
+          <td mat-footer-cell *matFooterCellDef [ngStyle]="{color: total < 0 ? '#e35e6b' : 'black'}">
             {{total | currency : 'BRL'}}</td>
         </ng-container>
 
