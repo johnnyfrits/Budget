@@ -23,7 +23,8 @@
     <p class="d-flex justify-content-center month-name">{{monthName}}</p>
   </div>
   <div class="">
-    <button class="card-button" mat-button *ngFor="let card of cards"
+    <mat-progress-bar mode="query" color="accent" *ngIf="!hideProgress"></mat-progress-bar>
+    <button class="card-button" [ngClass]="{'line': buttonName === card.name}" mat-button *ngFor="let card of cards"
       [ngStyle]="{backgroundColor: card.background, color: card.color}"
       (click)=getCardTotals(card)>{{card.name}}</button>
   </div>

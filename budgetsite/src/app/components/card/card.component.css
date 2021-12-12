@@ -10,10 +10,6 @@
   margin-right: 10px;
 }
 
-/* mat-card {
-	margin: 20px 20px 20px 20px;
-  } */
-
 .card-button {
   margin: 0px 0px 5px 5px;
   cursor: pointer;
@@ -22,7 +18,7 @@
 .card-button:hover,
 .card-button:focus,
 .card-button:active {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3);
   transition: box-shadow 0.3s ease-in-out;
 }
 
@@ -37,6 +33,7 @@
 .month-name {
   font-weight: bold;
   font-size: 20px;
+  color: rgb(255, 64, 129);
 }
 
 .previous-month,
@@ -44,7 +41,8 @@
   color: #6e6e6e
 }
 
-/* .previous-month:hover {
-	font-weight: 10px;
-	color: red;
-  } */
+.line {
+  border-color: rgb(255, 64, 129, 0.9);
+  border-top-style: solid;
+  box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3);
+}

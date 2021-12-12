@@ -13,14 +13,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { HeaderComponent } from './components/template/header/header.component';
-import { NavComponent } from './components/template/nav/nav.component';
-import { AccountViewComponent } from './views/account-view/account-view.component';
-import { AccountComponent } from './components/account/account.component';
-import { AccountPostingsComponent } from './components/accountpostings/accountpostings.component';
-import { CardViewComponent } from './views/card-view/card-view.component';
-import { CardComponent } from './components/card/card.component';
-
 import { LayoutModule } from '@angular/cdk/layout';
 
 import { MatCardModule } from '@angular/material/card';
@@ -35,9 +27,17 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+import { HeaderComponent } from './components/template/header/header.component';
+import { NavComponent } from './components/template/nav/nav.component';
+import { AccountViewComponent } from './views/account-view/account-view.component';
+import { AccountComponent } from './components/account/account.component';
+import { AccountPostingsComponent } from './components/accountpostings/accountpostings.component';
+import { CardViewComponent } from './views/card-view/card-view.component';
+import { CardComponent } from './components/card/card.component';
 import { CardPostingsComponent } from './components/cardpostings/cardpostings.component';
 import { BudgetComponent } from './components/budget/budget.component';
-
 
 registerLocaleData(localePt);
 
@@ -72,6 +72,7 @@ registerLocaleData(localePt);
     MatTabsModule,
     MatTableModule,
     MatProgressBarModule,
+    MatProgressSpinnerModule,
     FormsModule,
     ReactiveFormsModule
   ],

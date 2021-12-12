@@ -20,6 +20,7 @@ export class CardPostingsComponent implements OnInit {
   percMyTotal: string = '0,00%';
   othersTotal: number = 0;
   percOthersTotal: string = '0,00%';
+  hideProgress: boolean = true;
 
   constructor(private cardPostingsService: CardPostingsService) { }
 
@@ -32,11 +33,15 @@ export class CardPostingsComponent implements OnInit {
     // if (changes['cardId']?.currentValue || changes['reference']?.currentValue) {
     if (this.cardId) {
 
+      this.hideProgress = false;
+
       this.cardPostingsService.read(this.cardId!, this.reference!).subscribe(cardpostings => {
 
         this.cardpostings = cardpostings;
 
         this.getTotalAmount();
+
+        this.hideProgress = true;
       });
     }
   }

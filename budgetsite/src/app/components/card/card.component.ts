@@ -75,6 +75,8 @@ export class CardComponent implements OnInit {
   card!: Cards;
   monthName: string = "";
   hideProgress: boolean = false;
+  buttonClicked: boolean = false;
+  buttonName: string = "";
 
   constructor(private cardService: CardService) { }
 
@@ -114,6 +116,9 @@ export class CardComponent implements OnInit {
 
   getCardTotals(card: Cards) {
 
+    this.buttonClicked = true;
+    this.buttonName = card.name;
+
     this.hideProgress = false;
 
     this.monthName = this.date.value.format('MMMM');
@@ -124,6 +129,8 @@ export class CardComponent implements OnInit {
       this.reference = this.date.value.format('YYYYMM');
       this.card = card;
     }
+
+    this.hideProgress = true;
   }
 
   setNextMonth() {
