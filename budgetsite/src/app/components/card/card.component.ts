@@ -84,8 +84,6 @@ export class CardComponent implements OnInit {
 
     this.cardService.read().subscribe(cards => {
 
-      debugger;
-
       this.cards = cards;
 
       this.hideProgress = true;
