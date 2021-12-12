@@ -1,0 +1,50 @@
+.example-month-picker .mat-calendar-period-button {
+  pointer-events: none;
+}
+
+.example-month-picker .mat-calendar-arrow {
+  display: none;
+}
+
+.calendar {
+  margin-right: 10px;
+}
+
+/* mat-card {
+	margin: 20px 20px 20px 20px;
+  } */
+
+.card-button {
+  margin: 0px 0px 5px 5px;
+  cursor: pointer;
+}
+
+.card-button:hover,
+.card-button:focus,
+.card-button:active {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.arrow {
+  size: 12px;
+}
+
+.arrow:hover {
+  font-weight: bold;
+}
+
+.month-name {
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.previous-month,
+.next-month {
+  color: #6e6e6e
+}
+
+/* .previous-month:hover {
+	font-weight: 10px;
+	color: red;
+  } */

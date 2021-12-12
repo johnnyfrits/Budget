@@ -5,5 +5,5 @@ export interface AccountsPostings {
 	reference: string;
 	description: string;
 	amount: number;
-	note: string;
+	note?: string;
 }

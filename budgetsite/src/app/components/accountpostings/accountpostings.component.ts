@@ -13,9 +13,7 @@ export class AccountPostingsComponent implements OnInit {
   @Input() reference?: string;
 
   accountpostings!: AccountsPostings[];
-
   displayedColumns = ['index', 'date', 'description', 'amount'];
-
   total: number = 0;
 
   constructor(private accountPostingsService: AccountPostingsService) { }

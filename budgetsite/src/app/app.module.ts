@@ -35,6 +35,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CardPostingsComponent } from './components/cardpostings/cardpostings.component';
 
 
 registerLocaleData(localePt);
@@ -49,6 +50,7 @@ registerLocaleData(localePt);
     CardComponent,
     AccountViewComponent,
     CardViewComponent,
+    CardPostingsComponent,
   ],
   imports: [
     BrowserModule,
