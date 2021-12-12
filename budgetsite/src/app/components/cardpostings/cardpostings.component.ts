@@ -17,9 +17,9 @@ export class CardPostingsComponent implements OnInit {
   displayedColumns = ['index', 'date', 'description', 'amount'];
   total: number = 0;
   myTotal: number = 0;
-  percMyTotal: number = 0;
+  percMyTotal: string = '0,00%';
   othersTotal: number = 0;
-  percOthersTotal: number = 0;
+  percOthersTotal: string = '0,00%';
 
   constructor(private cardPostingsService: CardPostingsService) { }
 
@@ -53,7 +53,7 @@ export class CardPostingsComponent implements OnInit {
     this.othersTotal = this.cardpostings ?
       this.cardpostings.filter(t => t.others).map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0;
 
-    this.percMyTotal = this.total ? this.myTotal / this.total * 100 : 0;
-    this.percOthersTotal = this.total ? this.othersTotal / this.total * 100 : 0;
+    this.percMyTotal = (this.total ? this.myTotal / this.total * 100 : 0).toFixed(2)?.toString() + '%';;
+    this.percOthersTotal = (this.total ? this.othersTotal / this.total * 100 : 0).toFixed(2)?.toString() + '%';
   }
 }
