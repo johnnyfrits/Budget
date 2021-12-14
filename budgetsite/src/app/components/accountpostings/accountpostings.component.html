@@ -33,7 +33,7 @@
         <ng-container matColumnDef="date">
           <th mat-header-cell *matHeaderCellDef>Data</th>
           <td mat-cell *matCellDef="let row" [ngStyle]="{color: row.amount < 0 ? '#e35e6b' : 'black'}">
-            {{row.date | date: 'dd/MM/yyyy'}}</td>
+            {{row.date | date: 'dd/MM'}}</td>
           <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 

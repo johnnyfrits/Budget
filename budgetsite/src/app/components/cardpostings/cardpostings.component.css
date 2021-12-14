@@ -17,7 +17,8 @@ table {
 }
 
 .mat-column-date {
-  width: 125px;
+  width: 50px;
+  padding-right: 10px;
 }
 
 .mat-column-description {

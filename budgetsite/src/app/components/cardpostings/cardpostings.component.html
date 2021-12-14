@@ -35,7 +35,7 @@
           <th mat-header-cell *matHeaderCellDef>Data</th>
           <td mat-cell *matCellDef="let row" [ngClass]="{'bold': row.people}"
             [ngStyle]="{color: row.amount < 0 ? '#e35e6b' : row.people ? row.people.color : 'black'}">
-            {{row.date | date: 'dd/MM/yyyy'}}</td>
+            {{row.date | date: 'dd/MM'}}</td>
           <td mat-footer-cell *matFooterCellDef></td>
         </ng-container>
 

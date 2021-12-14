@@ -13,11 +13,12 @@ table {
 }
 
 .mat-column-index {
-  width: 50px;
+  width: 30px;
 }
 
 .mat-column-date {
-  width: 125px;
+  width: 50px;
+  padding-right: 10px;
 }
 
 .mat-column-description {
