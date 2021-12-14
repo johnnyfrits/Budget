@@ -115,11 +115,12 @@ export class CardComponent implements OnInit {
 
   getCardTotals(card: Cards) {
 
-    this.buttonName = card.name;
-    this.hideProgress = false;
     this.monthName = this.date.value.format('MMMM');
 
     if (card) {
+
+      this.buttonName = card.name;
+      this.hideProgress = false;
 
       this.cardId = card.id;
       this.reference = this.date.value.format('YYYYMM');

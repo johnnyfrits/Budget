@@ -112,11 +112,12 @@ export class AccountComponent implements OnInit {
 
   getAccountTotals(account: Accounts) {
 
-    this.buttonName = account.name;
-    this.hideProgress = false;
     this.monthName = this.date.value.format('MMMM');
 
     if (account) {
+
+      this.buttonName = account.name;
+      this.hideProgress = false;
 
       this.accountId = account.id;
       this.reference = this.date.value.format('YYYYMM');

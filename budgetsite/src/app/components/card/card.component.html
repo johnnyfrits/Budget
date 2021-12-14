@@ -19,7 +19,7 @@
       </button>
     </div>
   </div>
-  <div class="row ">
+  <div class="row">
     <span class="d-flex justify-content-center month-name">{{monthName}}</span>
   </div>
   <div class="">
@@ -30,7 +30,7 @@
       (click)=getCardTotals(card)>{{card.name}}</button>
     <hr>
   </div>
-</div>
-<div class="row">
-  <app-cardpostings [cardId]=cardId [reference]=reference></app-cardpostings>
+  <div class="row">
+    <app-cardpostings [cardId]=cardId [reference]=reference></app-cardpostings>
+  </div>
 </div>
