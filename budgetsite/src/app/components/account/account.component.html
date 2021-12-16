@@ -1,5 +1,5 @@
 <div class="container">
-  <app-datepicker (referenceChange)="reference=$event"></app-datepicker>
+  <app-datepicker (referenceChange)="reference=$event" [accountId]="accountId"></app-datepicker>
   <div class="">
     <hr>
     <mat-progress-bar mode="query" color="accent" *ngIf="!hideProgress"></mat-progress-bar>

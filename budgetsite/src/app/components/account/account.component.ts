@@ -17,7 +17,11 @@ export class AccountComponent implements OnInit {
   hideProgress: boolean = false;
   buttonName: string = "";
 
-  constructor(private accountService: AccountService) { }
+  constructor(private accountService: AccountService) {
+
+    debugger;
+    this.accountId = Number(localStorage.getItem("accountId"));
+  }
 
   ngOnInit(): void {
 
@@ -26,6 +30,16 @@ export class AccountComponent implements OnInit {
       this.accounts = accounts;
 
       this.hideProgress = true;
+
+      this.accounts.forEach(account => {
+
+        debugger;
+
+        if (account.id == this.accountId) {
+
+          this.getAccountTotals(account);
+        }
+      });
     });
   }
 
@@ -38,6 +52,8 @@ export class AccountComponent implements OnInit {
 
       this.accountId = account.id;
       this.account = account;
+
+      localStorage.setItem("accountId", account.id!.toString());
     }
 
     this.hideProgress = true;

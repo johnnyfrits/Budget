@@ -20,7 +20,10 @@ export class CardComponent implements OnInit {
   hideProgress: boolean = false;
   buttonName: string = "";
 
-  constructor(private cardService: CardService) { }
+  constructor(private cardService: CardService) {
+
+    this.cardId = Number(localStorage.getItem("cardId"));
+  }
 
   ngOnInit(): void {
 
@@ -29,6 +32,14 @@ export class CardComponent implements OnInit {
       this.cards = cards;
 
       this.hideProgress = true;
+
+      this.cards.forEach(card => {
+
+        if (card.id == this.cardId) {
+
+          this.getCardTotals(card);
+        }
+      });
     });
   }
 
@@ -41,6 +52,8 @@ export class CardComponent implements OnInit {
 
       this.cardId = card.id;
       this.card = card;
+
+      localStorage.setItem("cardId", card.id!.toString());
     }
 
     this.hideProgress = true;

@@ -69,21 +69,36 @@ export class DatepickerComponent implements OnInit {
   @Input() accountId?: number;
   @Input() cardId?: number;
 
-  monthName?: string;
+  monthName: string = "";
   @Output() referenceChange = new EventEmitter<string>();
 
   ngOnInit(): void {
 
-    this.monthName = this.date.value.format('MMMM');
+    debugger;
+
+    let localDate = this.accountId ? localStorage.getItem('accountDate') : localStorage.getItem('cardDate');
+
+    if (localDate) {
+
+      this.date.setValue(moment(localDate));
+
+      this.setMonthName();
+    }
   }
 
   setMonthName() {
 
     this.monthName = this.date.value.format('MMMM');
-
     let reference = this.date.value.format('YYYYMM');
 
     this.referenceChange.emit(reference);
+
+    if (this.accountId) {
+      localStorage.setItem('accountDate', this.date.value);
+    }
+    else {
+      localStorage.setItem('cardDate', this.date.value);
+    }
   }
 
   chosenYearHandler(normalizedYear: Moment) {
