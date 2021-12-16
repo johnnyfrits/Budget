@@ -29,6 +29,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { HeaderComponent } from './components/template/header/header.component';
 import { NavComponent } from './components/template/nav/nav.component';
@@ -62,6 +63,8 @@ registerLocaleData(localePt);
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatCardModule,
     MatToolbarModule,
     MatSidenavModule,
@@ -77,8 +80,7 @@ registerLocaleData(localePt);
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    FormsModule,
-    ReactiveFormsModule
+    MatTooltipModule
   ],
   providers: [{
     provide: LOCALE_ID,
