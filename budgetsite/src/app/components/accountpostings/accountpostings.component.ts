@@ -16,9 +16,9 @@ export class AccountPostingsComponent implements OnInit {
   accountpostings!: AccountsPostings[];
   displayedColumns = ['index', 'date', 'description', 'amount'];
   total: number = 0;
-  totalBalance?: number;
-  previousBalance?: number;
-  totalYields?: number;
+  totalBalance?: number = 0;
+  previousBalance?: number = 0;
+  totalYields?: number = 0;
   hideProgress: boolean = true;
 
   constructor(private accountPostingsService: AccountPostingsService, private accountService: AccountService) { }
