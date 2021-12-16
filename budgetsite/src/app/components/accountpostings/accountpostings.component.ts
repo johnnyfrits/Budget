@@ -34,21 +34,29 @@ export class AccountPostingsComponent implements OnInit {
 
       this.hideProgress = false;
 
-      this.accountPostingsService.read(this.accountId!, this.reference!).subscribe(accountpostings => {
+      this.accountPostingsService.read(this.accountId!, this.reference!).subscribe(
+        {
+          next: accountpostings => {
 
-        this.accountpostings = accountpostings;
+            this.accountpostings = accountpostings;
 
-        this.getTotalAmount();
+            this.getTotalAmount();
 
-        this.accountService.getAccountTotals(this.accountId, this.reference).subscribe(account => {
+            this.accountService.getAccountTotals(this.accountId, this.reference).subscribe(
+              {
+                next: account => {
 
-          this.totalBalance = account.totalBalance;
-          this.previousBalance = account.previousBalance;
-          this.totalYields = account.totalYields;
+                  this.totalBalance = account.totalBalance;
+                  this.previousBalance = account.previousBalance;
+                  this.totalYields = account.totalYields;
 
-          this.hideProgress = true;
+                  this.hideProgress = true;
+                },
+                error: () => this.hideProgress = true
+              });
+          },
+          error: () => this.hideProgress = true
         });
-      });
     }
   }
 

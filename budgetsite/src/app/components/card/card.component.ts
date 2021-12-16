@@ -27,23 +27,28 @@ export class CardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.cardService.read().subscribe(cards => {
+    this.cardService.read().subscribe(
+      {
+        next: cards => {
 
-      this.cards = cards;
+          this.cards = cards;
 
-      this.hideProgress = true;
+          this.hideProgress = true;
 
-      this.cards.forEach(card => {
+          this.cards.forEach(card => {
 
-        if (card.id == this.cardId) {
+            if (card.id == this.cardId) {
 
-          this.getCardTotals(card);
-        }
-      });
-    });
+              this.setCard(card);
+            }
+          });
+        },
+        error: () => this.hideProgress = true
+      }
+    );
   }
 
-  getCardTotals(card: Cards) {
+  setCard(card: Cards) {
 
     if (card) {
 

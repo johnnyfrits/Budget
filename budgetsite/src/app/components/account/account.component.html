@@ -5,7 +5,7 @@
     <mat-progress-bar mode="query" color="accent" *ngIf="!hideProgress"></mat-progress-bar>
     <button class="account-button" [ngClass]="{'line': buttonName === account.name}" mat-button
       *ngFor="let account of accounts" [ngStyle]="{backgroundColor: account.background, color: account.color}"
-      (click)=getAccountTotals(account)>{{account.name}}</button>
+      (click)=setAccount(account)>{{account.name}}</button>
     <hr>
   </div>
   <div class="row">

@@ -19,31 +19,32 @@ export class AccountComponent implements OnInit {
 
   constructor(private accountService: AccountService) {
 
-    debugger;
     this.accountId = Number(localStorage.getItem("accountId"));
   }
 
   ngOnInit(): void {
 
-    this.accountService.read().subscribe(accounts => {
+    this.accountService.read().subscribe(
+      {
+        next: accounts => {
 
-      this.accounts = accounts;
+          this.accounts = accounts;
 
-      this.hideProgress = true;
+          this.accounts.forEach(account => {
 
-      this.accounts.forEach(account => {
+            if (account.id == this.accountId) {
 
-        debugger;
+              this.setAccount(account);
+            }
+          });
 
-        if (account.id == this.accountId) {
-
-          this.getAccountTotals(account);
-        }
+          this.hideProgress = true;
+        },
+        error: () => this.hideProgress = true
       });
-    });
   }
 
-  getAccountTotals(account: Accounts) {
+  setAccount(account: Accounts) {
 
     if (account) {
 

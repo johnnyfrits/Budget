@@ -74,8 +74,6 @@ export class DatepickerComponent implements OnInit {
 
   ngOnInit(): void {
 
-    debugger;
-
     let localDate = this.accountId ? localStorage.getItem('accountDate') : localStorage.getItem('cardDate');
 
     if (localDate) {

@@ -35,14 +35,19 @@ export class CardPostingsComponent implements OnInit {
 
       this.hideProgress = false;
 
-      this.cardPostingsService.read(this.cardId!, this.reference!).subscribe(cardpostings => {
+      this.cardPostingsService.read(this.cardId!, this.reference!).subscribe(
+        {
+          next: cardpostings => {
 
-        this.cardpostings = cardpostings;
+            this.cardpostings = cardpostings;
 
-        this.getTotalAmount();
+            this.getTotalAmount();
 
-        this.hideProgress = true;
-      });
+            this.hideProgress = true;
+          },
+          error: () => this.hideProgress = true
+        }
+      );
     }
   }
 
