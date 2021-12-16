@@ -1,27 +1,5 @@
 <div class="container">
-  <br>
-  <div class="row">
-    <div class="col-md-6">
-      <mat-form-field appearance="fill" class="calendar">
-        <mat-label>Mês e Ano</mat-label>
-        <input matInput [matDatepicker]="dp" [formControl]="date">
-        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-        <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
-          (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
-        </mat-datepicker>
-      </mat-form-field>
-      <button mat-icon-button (click)=setPreviousMonth() color="primary" class="previous-month"
-        aria-label="Mês anterior">
-           <mat-icon>arrow_back_ios</mat-icon>
-      </button>
-      <button mat-icon-button (click)=setNextMonth() color="primary" class="next-month" aria-label="Próximo mês">
-        <mat-icon>arrow_forward_ios</mat-icon>
-      </button>
-    </div>
-  </div>
-  <div class="row ">
-    <span class="d-flex justify-content-center month-name">{{monthName}}</span>
-  </div>
+  <app-datepicker (referenceChange)="reference=$event"></app-datepicker>
   <div class="">
     <hr>
     <mat-progress-bar mode="query" color="accent" *ngIf="!hideProgress"></mat-progress-bar>

@@ -38,6 +38,7 @@ import { CardViewComponent } from './views/card-view/card-view.component';
 import { CardComponent } from './components/card/card.component';
 import { CardPostingsComponent } from './components/cardpostings/cardpostings.component';
 import { BudgetComponent } from './components/budget/budget.component';
+import { DatepickerComponent } from './shared/datepicker/datepicker.component';
 
 registerLocaleData(localePt);
 
@@ -53,6 +54,7 @@ registerLocaleData(localePt);
     CardViewComponent,
     CardPostingsComponent,
     BudgetComponent,
+    DatepickerComponent,
   ],
   imports: [
     BrowserModule,
