@@ -3,7 +3,6 @@ import { FormControl } from '@angular/forms';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
-import { MatTooltip } from '@angular/material/tooltip';
 
 // Depending on whether rollup is used, moment needs to be imported differently.
 // Since Moment.js doesn't have a default export, we normally need to import using the `* as`
@@ -66,23 +65,34 @@ export const MY_FORMATS = {
 export class DatepickerComponent implements OnInit {
 
   date = new FormControl(moment());
+  monthName: string = "";
 
   @Input() accountId?: number;
   @Input() cardId?: number;
+  @Input() budgetId?: number;
 
-  monthName: string = "";
   @Output() referenceChange = new EventEmitter<string>();
 
   ngOnInit(): void {
 
-    let localDate = this.accountId ? localStorage.getItem('accountDate') : localStorage.getItem('cardDate');
+    let localDate;
+
+    if (this.accountId) {
+      localDate = localStorage.getItem('accountDate');
+    }
+    else if (this.cardId) {
+      localDate = localStorage.getItem('cardDate');
+    }
+    else if (this.budgetId) {
+      localDate = localStorage.getItem('budgetDate');
+    }
 
     if (localDate) {
 
       this.date.setValue(moment(localDate));
-
-      this.setMonthName();
     }
+
+    this.setMonthName();
   }
 
   setMonthName() {
@@ -95,8 +105,11 @@ export class DatepickerComponent implements OnInit {
     if (this.accountId) {
       localStorage.setItem('accountDate', this.date.value);
     }
-    else {
+    else if (this.cardId) {
       localStorage.setItem('cardDate', this.date.value);
+    }
+    else if (this.budgetId) {
+      localStorage.setItem('budgetDate', this.date.value);
     }
   }
 

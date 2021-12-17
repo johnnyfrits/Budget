@@ -1,0 +1,46 @@
+.table-container {
+  width: 100%;
+  height: auto;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-table-sticky {
+  border-top: 1px solid #e0e0e0;
+}
+
+.mat-column-description {
+  width: 500px;
+}
+
+.mat-column-toPay {
+  width: 125px;
+  text-align: right;
+}
+
+.mat-column-paid {
+  width: 125px;
+  text-align: right;
+}
+
+.mat-column-toReceive {
+  width: 125px;
+  text-align: right;
+}
+
+.mat-column-received {
+  width: 125px;
+  text-align: right;
+}
+
+.mat-column-remaining {
+  width: 125px;
+  text-align: right;
+}
+
+tr.mat-footer-row {
+  font-weight: bold;
+}

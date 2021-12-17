@@ -13,7 +13,6 @@ export class AccountComponent implements OnInit {
   accountId?: number;
   reference?: string;
   account!: Accounts;
-  monthName: string = "";
   hideProgress: boolean = false;
   buttonName: string = "";
 

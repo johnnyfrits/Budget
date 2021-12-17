@@ -16,7 +16,6 @@ export class CardComponent implements OnInit {
   cardId?: number;
   reference?: string;
   card!: Cards;
-  monthName: string = "";
   hideProgress: boolean = false;
   buttonName: string = "";
 

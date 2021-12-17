@@ -30,6 +30,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDividerModule } from '@angular/material/divider';
 
 import { HeaderComponent } from './components/template/header/header.component';
 import { NavComponent } from './components/template/nav/nav.component';
@@ -41,6 +42,7 @@ import { CardComponent } from './components/card/card.component';
 import { CardPostingsComponent } from './components/cardpostings/cardpostings.component';
 import { BudgetComponent } from './components/budget/budget.component';
 import { DatepickerComponent } from './shared/datepicker/datepicker.component';
+import { BudgetViewComponent } from './views/budget-view/budget-view.component';
 
 registerLocaleData(localePt);
 
@@ -57,6 +59,7 @@ registerLocaleData(localePt);
     CardPostingsComponent,
     BudgetComponent,
     DatepickerComponent,
+    BudgetViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,7 +83,8 @@ registerLocaleData(localePt);
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDividerModule
   ],
   providers: [{
     provide: LOCALE_ID,

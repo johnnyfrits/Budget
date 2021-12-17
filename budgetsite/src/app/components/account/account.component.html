@@ -1,7 +1,6 @@
 <div class="container">
   <app-datepicker (referenceChange)="reference=$event" [accountId]="accountId"></app-datepicker>
   <div class="">
-    <hr>
     <mat-progress-bar mode="query" color="accent" *ngIf="!hideProgress"></mat-progress-bar>
     <button class="account-button" [ngClass]="{'line': buttonName === account.name}" mat-button
       *ngFor="let account of accounts" [ngStyle]="{backgroundColor: account.background, color: account.color}"

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ApiUrls } from 'src/app/common/api-urls'
 import { AccountsPostings } from 'src/app/models/accountspostings.model';
 import { catchError, map } from 'rxjs/operators';
