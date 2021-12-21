@@ -10,12 +10,44 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+th.mat-header-cell {
+  height: 4em !important;
+  font-size: 1em !important;
+  font-weight: bold !important;
+  border-style: solid !important;
+  border-bottom: 2px black !important;
+  color: rgb(30, 31, 32) !important;
+}
 
+td.mat-cell {
+  border-style: none !important;
+}
 
 tr.mat-row {
-  height: 0px !important;
+  cursor: pointer;
+  height: 2em !important;
+}
+
+tr:nth-child(even) {
+  background: #e0e0e0
+}
+
+tr:nth-child(even) {
+  background: #e0e0e0
+}
+
+tr:nth-child(odd) {
+  background: #f2f2f2
 }
 
 tr.mat-footer-row {
-  height: 3px !important;
+  height: 3em !important;
+}
+
+.negative {
+  color: red;
+}
+
+.positive {
+  color: black;
 }

@@ -12,7 +12,7 @@ export class BudgetViewComponent implements OnInit {
 
     navService.navData = {
 
-      title: 'Orcamento',
+      title: 'Orçamento',
       icon: 'view_quilt',
       routeUrl: '/budget'
     };

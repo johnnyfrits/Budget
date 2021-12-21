@@ -7,7 +7,7 @@
     </div>
   </div>
   <!-- EXPENSES TABLE -->
-  <div class="row" *ngIf="hideExpensesProgress || hideIncomesProgress">
+  <div class="row expenses" *ngIf="hideExpensesProgress || hideIncomesProgress">
     <div class="table-container mat-elevation-z8">
       <table mat-table [dataSource]="expenses">
         <!-- Despesas Column -->
@@ -23,31 +23,32 @@
           <th mat-header-cell *matHeaderCellDef>A Pagar</th>
           <td mat-cell *matCellDef="let row">
             {{row.toPay | currency : '':''}}</td>
-          <td mat-footer-cell *matFooterCellDef [ngStyle]="{color: 'black'}">
+          <td mat-footer-cell *matFooterCellDef>
             {{toPayTotal | currency : '':''}}</td>
         </ng-container>
 
         <!-- Pago Column -->
         <ng-container matColumnDef="paid">
           <th mat-header-cell *matHeaderCellDef>Pago</th>
-          <td mat-cell *matCellDef="let row" [ngStyle]="{color: '#e35e6b'}">
+          <td mat-cell *matCellDef="let row" [ngClass]="'negative'">
             {{row.paid | currency : '':''}}</td>
-          <td mat-footer-cell *matFooterCellDef [ngStyle]="{color: '#e35e6b'}">
+          <td mat-footer-cell *matFooterCellDef>
             {{paidTotal | currency : '':''}}</td>
         </ng-container>
 
         <!-- Restante Column -->
         <ng-container matColumnDef="remaining">
           <th mat-header-cell *matHeaderCellDef>Restante</th>
-          <td mat-cell *matCellDef="let row" [ngStyle]="{color: '#e35e6b'}">
+          <td mat-cell *matCellDef="let row" [ngClass]="'negative'">
             {{row.remaining | currency : '':''}}</td>
-          <td mat-footer-cell *matFooterCellDef [ngStyle]="{color: '#e35e6b'}">
+          <td mat-footer-cell *matFooterCellDef>
             {{expensesRemainingTotal | currency : '':''}}</td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedExpensesColumns; sticky: false"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedExpensesColumns"></tr>
-        <tr mat-footer-row *matFooterRowDef="displayedExpensesColumns; sticky: false"></tr>
+        <tr class="expenses mat-header-cell-expenses" mat-header-row
+          *matHeaderRowDef="displayedExpensesColumns; sticky: false"></tr>
+        <tr class="expenses" mat-row *matRowDef="let row; columns: displayedExpensesColumns"></tr>
+        <tr class="expenses" mat-footer-row *matFooterRowDef="displayedExpensesColumns; sticky: false"></tr>
       </table>
     </div>
   </div>
@@ -69,31 +70,32 @@
           <th mat-header-cell *matHeaderCellDef>A Receber</th>
           <td mat-cell *matCellDef="let row">
             {{row.toReceive | currency : '':''}}</td>
-          <td mat-footer-cell *matFooterCellDef [ngStyle]="{color: 'black'}">
+          <td mat-footer-cell *matFooterCellDef>
             {{toReceiveTotal | currency : '':''}}</td>
         </ng-container>
 
         <!-- Recebido Column -->
         <ng-container matColumnDef="received">
           <th mat-header-cell *matHeaderCellDef>Recebido</th>
-          <td mat-cell *matCellDef="let row" [ngStyle]="{color: 'black'}">
+          <td mat-cell *matCellDef="let row" [ngClass]="'negative'">
             {{row.received | currency : '':''}}</td>
-          <td mat-footer-cell *matFooterCellDef [ngStyle]="{color: 'black'}">
+          <td mat-footer-cell *matFooterCellDef>
             {{receivedTotal | currency : '':''}}</td>
         </ng-container>
 
         <!-- Restante Column -->
         <ng-container matColumnDef="remaining">
           <th mat-header-cell *matHeaderCellDef>Restante</th>
-          <td mat-cell *matCellDef="let row" [ngStyle]="{color: 'black'}">
+          <td mat-cell *matCellDef="let row">
             {{row.remaining | currency : '':''}}</td>
-          <td mat-footer-cell *matFooterCellDef [ngStyle]="{color: 'black'}">
+          <td mat-footer-cell *matFooterCellDef>
             {{incomesRemainingTotal | currency : '':''}}</td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedIncomesColumns; sticky: false"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedIncomesColumns"></tr>
-        <tr mat-footer-row *matFooterRowDef="displayedIncomesColumns; sticky: false"></tr>
+        <tr class="incomes mat-header-cell-incomes" mat-header-row
+          *matHeaderRowDef="displayedIncomesColumns; sticky: false"></tr>
+        <tr class="incomes" mat-row *matRowDef="let row; columns: displayedIncomesColumns"></tr>
+        <tr class="incomes" mat-footer-row *matFooterRowDef="displayedIncomesColumns; sticky: false"></tr>
       </table>
     </div>
   </div>
