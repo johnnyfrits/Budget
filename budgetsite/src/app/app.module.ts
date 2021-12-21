@@ -31,6 +31,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatSelectModule } from '@angular/material/select';
 
 import { HeaderComponent } from './components/template/header/header.component';
 import { NavComponent } from './components/template/nav/nav.component';
@@ -39,7 +42,7 @@ import { AccountComponent } from './components/account/account.component';
 import { AccountPostingsComponent } from './components/accountpostings/accountpostings.component';
 import { CardViewComponent } from './views/card-view/card-view.component';
 import { CardComponent } from './components/card/card.component';
-import { CardPostingsComponent } from './components/cardpostings/cardpostings.component';
+import { CardPostingsComponent, CardPostingsDialog } from './components/cardpostings/cardpostings.component';
 import { BudgetComponent } from './components/budget/budget.component';
 import { DatepickerComponent } from './shared/datepicker/datepicker.component';
 import { BudgetViewComponent } from './views/budget-view/budget-view.component';
@@ -60,6 +63,7 @@ registerLocaleData(localePt);
     BudgetComponent,
     DatepickerComponent,
     BudgetViewComponent,
+    CardPostingsDialog
   ],
   imports: [
     BrowserModule,
@@ -84,12 +88,17 @@ registerLocaleData(localePt);
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatTooltipModule,
-    MatDividerModule
+    MatDividerModule,
+    MatDialogModule,
+    MatMomentDateModule,
+    MatSelectModule
   ],
   providers: [{
     provide: LOCALE_ID,
     useValue: 'pt-BR',
-  }],
+  },
+  { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -13,5 +13,5 @@ export interface CardsPostings {
 	totalAmount?: number;
 	others: boolean;
 	note?: string;
-	people?: People;
+	people?: People[];
 }

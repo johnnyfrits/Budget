@@ -9,4 +9,5 @@ export class ApiUrls {
     public static cardspostings: string = ApiUrls.baseUrl + 'cardspostings';
     public static expenses: string = ApiUrls.baseUrl + 'expenses/reference';
     public static incomes: string = ApiUrls.baseUrl + 'incomes/reference';
+    public static people: string = ApiUrls.baseUrl + 'people';
 }

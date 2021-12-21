@@ -1,0 +1,69 @@
+<div class="container">
+  <h1 mat-dialog-title>Editar</h1>
+
+  <div mat-dialog-content>
+
+    <div class="row">
+      <div class="col">
+        <mat-form-field appearance="fill">
+          <mat-label>Data</mat-label>
+          <input matInput [matDatepicker]="dp" [formControl]="date">
+          <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+          <mat-datepicker #dp></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Descrição</mat-label>
+        <input matInput [(ngModel)]="cardPosting.description">
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <mat-form-field appearance="fill" floatLabel="always">
+          <mat-label>Valor</mat-label>
+          <input matInput type="number" [(ngModel)]="cardPosting.amount" placeholder="0">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <mat-form-field appearance="fill" style="width:150px !important">
+          <mat-label>Nº. Parcela</mat-label>
+          <input matInput type="number" [(ngModel)]="cardPosting.parcelNumber">
+        </mat-form-field>
+      </div>
+      <div class="col">
+        <mat-form-field appearance="fill" style="width:150px !important">
+          <mat-label>Total de Parcelas</mat-label>
+          <input matInput type="number" [(ngModel)]="cardPosting.parcels">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Pessoa</mat-label>
+        <mat-select [(ngModel)]="cardPosting.peopleId">
+          <mat-option>-- Nenhuma --</mat-option>
+          <mat-option *ngFor="let p of people" [value]="p.id">{{ p.id }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Comentário</mat-label>
+        <textarea matInput [(ngModel)]="cardPosting.note"></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button mat-button [mat-dialog-close]="cardPosting" cdkFocusInitial>Salvar</button>
+  </div>
+</div>

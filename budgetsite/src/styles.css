@@ -51,3 +51,7 @@ tr.mat-footer-row {
 .positive {
   color: black;
 }
+
+input.right-align {
+  -moz-appearance: textfield;
+}
