@@ -20,6 +20,7 @@ export class BudgetComponent implements OnInit {
   toPayTotal: number = 0;
   paidTotal: number = 0;
   expensesRemainingTotal: number = 0;
+  expectedBalance: number = 0;
   toReceiveTotal: number = 0;
   receivedTotal: number = 0;
   incomesRemainingTotal: number = 0;
@@ -114,6 +115,8 @@ export class BudgetComponent implements OnInit {
       this.incomes ?
         this.incomes.map(t => t.remaining).reduce((acc, value) => acc + value, 0) :
         0;
+
+    this.expectedBalance = this.toReceiveTotal - this.toPayTotal;
   }
 
   getExpensesTotals() {
@@ -132,5 +135,7 @@ export class BudgetComponent implements OnInit {
       this.expenses ?
         this.expenses.map(t => t.remaining).reduce((acc, value) => acc + value, 0) :
         0;
+
+    this.expectedBalance = this.toReceiveTotal - this.toPayTotal;
   }
 }
