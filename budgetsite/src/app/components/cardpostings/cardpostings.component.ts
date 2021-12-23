@@ -4,46 +4,11 @@ import { CardPostingsService } from '../../services/cardpostings/cardpostings.se
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl } from '@angular/forms';
 import { People } from 'src/app/models/people.model';
-import { default as _rollupMoment, Moment } from 'moment';
-import * as _moment from 'moment';
 import { PeopleService } from 'src/app/services/people/people.service';
+import { default as _rollupMoment } from 'moment';
+import * as _moment from 'moment';
 
 let moment = _rollupMoment || _moment;
-
-moment.updateLocale('pt-BR', {
-  months: [
-    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
-    "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-  ]
-});
-
-moment.updateLocale('pt-BR', {
-  monthsShort: [
-    "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
-    "Jul", "Ago", "Set", "Out", "Nov", "Dez"
-  ]
-});
-
-moment.updateLocale('pt-BR', {
-  weekdays: [
-    "Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"
-  ]
-});
-
-moment.updateLocale('pt-BR', {
-  weekdaysShort: [
-    "Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"
-  ]
-});
-
-moment.updateLocale('pt-BR', {
-  weekdaysMin: [
-    "Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"
-  ]
-});
-
-moment.locale('pt-BR');
-
 @Component({
   selector: 'app-cardpostings',
   templateUrl: './cardpostings.component.html',
@@ -130,10 +95,11 @@ export class CardPostingsComponent implements OnInit {
   edit(cardPosting: CardsPostings) {
 
     const dialogRef = this.dialog.open(CardPostingsDialog, {
-      width: '500px',
+      width: '400px',
       data: {
         id: cardPosting.id,
         cardId: cardPosting.cardId,
+        date: cardPosting.date,
         reference: cardPosting.reference,
         description: cardPosting.description,
         peopleId: cardPosting.peopleId,
@@ -149,6 +115,36 @@ export class CardPostingsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
+
+      if (result) {
+
+        this.hideProgress = false;
+
+        this.cardPostingsService.update(result).subscribe(
+          {
+            next: () => {
+
+              this.cardpostings.filter(t => t.id === result.id).map(t => {
+                t.date = result.date;
+                t.reference = result.reference;
+                t.description = result.description;
+                t.peopleId = result.peopleId;
+                t.parcelNumber = result.parcelNumber;
+                t.parcels = result.parcels;
+                t.amount = result.amount;
+                t.totalAmount = result.totalAmount;
+                t.others = result.others;
+                t.note = result.note;
+              });
+
+              this.getTotalAmount();
+
+              this.hideProgress = true;
+            },
+            error: () => this.hideProgress = true
+          }
+        );
+      }
     });
   }
 }
@@ -157,19 +153,27 @@ export class CardPostingsComponent implements OnInit {
   selector: 'cardpostings-dialog',
   templateUrl: 'cardpostings-dialog.html',
 })
-export class CardPostingsDialog {
+export class CardPostingsDialog implements OnInit {
 
   people?: People[];
 
   date = new FormControl(moment());
 
   constructor(public dialogRef: MatDialogRef<CardPostingsDialog>, @Inject(MAT_DIALOG_DATA) public cardPosting: CardsPostings) {
+  }
 
-    this.date.setValue(moment(cardPosting.date));
-    this.people = cardPosting.people;
+  ngOnInit(): void {
+
+    this.date.setValue(moment(this.cardPosting.date));
+    this.people = this.cardPosting.people;
   }
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  currentDateChanged(date: Date) {
+
+    this.cardPosting.date = date;
   }
 }

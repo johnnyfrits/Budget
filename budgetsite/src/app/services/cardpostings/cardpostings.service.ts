@@ -20,4 +20,25 @@ export class CardPostingsService {
       catchError(e => this.messenger.errorHandler(e))
     );
   }
+
+  update(cardPosting: CardsPostings): Observable<CardsPostings> {
+
+    let cp: CardsPostings = {
+      id: cardPosting.id,
+      cardId: cardPosting.cardId,
+      reference: cardPosting.reference,
+      date: cardPosting.date,
+      description: cardPosting.description,
+      amount: cardPosting.amount,
+      peopleId: cardPosting.peopleId,
+      others: cardPosting.peopleId ? true : false
+    };
+
+    debugger
+
+    return this.http.put<CardsPostings>(`${ApiUrls.cardspostings}/${cp.id}`, cp).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
 }

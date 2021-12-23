@@ -1,0 +1,40 @@
+<div class="container">
+  <h1 mat-dialog-title> Editar </h1>
+  <div mat-dialog-content>
+
+    <div class="row">
+      <div class="col">
+        <app-datepickerinput [currentDate]="accountPosting.date" (currentDateChanged)="currentDateChanged($event)">
+        </app-datepickerinput>
+      </div>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Descrição</mat-label>
+        <input matInput [(ngModel)]="accountPosting.description">
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <mat-form-field appearance="fill" floatLabel="always">
+          <mat-label>Valor</mat-label>
+          <input matInput type="number" [(ngModel)]="accountPosting.amount" placeholder="0">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Comentário</mat-label>
+        <textarea matInput [(ngModel)]="accountPosting.note"></textarea>
+      </mat-form-field>
+    </div>
+
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancelar</button>
+    <button mat-button [mat-dialog-close]="accountPosting" cdkFocusInitial>Salvar</button>
+  </div>
+</div>
