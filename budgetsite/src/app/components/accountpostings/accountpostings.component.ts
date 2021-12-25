@@ -93,7 +93,6 @@ export class AccountPostingsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
     });
   }
 }

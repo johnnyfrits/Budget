@@ -114,7 +114,6 @@ export class CardPostingsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result);
 
       if (result) {
 

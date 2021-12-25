@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiUrls } from 'src/app/common/api-urls'
 import { CardsPostings } from 'src/app/models/cardspostings.model';
@@ -33,8 +33,6 @@ export class CardPostingsService {
       peopleId: cardPosting.peopleId,
       others: cardPosting.peopleId ? true : false
     };
-
-    debugger
 
     return this.http.put<CardsPostings>(`${ApiUrls.cardspostings}/${cp.id}`, cp).pipe(
       map(obj => obj),
