@@ -1,12 +1,21 @@
 <div class="container">
-  <app-datepicker (referenceChange)="reference=$event" [cardId]="cardId"></app-datepicker>
-  <div class="">
-    <mat-progress-bar mode="query" color="accent" *ngIf="!hideProgress"></mat-progress-bar>
-    <button class="card-button" [ngClass]="{'line': buttonName === card.name}" mat-button *ngFor="let card of cards"
-      [ngStyle]="{backgroundColor: card.background, color: card.color}" (click)=setCard(card)>{{card.name}}</button>
-    <hr>
-  </div>
-  <div class="row">
+  <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false">
+    <mat-expansion-panel style="margin-top: 10px !important; padding-bottom: -50px;" [hideToggle]="false">
+      <mat-expansion-panel-header>
+        <span class="material-icons"> calendar_month </span>
+        <span class="material-icons"> credit_card </span>
+      </mat-expansion-panel-header>
+      <app-datepicker style="margin-top: -75px !important" (referenceChange)="reference=$event" [cardId]="cardId">
+      </app-datepicker>
+      <div class="">
+        <mat-progress-bar mode="query" color="accent" *ngIf="!hideProgress"></mat-progress-bar>
+        <button class="card-button" [ngClass]="{'line': buttonName === card.name}" mat-button *ngFor="let card of cards"
+          [ngStyle]="{backgroundColor: card.background, color: card.color}" (click)=setCard(card)>{{card.name}}</button>
+        <hr>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <div class="row" style="margin-top: 10px">
     <app-cardpostings [cardId]=cardId [reference]=reference></app-cardpostings>
   </div>
 </div>

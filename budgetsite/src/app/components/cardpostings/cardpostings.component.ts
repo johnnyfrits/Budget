@@ -99,6 +99,7 @@ export class CardPostingsComponent implements OnInit {
     const dialogRef = this.dialog.open(CardPostingsDialog, {
       width: '400px',
       data: {
+        date: new Date(),
         reference: this.reference,
         cardId: this.cardId,
         parcels: 1,

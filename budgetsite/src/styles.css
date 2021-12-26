@@ -90,3 +90,7 @@ body {
 .small-text {
   font-size: 0.8em !important;
 }
+
+.mat-expansion-panel-header {
+  color: rgb(112, 112, 112) !important;
+}
