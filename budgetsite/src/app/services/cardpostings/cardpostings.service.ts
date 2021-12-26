@@ -13,6 +13,30 @@ export class CardPostingsService {
 
   constructor(private http: HttpClient, private messenger: Messenger) { }
 
+  create(cardPosting: CardsPostings): Observable<CardsPostings> {
+
+    let cp: CardsPostings = {
+
+      id: cardPosting.id,
+      cardId: cardPosting.cardId,
+      date: cardPosting.date,
+      reference: cardPosting.reference,
+      description: cardPosting.description,
+      peopleId: cardPosting.peopleId,
+      parcelNumber: cardPosting.parcelNumber,
+      parcels: cardPosting.parcels,
+      amount: cardPosting.amount,
+      totalAmount: cardPosting.totalAmount,
+      others: cardPosting.peopleId ? true : false,
+      note: cardPosting.note,
+    };
+
+    return this.http.post<CardsPostings>(`${ApiUrls.cardspostings}`, cp).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
   read(cardId: number, reference: string): Observable<CardsPostings[]> {
 
     return this.http.get<CardsPostings[]>(`${ApiUrls.cardspostings}/${cardId}/${reference}`).pipe(
@@ -35,6 +59,14 @@ export class CardPostingsService {
     };
 
     return this.http.put<CardsPostings>(`${ApiUrls.cardspostings}/${cp.id}`, cp).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
+  delete(id: number): Observable<CardsPostings> {
+
+    return this.http.delete<CardsPostings>(`${ApiUrls.cardspostings}/${id}`).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );

@@ -14,4 +14,6 @@ export interface CardsPostings {
 	others: boolean;
 	note?: string;
 	people?: People[];
+	editing?: boolean;
+	deleting?: boolean;
 }

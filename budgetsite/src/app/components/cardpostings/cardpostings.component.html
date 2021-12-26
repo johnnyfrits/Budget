@@ -17,9 +17,17 @@
         <span><b>{{othersTotal | currency : '':''}} </b>({{percOthersTotal}})</span>
       </div>
     </div>
+    <!-- Add button -->
+    <div class="row justify-content-center" *ngIf="hideProgress">
+      <button class="default-button" mat-mini-fab matTooltip="Adicionar compra no cartão" matTooltipPosition="right"
+        color="accent" aria-label="Adicionar compra no cartão" (click)="add()">
+        <mat-icon class="default-icon">post_add</mat-icon>
+      </button>
+    </div>
   </div>
-  <div class="row teste" *ngIf="hideProgress">
+  <div class="row" *ngIf="hideProgress">
     <div class="table-container mat-elevation-z8">
+      <!-- Table -->
       <table mat-table [dataSource]="cardpostings">
         <!-- # Column -->
         <ng-container matColumnDef="index">
@@ -60,7 +68,7 @@
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-        <tr mat-row (click)="edit(row)" *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr mat-row (click)="editOrDelete(row)" *matRowDef="let row; columns: displayedColumns"></tr>
         <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
       </table>
     </div>

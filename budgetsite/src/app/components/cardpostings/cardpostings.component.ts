@@ -2,7 +2,7 @@ import { Component, OnInit, Input, SimpleChanges, Inject } from '@angular/core';
 import { CardsPostings } from '../../models/cardspostings.model'
 import { CardPostingsService } from '../../services/cardpostings/cardpostings.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { People } from 'src/app/models/people.model';
 import { PeopleService } from 'src/app/services/people/people.service';
 import { default as _rollupMoment } from 'moment';
@@ -28,7 +28,7 @@ export class CardPostingsComponent implements OnInit {
   othersTotal: number = 0;
   percOthersTotal: string = '0,00%';
   hideProgress: boolean = true;
-
+  editing: boolean = false;
   people?: People[];
 
   constructor(private cardPostingsService: CardPostingsService,
@@ -92,7 +92,48 @@ export class CardPostingsComponent implements OnInit {
     this.percOthersTotal = (this.total ? this.othersTotal / this.total * 100 : 0).toFixed(2)?.toString() + '%';
   }
 
-  edit(cardPosting: CardsPostings) {
+  add() {
+
+    this.editing = false;
+
+    const dialogRef = this.dialog.open(CardPostingsDialog, {
+      width: '400px',
+      data: {
+        reference: this.reference,
+        cardId: this.cardId,
+        parcels: 1,
+        parcelNumber: 1,
+        people: this.people,
+        editing: this.editing
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result) {
+
+        this.hideProgress = false;
+
+        this.cardPostingsService.create(result).subscribe(
+          {
+            next: cardpostings => {
+
+              this.cardpostings.push(cardpostings);
+
+              this.getTotalAmount();
+
+              this.hideProgress = true;
+            },
+            error: () => this.hideProgress = true
+          }
+        );
+      }
+    });
+  }
+
+  editOrDelete(cardPosting: CardsPostings) {
+
+    this.editing = true;
 
     const dialogRef = this.dialog.open(CardPostingsDialog, {
       width: '400px',
@@ -103,13 +144,15 @@ export class CardPostingsComponent implements OnInit {
         reference: cardPosting.reference,
         description: cardPosting.description,
         peopleId: cardPosting.peopleId,
-        parcelNumber: cardPosting.parcelNumber,
-        parcels: cardPosting.parcels,
+        parcelNumber: cardPosting.parcelNumber ? cardPosting.parcelNumber : 1,
+        parcels: cardPosting.parcels ? cardPosting.parcels : 1,
         amount: cardPosting.amount,
-        totalAmount: cardPosting.totalAmount,
+        totalAmount: cardPosting.totalAmount ? cardPosting.totalAmount : cardPosting.amount,
         others: cardPosting.others,
         note: cardPosting.note,
-        people: this.people
+        people: this.people,
+        editing: this.editing,
+        deleting: false
       }
     });
 
@@ -119,30 +162,48 @@ export class CardPostingsComponent implements OnInit {
 
         this.hideProgress = false;
 
-        this.cardPostingsService.update(result).subscribe(
-          {
-            next: () => {
+        if (result.deleting) {
 
-              this.cardpostings.filter(t => t.id === result.id).map(t => {
-                t.date = result.date;
-                t.reference = result.reference;
-                t.description = result.description;
-                t.peopleId = result.peopleId;
-                t.parcelNumber = result.parcelNumber;
-                t.parcels = result.parcels;
-                t.amount = result.amount;
-                t.totalAmount = result.totalAmount;
-                t.others = result.others;
-                t.note = result.note;
-              });
+          this.cardPostingsService.delete(result.id).subscribe(
+            {
+              next: () => {
 
-              this.getTotalAmount();
+                this.cardpostings = this.cardpostings.filter(t => t.id! != result.id!);
 
-              this.hideProgress = true;
-            },
-            error: () => this.hideProgress = true
-          }
-        );
+                this.getTotalAmount();
+
+                this.hideProgress = true;
+              },
+              error: () => this.hideProgress = true
+            }
+          );
+        } else {
+
+          this.cardPostingsService.update(result).subscribe(
+            {
+              next: () => {
+
+                this.cardpostings.filter(t => t.id === result.id).map(t => {
+                  t.date = result.date;
+                  t.reference = result.reference;
+                  t.description = result.description;
+                  t.peopleId = result.peopleId;
+                  t.parcelNumber = result.parcelNumber;
+                  t.parcels = result.parcels;
+                  t.amount = result.amount;
+                  t.totalAmount = result.totalAmount;
+                  t.others = result.others;
+                  t.note = result.note;
+                });
+
+                this.getTotalAmount();
+
+                this.hideProgress = true;
+              },
+              error: () => this.hideProgress = true
+            }
+          );
+        }
       }
     });
   }
@@ -156,23 +217,42 @@ export class CardPostingsDialog implements OnInit {
 
   people?: People[];
 
-  date = new FormControl(moment());
+  cardPostingFormGroup = new FormGroup({
 
-  constructor(public dialogRef: MatDialogRef<CardPostingsDialog>, @Inject(MAT_DIALOG_DATA) public cardPosting: CardsPostings) {
-  }
+    descriptionFormControl: new FormControl('', Validators.required),
+    totalAmountFormControl: new FormControl('', Validators.required),
+    amountFormControl: new FormControl('', Validators.required),
+    parcelsFormControl: new FormControl('', Validators.min(1)),
+    parcelNumberFormControl: new FormControl('', [Validators.required, Validators.min(1)]),
+  });
+
+  constructor(public dialogRef: MatDialogRef<CardPostingsDialog>,
+    @Inject(MAT_DIALOG_DATA) public cardPosting: CardsPostings) { }
 
   ngOnInit(): void {
 
-    this.date.setValue(moment(this.cardPosting.date));
     this.people = this.cardPosting.people;
   }
 
-  onNoClick(): void {
+  cancel(): void {
+
     this.dialogRef.close();
   }
 
   currentDateChanged(date: Date) {
 
     this.cardPosting.date = date;
+  }
+
+  save(): void {
+
+    this.dialogRef.close(this.cardPosting);
+  }
+
+  delete(): void {
+
+    this.cardPosting.deleting = true;
+
+    this.dialogRef.close(this.cardPosting);
   }
 }

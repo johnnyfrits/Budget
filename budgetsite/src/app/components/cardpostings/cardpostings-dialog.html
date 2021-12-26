@@ -1,65 +1,127 @@
-<div class="container">
-  <h1 mat-dialog-title>Editar</h1>
+<div class="">
+  <form [formGroup]="cardPostingFormGroup">
+    <!-- <h1 mat-dialog-title>Editar</h1> -->
+    <!-- <div mat-dialog-actions class="cancel">
+    <button mat-button (click)="onNoClick()">Cancelar</button> 
+    <button mat-icon-button matTooltip="Cancelar" color="accent" aria-label="Cancelar" (click)="onNoClick()">
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div> -->
+    <div class="cancel">
+      <button type="reset" class="default-button" mat-mini-fab matTooltip="Cancelar" color="accent"
+        aria-label="Cancelar" (click)="cancel()">
+        <mat-icon class="default-icon">close</mat-icon>
+      </button>
+    </div>
 
-  <div mat-dialog-content>
+    <div mat-dialog-content>
 
-    <div class="row">
-      <div class="col">
-        <app-datepickerinput [currentDate]="cardPosting.date" (currentDateChanged)="currentDateChanged($event)">
-        </app-datepickerinput>
+      <div class="row">
+        <div class="col">
+          <app-datepickerinput [currentDate]="cardPosting.date" (currentDateChanged)="currentDateChanged($event)">
+          </app-datepickerinput>
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-      <mat-form-field appearance="fill">
-        <mat-label>Descrição</mat-label>
-        <input matInput [(ngModel)]="cardPosting.description">
-      </mat-form-field>
-    </div>
+      <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-label>Descrição</mat-label>
+          <input type="text" id="descriptionFormControl" required matInput formControlName="descriptionFormControl"
+            [(ngModel)]="cardPosting.description" cdkFocusInitial>
+          <mat-error *ngIf="cardPostingFormGroup.get('descriptionFormControl')?.hasError('required')">
+            Campo <strong>obrigatório</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-    <div class="row">
-      <div class="col">
+      <div class="row">
+        <div class="col">
+          <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
+            <mat-label>Valor Total</mat-label>
+            <input matInput type="number" formControlName="totalAmountFormControl" [(ngModel)]="cardPosting.totalAmount"
+              placeholder="0">
+            <mat-error *ngIf="cardPostingFormGroup.get('totalAmountFormControl')?.hasError('required')">
+              Campo <strong>obrigatório</strong>.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
+            <mat-label>Total de Parcelas</mat-label>
+            <input matInput type="number" formControlName="parcelsFormControl" [(ngModel)]="cardPosting.parcels" min=1>
+            <mat-error
+              *ngIf="cardPostingFormGroup.get('parcelsFormControl')?.hasError('min') && !cardPostingFormGroup.get('parcelsFormControl')?.hasError('required')">
+              Valor mínimo é <strong>1</strong>.
+            </mat-error>
+            <mat-error *ngIf="cardPostingFormGroup.get('parcelsFormControl')?.hasError('required')">
+              Campo <strong>obrigatório</strong>.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
+            <mat-label>Valor Parcela</mat-label>
+            <input matInput type="number" formControlName="amountFormControl" [(ngModel)]="cardPosting.amount"
+              placeholder="0">
+            <mat-error *ngIf="cardPostingFormGroup.get('amountFormControl')?.hasError('required')">
+              Campo <strong>obrigatório</strong>.
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col">
+          <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
+            <mat-label>Nº. Parcela</mat-label>
+            <input matInput type="number" formControlName="parcelNumberFormControl"
+              [(ngModel)]="cardPosting.parcelNumber" min=1>
+            <mat-error
+              *ngIf="cardPostingFormGroup.get('parcelNumberFormControl')?.hasError('min') && !cardPostingFormGroup.get('parcelNumberFormControl')?.hasError('required')">
+              Valor mínimo é <strong>1</strong>.
+            </mat-error>
+            <mat-error *ngIf="cardPostingFormGroup.get('parcelNumberFormControl')?.hasError('required')">
+              Campo <strong>obrigatório</strong>.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- <div class="row">
         <mat-form-field appearance="fill" floatLabel="always">
-          <mat-label>Valor</mat-label>
-          <input matInput type="number" [(ngModel)]="cardPosting.amount" placeholder="0">
+          <mat-label>Pessoa</mat-label>
+          <mat-select [(ngModel)]="cardPosting.peopleId">
+            <mat-option>-- Nenhuma --</mat-option>
+            <mat-option *ngFor="let p of people" [value]="p.id">{{ p.id }}</mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
-    </div>
 
+      <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-label>Comentário</mat-label>
+          <textarea matInput [(ngModel)]="cardPosting.note"></textarea>
+        </mat-form-field>
+      </div> -->
+    </div>
     <div class="row">
       <div class="col">
-        <mat-form-field appearance="fill" style="width:150px !important">
-          <mat-label>Nº. Parcela</mat-label>
-          <input matInput type="number" [(ngModel)]="cardPosting.parcelNumber">
-        </mat-form-field>
+        <div mat-dialog-actions>
+          <button [disabled]="!cardPostingFormGroup.valid" class="default-button" mat-mini-fab matTooltip="Salvar"
+            matTooltipPosition="above" color="primary" aria-label="Salvar" [mat-dialog-close]="cardPosting"
+            (click)="save()">
+            <mat-icon class="default-icon">save</mat-icon>
+          </button>
+        </div>
       </div>
-      <div class="col">
-        <mat-form-field appearance="fill" style="width:150px !important">
-          <mat-label>Total de Parcelas</mat-label>
-          <input matInput type="number" [(ngModel)]="cardPosting.parcels">
-        </mat-form-field>
+      <div class="col" *ngIf="cardPosting.editing">
+        <div mat-dialog-actions>
+          <button class="default-button" mat-mini-fab matTooltip="Excluir" matTooltipPosition="above" color="warn"
+            aria-label="Excluir" (click)="delete()">
+            <mat-icon class="default-icon">delete</mat-icon>
+          </button>
+        </div>
       </div>
     </div>
-
-    <div class="row">
-      <mat-form-field appearance="fill" floatLabel="always">
-        <mat-label>Pessoa</mat-label>
-        <mat-select [(ngModel)]="cardPosting.peopleId">
-          <mat-option>-- Nenhuma --</mat-option>
-          <mat-option *ngFor="let p of people" [value]="p.id">{{ p.id }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <div class="row">
-      <mat-form-field appearance="fill">
-        <mat-label>Comentário</mat-label>
-        <textarea matInput [(ngModel)]="cardPosting.note"></textarea>
-      </mat-form-field>
-    </div>
-  </div>
-  <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">Cancelar</button>
-    <button mat-button [mat-dialog-close]="cardPosting" cdkFocusInitial>Salvar</button>
-  </div>
+  </form>
 </div>

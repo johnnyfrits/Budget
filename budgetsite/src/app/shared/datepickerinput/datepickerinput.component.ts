@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { default as _rollupMoment, Moment } from 'moment';
 import * as _moment from 'moment';
@@ -62,7 +62,7 @@ export class DatepickerinputComponent implements OnInit {
   @Input() currentDate?: Date;
   @Output() currentDateChanged: EventEmitter<Date> = new EventEmitter<Date>();
 
-  date = new FormControl(moment());
+  date = new FormControl(moment(), Validators.required);
 
   constructor() { }
 
@@ -76,6 +76,6 @@ export class DatepickerinputComponent implements OnInit {
 
   dateChanged(event: Moment): void {
 
-    this.currentDateChanged.emit(event.toDate());
+    this.currentDateChanged.emit(event?.toDate());
   }
 }

@@ -13,9 +13,33 @@ export class AccountPostingsService {
 
   constructor(private http: HttpClient, private messenger: Messenger) { }
 
+  create(accountPosting: AccountsPostings): Observable<AccountsPostings> {
+
+    return this.http.post<AccountsPostings>(`${ApiUrls.accountspostings}`, accountPosting).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
   read(accountId: number, reference: string): Observable<AccountsPostings[]> {
 
     return this.http.get<AccountsPostings[]>(`${ApiUrls.accountspostings}/${accountId}/${reference}`).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
+  update(accountPosting: AccountsPostings): Observable<AccountsPostings> {
+
+    return this.http.put<AccountsPostings>(`${ApiUrls.accountspostings}/${accountPosting.id}`, accountPosting).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
+  delete(accountPosting: AccountsPostings): Observable<AccountsPostings> {
+
+    return this.http.delete<AccountsPostings>(`${ApiUrls.accountspostings}/${accountPosting.id}`).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );

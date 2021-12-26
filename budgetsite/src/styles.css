@@ -65,3 +65,24 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.cancel {
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: flex-start !important;
+}
+
+.default-icon {
+  line-height: 22px !important;
+  margin-right: 6px !important;
+  font-size: 30px !important;
+}
+
+.default-button {
+  margin: 5px 0px 5px 0px !important;
+}
+
+.mat-dialog-actions {
+  display: flex !important;
+  justify-content: center !important;
+}
