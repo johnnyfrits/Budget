@@ -50,12 +50,16 @@ export class CardPostingsService {
     let cp: CardsPostings = {
       id: cardPosting.id,
       cardId: cardPosting.cardId,
-      reference: cardPosting.reference,
       date: cardPosting.date,
+      reference: cardPosting.reference,
       description: cardPosting.description,
-      amount: cardPosting.amount,
       peopleId: cardPosting.peopleId,
-      others: cardPosting.peopleId ? true : false
+      parcelNumber: cardPosting.parcelNumber,
+      parcels: cardPosting.parcels,
+      amount: cardPosting.amount,
+      totalAmount: cardPosting.totalAmount,
+      others: cardPosting.peopleId ? true : false,
+      note: cardPosting.note,
     };
 
     return this.http.put<CardsPostings>(`${ApiUrls.cardspostings}/${cp.id}`, cp).pipe(

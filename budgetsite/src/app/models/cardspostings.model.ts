@@ -13,7 +13,8 @@ export interface CardsPostings {
 	totalAmount?: number;
 	others: boolean;
 	note?: string;
-	people?: People[];
+	people?: People;
+	peopleList?: People[];
 	editing?: boolean;
 	deleting?: boolean;
 }

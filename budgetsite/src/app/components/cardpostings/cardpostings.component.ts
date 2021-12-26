@@ -29,7 +29,7 @@ export class CardPostingsComponent implements OnInit {
   percOthersTotal: string = '0,00%';
   hideProgress: boolean = true;
   editing: boolean = false;
-  people?: People[];
+  peopleList?: People[];
 
   constructor(private cardPostingsService: CardPostingsService,
     private peopleService: PeopleService,
@@ -45,7 +45,7 @@ export class CardPostingsComponent implements OnInit {
       {
         next: people => {
 
-          this.people = people;
+          this.peopleList = people;
 
           this.hideProgress = true;
         },
@@ -103,7 +103,7 @@ export class CardPostingsComponent implements OnInit {
         cardId: this.cardId,
         parcels: 1,
         parcelNumber: 1,
-        people: this.people,
+        peopleList: this.peopleList,
         editing: this.editing
       }
     });
@@ -150,7 +150,8 @@ export class CardPostingsComponent implements OnInit {
         totalAmount: cardPosting.totalAmount ? cardPosting.totalAmount : cardPosting.amount,
         others: cardPosting.others,
         note: cardPosting.note,
-        people: this.people,
+        people: cardPosting.people,
+        peopleList: this.peopleList,
         editing: this.editing,
         deleting: false
       }
@@ -194,6 +195,7 @@ export class CardPostingsComponent implements OnInit {
                   t.totalAmount = result.totalAmount;
                   t.others = result.others;
                   t.note = result.note;
+                  t.people = result.people;
                 });
 
                 this.getTotalAmount();
@@ -224,6 +226,8 @@ export class CardPostingsDialog implements OnInit {
     amountFormControl: new FormControl('', Validators.required),
     parcelsFormControl: new FormControl('', Validators.min(1)),
     parcelNumberFormControl: new FormControl('', [Validators.required, Validators.min(1)]),
+    peopleFormControl: new FormControl(''),
+    noteFormControl: new FormControl(''),
   });
 
   constructor(public dialogRef: MatDialogRef<CardPostingsDialog>,
@@ -231,7 +235,7 @@ export class CardPostingsDialog implements OnInit {
 
   ngOnInit(): void {
 
-    this.people = this.cardPosting.people;
+    this.people = this.cardPosting.peopleList;
   }
 
   cancel(): void {
@@ -254,5 +258,10 @@ export class CardPostingsDialog implements OnInit {
     this.cardPosting.deleting = true;
 
     this.dialogRef.close(this.cardPosting);
+  }
+
+  setPeople(): void {
+
+    this.cardPosting.people = this.cardPosting.peopleList?.find(t => t.id == this.cardPosting.peopleId);
   }
 }

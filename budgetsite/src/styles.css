@@ -86,3 +86,7 @@ body {
   display: flex !important;
   justify-content: center !important;
 }
+
+.small-text {
+  font-size: 0.8em !important;
+}

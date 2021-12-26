@@ -32,7 +32,7 @@
         <!-- # Column -->
         <ng-container matColumnDef="index">
           <th mat-header-cell *matHeaderCellDef>#</th>
-          <td mat-cell *matCellDef="let row; let i = index" [ngClass]="{'bold': row.people}"
+          <td mat-cell *matCellDef="let row; let i = index" [ngClass]="{'bold': row.people || row.parcels}"
             [ngStyle]="{color: row.amount < 0 ? '#e35e6b' : row.people ? row.people.color : 'black'}">
             {{i + 1}}</td>
           <td mat-footer-cell *matFooterCellDef [ngStyle]="{color: total < 0 ? '#e35e6b' : 'black'}"> Total </td>
@@ -41,7 +41,7 @@
         <!-- Data Column -->
         <ng-container matColumnDef="date">
           <th mat-header-cell *matHeaderCellDef>Data</th>
-          <td mat-cell *matCellDef="let row" [ngClass]="{'bold': row.people}"
+          <td mat-cell *matCellDef="let row" [ngClass]="{'bold': row.people || row.parcels}"
             [ngStyle]="{color: row.amount < 0 ? '#e35e6b' : row.people ? row.people.color : 'black'}">
             {{row.date | date: 'dd/MM'}}</td>
           <td mat-footer-cell *matFooterCellDef></td>
@@ -50,9 +50,13 @@
         <!-- Descrição Column -->
         <ng-container matColumnDef="description">
           <th mat-header-cell *matHeaderCellDef>Descrição</th>
-          <td mat-cell *matCellDef="let row" [ngClass]="{'bold': row.people}"
+          <td mat-cell *matCellDef="let row" [ngClass]="{'bold': row.people || row.parcels}"
             [ngStyle]="{color: row.amount < 0 ? '#e35e6b' : row.people ? row.people.color : 'black'}">
-            {{row.description}} <span *ngIf="row.peopleId !== null"> - <i>{{row.peopleId}}</i></span>
+            {{row.description}}
+            <div class="small-text" *ngIf="row.peopleId !== null || row.parcels > 1">
+              <span *ngIf="row.parcels > 1">({{row.parcelNumber}}/{{row.parcels}}) </span>
+              <span *ngIf="row.peopleId !== null"><i>{{row.peopleId}}</i></span>
+            </div>
           </td>
           <td mat-footer-cell *matFooterCellDef> </td>
         </ng-container>
@@ -60,7 +64,7 @@
         <!-- Valor Column -->
         <ng-container matColumnDef="amount">
           <th mat-header-cell *matHeaderCellDef>Valor</th>
-          <td mat-cell *matCellDef="let row" [ngClass]="{'bold': row.people}"
+          <td mat-cell *matCellDef="let row" [ngClass]="{'bold': row.people || row.parcels}"
             [ngStyle]="{color: row.amount < 0 ? '#e35e6b' : row.people ? row.people.color : 'black'}">
             {{row.amount | currency : '':''}}</td>
           <td mat-footer-cell *matFooterCellDef [ngStyle]="{color: total < 0 ? '#e35e6b' : 'black'}">

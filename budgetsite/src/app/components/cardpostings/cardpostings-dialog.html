@@ -87,10 +87,11 @@
         </div>
       </div>
 
-      <!-- <div class="row">
+      <div class="row">
         <mat-form-field appearance="fill" floatLabel="always">
           <mat-label>Pessoa</mat-label>
-          <mat-select [(ngModel)]="cardPosting.peopleId">
+          <mat-select mat-input [(ngModel)]="cardPosting.peopleId" formControlName="peopleFormControl"
+            (selectionChange)="setPeople()">
             <mat-option>-- Nenhuma --</mat-option>
             <mat-option *ngFor="let p of people" [value]="p.id">{{ p.id }}</mat-option>
           </mat-select>
@@ -100,9 +101,9 @@
       <div class="row">
         <mat-form-field appearance="fill">
           <mat-label>Comentário</mat-label>
-          <textarea matInput [(ngModel)]="cardPosting.note"></textarea>
+          <textarea matInput [(ngModel)]="cardPosting.note" formControlName="noteFormControl"></textarea>
         </mat-form-field>
-      </div> -->
+      </div>
     </div>
     <div class="row">
       <div class="col">
