@@ -6,4 +6,6 @@ export interface AccountsPostings {
 	description: string;
 	amount: number;
 	note?: string;
+	editing?: boolean;
+	deleting?: boolean;
 }

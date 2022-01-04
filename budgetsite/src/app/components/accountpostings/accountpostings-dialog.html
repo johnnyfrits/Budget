@@ -1,40 +1,71 @@
-<div class="container">
-  <h1 mat-dialog-title> Editar </h1>
-  <div mat-dialog-content>
+<div class="">
+  <form [formGroup]="accountPostingFormGroup">
 
-    <div class="row">
-      <div class="col">
-        <app-datepickerinput [currentDate]="accountPosting.date" (currentDateChanged)="currentDateChanged($event)">
-        </app-datepickerinput>
+    <div class="cancel">
+      <button class="default-button" mat-mini-fab matTooltip="Cancelar" color="accent" aria-label="Cancelar"
+        (click)="cancel()">
+        <mat-icon class="default-icon">close</mat-icon>
+      </button>
+    </div>
+
+    <div mat-dialog-content>
+
+      <div class="row">
+        <div class="col">
+          <app-datepickerinput [currentDate]="accountPosting.date" (currentDateChanged)="currentDateChanged($event)">
+          </app-datepickerinput>
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-      <mat-form-field appearance="fill">
-        <mat-label>Descrição</mat-label>
-        <input matInput [(ngModel)]="accountPosting.description">
-      </mat-form-field>
-    </div>
+      <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-label>Descrição</mat-label>
+          <input type="text" id="descriptionFormControl" required matInput formControlName="descriptionFormControl"
+            [(ngModel)]="accountPosting.description" cdkFocusInitial>
+          <mat-error *ngIf="accountPostingFormGroup.get('descriptionFormControl')?.hasError('required')">
+            Campo <strong>obrigatório</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-    <div class="row">
-      <div class="col">
-        <mat-form-field appearance="fill" floatLabel="always">
-          <mat-label>Valor</mat-label>
-          <input matInput type="number" [(ngModel)]="accountPosting.amount" placeholder="0">
+      <div class="row">
+        <div class="col">
+          <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
+            <mat-label>Valor</mat-label>
+            <input matInput type="number" formControlName="amountFormControl" [(ngModel)]="accountPosting.amount"
+              placeholder="0">
+            <mat-error *ngIf="accountPostingFormGroup.get('amountFormControl')?.hasError('required')">
+              Campo <strong>obrigatório</strong>.
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-label>Comentário</mat-label>
+          <textarea matInput [(ngModel)]="accountPosting.note" formControlName="noteFormControl"></textarea>
         </mat-form-field>
       </div>
     </div>
-
     <div class="row">
-      <mat-form-field appearance="fill">
-        <mat-label>Comentário</mat-label>
-        <textarea matInput [(ngModel)]="accountPosting.note"></textarea>
-      </mat-form-field>
+      <div class="col">
+        <div mat-dialog-actions>
+          <button [disabled]="!accountPostingFormGroup.valid" class="default-button" mat-mini-fab matTooltip="Salvar"
+            matTooltipPosition="above" color="primary" aria-label="Salvar" [mat-dialog-close]="accountPosting"
+            (click)="save()">
+            <mat-icon class="default-icon">save</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="col" *ngIf="accountPosting.editing">
+        <div mat-dialog-actions>
+          <button class="default-button" mat-mini-fab matTooltip="Excluir" matTooltipPosition="above" color="warn"
+            aria-label="Excluir" (click)="delete()">
+            <mat-icon class="default-icon">delete</mat-icon>
+          </button>
+        </div>
+      </div>
     </div>
-
-  </div>
-  <div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">Cancelar</button>
-    <button mat-button [mat-dialog-close]="accountPosting" cdkFocusInitial>Salvar</button>
-  </div>
+  </form>
 </div>

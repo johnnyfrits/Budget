@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Accounts } from 'src/app/models/accounts.model';
 import { AccountService } from 'src/app/services/account/account.service';
 
@@ -12,13 +12,19 @@ export class AccountComponent implements OnInit {
   accounts?: Accounts[];
   accountId?: number;
   reference?: string;
+  referenceHead?: string;
   account!: Accounts;
   hideProgress: boolean = false;
   buttonName: string = "";
 
-  constructor(private accountService: AccountService) {
+  constructor(private accountService: AccountService, private cd: ChangeDetectorRef) {
 
     this.accountId = Number(localStorage.getItem("accountId"));
+  }
+
+  ngAfterViewInit(): void {
+
+    this.cd.detectChanges();
   }
 
   ngOnInit(): void {
@@ -41,6 +47,13 @@ export class AccountComponent implements OnInit {
         },
         error: () => this.hideProgress = true
       });
+  }
+
+  setReference(reference: string) {
+
+    this.reference = reference;
+
+    this.referenceHead = this.reference.substr(4, 2) + "/" + this.reference.substr(0, 4);
   }
 
   setAccount(account: Accounts) {

@@ -1,13 +1,24 @@
 <div class="container">
-  <app-datepicker (referenceChange)="reference=$event" [accountId]="accountId"></app-datepicker>
-  <div class="">
-    <mat-progress-bar mode="query" color="accent" *ngIf="!hideProgress"></mat-progress-bar>
-    <button class="account-button" [ngClass]="{'line': buttonName === account.name}" mat-button
-      *ngFor="let account of accounts" [ngStyle]="{backgroundColor: account.background, color: account.color}"
-      (click)=setAccount(account)>{{account.name}}</button>
-    <hr>
-  </div>
-  <div class="row">
+  <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false">
+    <mat-expansion-panel style="margin-top: 10px !important; padding-bottom: -50px;" [hideToggle]="false">
+      <mat-expansion-panel-header>
+        <span class="material-icons center"> calendar_month </span>
+        <span class="center"><b>{{referenceHead}}</b></span>
+        <span class="material-icons center" style="padding-left: 10px"> account_balance </span>
+        <button mat-button class="center"
+          [ngStyle]="{backgroundColor: account?.background, color: account?.color}">{{account?.name}}</button>
+      </mat-expansion-panel-header>
+      <app-datepicker (referenceChange)="setReference($event)" [accountId]="accountId"></app-datepicker>
+      <div class="">
+        <mat-progress-bar mode="query" color="accent" *ngIf="!hideProgress"></mat-progress-bar>
+        <button class="account-button" [ngClass]="{'line': buttonName === account.name}" mat-button
+          *ngFor="let account of accounts" [ngStyle]="{backgroundColor: account.background, color: account.color}"
+          (click)=setAccount(account)>{{account.name}}</button>
+        <hr>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+  <div class="row" style="margin-top: 10px">
     <app-accountpostings [accountId]=accountId [reference]=reference></app-accountpostings>
   </div>
 </div>

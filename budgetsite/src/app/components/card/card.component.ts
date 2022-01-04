@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Cards } from 'src/app/models/cards.model';
 import { CardService } from 'src/app/services/card/card.service';
 
@@ -7,7 +7,7 @@ import { CardService } from 'src/app/services/card/card.service';
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css']
 })
-export class CardComponent implements OnInit {
+export class CardComponent implements OnInit, AfterViewInit {
 
   cards?: Cards[];
   totalBalance?: number;
@@ -15,13 +15,19 @@ export class CardComponent implements OnInit {
   totalYields?: number;
   cardId?: number;
   reference?: string;
+  referenceHead?: string;
   card!: Cards;
   hideProgress: boolean = false;
   buttonName: string = "";
 
-  constructor(private cardService: CardService) {
+  constructor(private cardService: CardService, private cd: ChangeDetectorRef) {
 
     this.cardId = Number(localStorage.getItem("cardId"));
+  }
+
+  ngAfterViewInit(): void {
+
+    this.cd.detectChanges();
   }
 
   ngOnInit(): void {
@@ -45,6 +51,13 @@ export class CardComponent implements OnInit {
         error: () => this.hideProgress = true
       }
     );
+  }
+
+  setReference(reference: string) {
+
+    this.reference = reference;
+
+    this.referenceHead = this.reference.substr(4, 2) + "/" + this.reference.substr(0, 4);
   }
 
   setCard(card: Cards) {

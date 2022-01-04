@@ -2,10 +2,13 @@
   <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false">
     <mat-expansion-panel style="margin-top: 10px !important; padding-bottom: -50px;" [hideToggle]="false">
       <mat-expansion-panel-header>
-        <span class="material-icons"> calendar_month </span>
-        <span class="material-icons"> credit_card </span>
+        <span class="material-icons center"> calendar_month </span>
+        <span class="center"><b>{{referenceHead}}</b></span>
+        <span class="material-icons center" style="padding-left: 10px"> credit_card </span>
+        <button mat-button class="center"
+          [ngStyle]="{backgroundColor: card?.background, color: card?.color}">{{card?.name}}</button>
       </mat-expansion-panel-header>
-      <app-datepicker style="margin-top: -75px !important" (referenceChange)="reference=$event" [cardId]="cardId">
+      <app-datepicker style="margin-top: -75px !important" (referenceChange)="setReference($event)" [cardId]="cardId">
       </app-datepicker>
       <div class="">
         <mat-progress-bar mode="query" color="accent" *ngIf="!hideProgress"></mat-progress-bar>

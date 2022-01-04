@@ -3,7 +3,7 @@ import { AccountsPostings } from '../../models/accountspostings.model'
 import { AccountService } from 'src/app/services/account/account.service';
 import { AccountPostingsService } from '../../services/accountpostings/accountpostings.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { default as _rollupMoment } from 'moment';
 import * as _moment from 'moment';
 
@@ -26,6 +26,7 @@ export class AccountPostingsComponent implements OnInit {
   previousBalance?: number = 0;
   totalYields?: number = 0;
   hideProgress: boolean = true;
+  editing: boolean = false;
 
   constructor(
     private accountPostingsService: AccountPostingsService,
@@ -50,23 +51,27 @@ export class AccountPostingsComponent implements OnInit {
             this.accountpostings = accountpostings;
 
             this.getTotalAmount();
-
-            this.accountService.getAccountTotals(this.accountId, this.reference).subscribe(
-              {
-                next: account => {
-
-                  this.totalBalance = account.totalBalance;
-                  this.previousBalance = account.previousBalance;
-                  this.totalYields = account.totalYields;
-
-                  this.hideProgress = true;
-                },
-                error: () => this.hideProgress = true
-              });
+            this.getAccountTotals();
           },
           error: () => this.hideProgress = true
         });
     }
+  }
+
+  getAccountTotals() {
+
+    this.accountService.getAccountTotals(this.accountId, this.reference).subscribe(
+      {
+        next: account => {
+
+          this.totalBalance = account.totalBalance;
+          this.previousBalance = account.previousBalance;
+          this.totalYields = account.totalYields;
+
+          this.hideProgress = true;
+        },
+        error: () => this.hideProgress = true
+      });
   }
 
   getTotalAmount() {
@@ -77,7 +82,45 @@ export class AccountPostingsComponent implements OnInit {
         0;
   }
 
-  edit(accountPosting: AccountsPostings) {
+  add() {
+
+    this.editing = false;
+
+    const dialogRef = this.dialog.open(AccountPostingsDialog, {
+      width: '400px',
+      data: {
+        date: new Date(),
+        reference: this.reference,
+        accountId: this.accountId,
+        editing: this.editing
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result) {
+
+        this.hideProgress = false;
+
+        this.accountPostingsService.create(result).subscribe(
+          {
+            next: accountpostings => {
+
+              this.accountpostings.push(accountpostings);
+
+              this.getTotalAmount();
+              this.getAccountTotals();
+            },
+            error: () => this.hideProgress = true
+          }
+        );
+      }
+    });
+  }
+
+  editOrDelete(accountPosting: AccountsPostings) {
+
+    this.editing = true;
 
     const dialogRef = this.dialog.open(AccountPostingsDialog, {
       width: '400px',
@@ -88,11 +131,55 @@ export class AccountPostingsComponent implements OnInit {
         reference: accountPosting.reference,
         description: accountPosting.description,
         amount: accountPosting.amount,
-        note: accountPosting.note
+        note: accountPosting.note,
+        editing: this.editing,
+        deleting: false
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
+
+      if (result) {
+
+        this.hideProgress = false;
+
+        if (result.deleting) {
+
+          this.accountPostingsService.delete(result.id).subscribe(
+            {
+              next: () => {
+
+                this.accountpostings = this.accountpostings.filter(t => t.id! != result.id!);
+
+                this.getTotalAmount();
+                this.getAccountTotals();
+              },
+              error: () => this.hideProgress = true
+            }
+          );
+        } else {
+
+          this.accountPostingsService.update(result).subscribe(
+            {
+              next: () => {
+
+                this.accountpostings.filter(t => t.id === result.id).map(t => {
+                  t.date = result.date;
+                  t.accountId = result.accountId;
+                  t.reference = result.reference;
+                  t.description = result.description;
+                  t.amount = result.amount;
+                  t.note = result.note;
+                });
+
+                this.getTotalAmount();
+                this.getAccountTotals();
+              },
+              error: () => this.hideProgress = true
+            }
+          );
+        }
+      }
     });
   }
 }
@@ -103,7 +190,12 @@ export class AccountPostingsComponent implements OnInit {
 })
 export class AccountPostingsDialog implements OnInit {
 
-  date = new FormControl(moment());
+  accountPostingFormGroup = new FormGroup({
+
+    descriptionFormControl: new FormControl('', Validators.required),
+    amountFormControl: new FormControl('', Validators.required),
+    noteFormControl: new FormControl(''),
+  });
 
   constructor(
     public dialogRef: MatDialogRef<AccountPostingsDialog>,
@@ -112,15 +204,27 @@ export class AccountPostingsDialog implements OnInit {
 
   ngOnInit(): void {
 
-    this.date.setValue(moment(this.accountPosting.date));
   }
 
-  onNoClick(): void {
+  cancel(): void {
+
     this.dialogRef.close();
   }
 
   currentDateChanged(date: Date) {
 
     this.accountPosting.date = date;
+  }
+
+  save(): void {
+
+    this.dialogRef.close(this.accountPosting);
+  }
+
+  delete(): void {
+
+    this.accountPosting.deleting = true;
+
+    this.dialogRef.close(this.accountPosting);
   }
 }
