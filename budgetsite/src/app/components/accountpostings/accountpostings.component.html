@@ -1,19 +1,23 @@
 <div class="container">
   <div class="row center">
-    <div class="row justify-content-center">
+    <div class="center">
       <mat-spinner color="accent" *ngIf="!hideProgress"></mat-spinner>
     </div>
-    <div class="d-flex justify-content-center text-center" *ngIf="hideProgress">
-      <div class="row ">
-        <span>Saldo Anterior:</span>
+    <div class="row">
+      <span class="center">Saldo Geral:</span>
+      <span class="center"><b>{{grandTotalBalance | currency : '':''}}</b></span>
+    </div>
+    <div class="center">
+      <div class="col text-center">
+        <span>Saldo Anterior:</span><br>
         <span><b>{{previousBalance | currency : '':''}}</b></span>
       </div>
-      <div class="row">
-        <span>Saldo Atual:</span>
-        <span class="align-center"><b>{{totalBalance | currency : '':''}}</b></span>
+      <div class="col text-center">
+        <span>Saldo Atual:</span><br>
+        <span><b>{{totalBalance | currency : '':''}}</b></span>
       </div>
-      <div class="row">
-        <span>Rendimentos:</span>
+      <div class="col text-center">
+        <span>Rendimentos:</span><br>
         <span><b>{{totalYields | currency : '':''}}</b></span>
       </div>
     </div>
