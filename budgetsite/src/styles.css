@@ -52,6 +52,10 @@ tr.mat-footer-row {
   color: black;
 }
 
+.yield {
+  color: green;
+}
+
 input.right-align {
   -moz-appearance: textfield;
 }

@@ -92,7 +92,8 @@ export class AccountPostingsComponent implements OnInit {
         date: new Date(),
         reference: this.reference,
         accountId: this.accountId,
-        editing: this.editing
+        editing: this.editing,
+        type: "R"
       }
     });
 
@@ -102,18 +103,25 @@ export class AccountPostingsComponent implements OnInit {
 
         this.hideProgress = false;
 
-        this.accountPostingsService.create(result).subscribe(
-          {
-            next: accountpostings => {
+        result.amount = result.amount * (result.type === 'P' ? -1 : 1);
 
-              this.accountpostings.push(accountpostings);
+        if (result.type === 'Y') {
 
-              this.getTotalAmount();
-              this.getAccountTotals();
-            },
-            error: () => this.hideProgress = true
-          }
-        );
+        } else {
+
+          this.accountPostingsService.create(result).subscribe(
+            {
+              next: accountpostings => {
+
+                this.accountpostings.push(accountpostings);
+
+                this.getTotalAmount();
+                this.getAccountTotals();
+              },
+              error: () => this.hideProgress = true
+            }
+          );
+        }
       }
     });
   }
@@ -133,7 +141,8 @@ export class AccountPostingsComponent implements OnInit {
         amount: accountPosting.amount,
         note: accountPosting.note,
         editing: this.editing,
-        deleting: false
+        deleting: false,
+        type: accountPosting.type
       }
     });
 
@@ -159,6 +168,8 @@ export class AccountPostingsComponent implements OnInit {
           );
         } else {
 
+          result.amount = Math.abs(result.amount) * (result.type === 'P' ? -1 : 1);
+
           this.accountPostingsService.update(result).subscribe(
             {
               next: () => {
@@ -170,6 +181,7 @@ export class AccountPostingsComponent implements OnInit {
                   t.description = result.description;
                   t.amount = result.amount;
                   t.note = result.note;
+                  t.type = result.type;
                 });
 
                 this.getTotalAmount();
@@ -195,6 +207,7 @@ export class AccountPostingsDialog implements OnInit {
     descriptionFormControl: new FormControl('', Validators.required),
     amountFormControl: new FormControl('', Validators.required),
     noteFormControl: new FormControl(''),
+    typeFormControl: new FormControl(''),
   });
 
   constructor(
@@ -226,5 +239,19 @@ export class AccountPostingsDialog implements OnInit {
     this.accountPosting.deleting = true;
 
     this.dialogRef.close(this.accountPosting);
+  }
+
+  onTypeChange(): void {
+
+    if (this.accountPosting.type === 'Y') {
+
+      this.accountPosting.description = 'Rendimento';
+    }
+    else {
+      if (this.accountPosting.description === 'Rendimento') {
+
+        this.accountPosting.description = '';
+      }
+    }
   }
 }

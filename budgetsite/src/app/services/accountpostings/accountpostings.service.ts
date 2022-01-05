@@ -37,9 +37,9 @@ export class AccountPostingsService {
     );
   }
 
-  delete(accountPosting: AccountsPostings): Observable<AccountsPostings> {
+  delete(id: number): Observable<AccountsPostings> {
 
-    return this.http.delete<AccountsPostings>(`${ApiUrls.accountspostings}/${accountPosting.id}`).pipe(
+    return this.http.delete<AccountsPostings>(`${ApiUrls.accountspostings}/${id}`).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );
