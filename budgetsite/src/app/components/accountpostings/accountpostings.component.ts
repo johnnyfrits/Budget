@@ -105,23 +105,18 @@ export class AccountPostingsComponent implements OnInit {
 
         result.amount = result.amount * (result.type === 'P' ? -1 : 1);
 
-        if (result.type === 'Y') {
+        this.accountPostingsService.create(result).subscribe(
+          {
+            next: accountpostings => {
 
-        } else {
+              this.accountpostings.push(accountpostings);
 
-          this.accountPostingsService.create(result).subscribe(
-            {
-              next: accountpostings => {
-
-                this.accountpostings.push(accountpostings);
-
-                this.getTotalAmount();
-                this.getAccountTotals();
-              },
-              error: () => this.hideProgress = true
-            }
-          );
-        }
+              this.getTotalAmount();
+              this.getAccountTotals();
+            },
+            error: () => this.hideProgress = true
+          }
+        );
       }
     });
   }
