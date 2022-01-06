@@ -14,7 +14,6 @@
         <button class="account-button" [ngClass]="{'line': buttonName === account.name}" mat-button
           *ngFor="let account of accounts" [ngStyle]="{backgroundColor: account.background, color: account.color}"
           (click)=setAccount(account)>{{account.name}}</button>
-        <hr>
       </div>
     </mat-expansion-panel>
   </mat-accordion>

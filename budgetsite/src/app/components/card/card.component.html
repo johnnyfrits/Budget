@@ -14,7 +14,6 @@
         <mat-progress-bar mode="query" color="accent" *ngIf="!hideProgress"></mat-progress-bar>
         <button class="card-button" [ngClass]="{'line': buttonName === card.name}" mat-button *ngFor="let card of cards"
           [ngStyle]="{backgroundColor: card.background, color: card.color}" (click)=setCard(card)>{{card.name}}</button>
-        <hr>
       </div>
     </mat-expansion-panel>
   </mat-accordion>
