@@ -61,6 +61,8 @@ export class AccountPostingsComponent implements OnInit {
 
   getAccountTotals() {
 
+    this.hideProgress = false;
+
     this.accountService.getAccountTotals(this.accountId, this.reference).subscribe(
       {
         next: account => {
