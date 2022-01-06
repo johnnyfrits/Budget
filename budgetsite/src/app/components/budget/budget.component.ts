@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Expenses } from 'src/app/models/expenses.model';
 import { Incomes } from 'src/app/models/incomes.model';
 import { ExpenseService } from 'src/app/services/expense/expense.service';
@@ -9,9 +9,10 @@ import { IncomeService } from 'src/app/services/income/income.service';
   templateUrl: './budget.component.html',
   styleUrls: ['./budget.component.css']
 })
-export class BudgetComponent implements OnInit {
+export class BudgetComponent implements OnInit, AfterViewInit {
 
   reference?: string;
+  referenceHead?: string;
 
   expenses!: Expenses[];
   incomes!: Incomes[];
@@ -27,15 +28,24 @@ export class BudgetComponent implements OnInit {
   monthName: string = "";
   hideExpensesProgress: boolean = true;
   hideIncomesProgress: boolean = true;
+  expensesPanelExpanded: boolean = false;
+  incomesPanelExpanded: boolean = false;
 
-  constructor(private expenseService: ExpenseService, private incomeService: IncomeService) { }
+  constructor(private expenseService: ExpenseService, private incomeService: IncomeService, private cd: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+
+    this.cd.detectChanges();
   }
 
   referenceChanges(reference: string) {
 
     this.reference = reference;
+
+    this.referenceHead = this.reference.substr(4, 2) + "/" + this.reference.substr(0, 4);
 
     this.getData();
   }
@@ -137,5 +147,13 @@ export class BudgetComponent implements OnInit {
         0;
 
     this.expectedBalance = this.toReceiveTotal - this.toPayTotal;
+  }
+
+  addExpense(): void {
+
+  }
+
+  addIncome(): void {
+
   }
 }

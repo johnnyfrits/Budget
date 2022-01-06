@@ -10,12 +10,6 @@
   margin-right: 10px;
 }
 
-.month-name {
-  font-weight: bold;
-  font-size: 20px;
-  color: rgb(255, 64, 129);
-}
-
 .previous-month,
 .next-month {
   color: #6e6e6e

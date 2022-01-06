@@ -54,8 +54,10 @@ export class DatepickerComponent implements OnInit {
   @Input() accountId?: number;
   @Input() cardId?: number;
   @Input() budgetId?: number;
+  @Input() showMonthName?: boolean = true;
 
   @Output() referenceChange = new EventEmitter<string>();
+  @Output() monthChange = new EventEmitter<string>();
 
   ngOnInit(): void {
 
@@ -85,6 +87,7 @@ export class DatepickerComponent implements OnInit {
     let reference = this.date.value.format('YYYYMM');
 
     this.referenceChange.emit(reference);
+    this.monthChange.emit(this.monthName);
 
     if (this.accountId) {
       localStorage.setItem('accountDate', this.date.value);

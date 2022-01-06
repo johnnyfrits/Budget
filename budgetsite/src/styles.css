@@ -106,11 +106,54 @@ body {
 }
 
 .mytable {
-  /* --bs-gutter-x: 1.5rem; */
   --bs-gutter-y: 0;
   display: flex;
   flex-wrap: wrap;
   margin-top: calc(-1 * var(--bs-gutter-y));
   margin-right: calc(-.5 * var(--bs-gutter-x));
   margin-left: calc(-.5 * var(--bs-gutter-x));
+}
+
+.mytable2 {
+  padding-right: 0px !important;
+  padding-left: 0px !important;
+}
+
+.primary {
+  color: #3f51b5;
+}
+
+.accent {
+  color: #ff4081;
+}
+
+.warn {
+  color: #f44336;
+}
+
+.bg-primary {
+  background-color: #3f51b5;
+}
+
+.bg-accent {
+  background-color: #ff4081;
+}
+
+.bg-warn {
+  background-color: #f44336;
+}
+
+.month-name {
+  font-weight: bold;
+  font-size: 20px;
+  color: rgb(255, 64, 129);
+  padding-top: 20px;
+}
+
+.month-name2 {
+  font-weight: bold;
+  font-size: 20px;
+  color: rgb(255, 64, 129);
+  width: 100%;
+  margin-left: -80px;
 }

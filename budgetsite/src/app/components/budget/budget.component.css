@@ -80,3 +80,8 @@ tr.incomes:nth-child(even) {
 tr.incomes:nth-child(odd) {
   background: rgba(200, 223, 242, 0.4)
 }
+
+.mat-panel-budget {
+  margin-top: 10px !important;
+  padding-bottom: -50px !important;
+}

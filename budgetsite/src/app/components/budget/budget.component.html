@@ -1,12 +1,23 @@
 <div class="container">
-  <app-datepicker (referenceChange)="referenceChanges($event)" [budgetId]=1></app-datepicker>
+  <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false">
+    <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false">
+      <mat-expansion-panel-header>
+        <span class="material-icons center"> calendar_month </span>
+        <span class="center"><b>{{referenceHead}}</b></span>
+        <div class="center accent month-name2"><b>{{monthName}}</b></div>
+      </mat-expansion-panel-header>
+      <app-datepicker [showMonthName]="false" (referenceChange)="referenceChanges($event)"
+        (monthChange)="monthName=$event" [budgetId]=1>
+      </app-datepicker>
+    </mat-expansion-panel>
+  </mat-accordion>
   <!-- SPINNER -->
   <div class="row center">
     <div class="row justify-content-center">
       <mat-spinner color="accent" *ngIf="!hideExpensesProgress || !hideIncomesProgress"></mat-spinner>
     </div>
   </div>
-  <div class="row center">
+  <div class="row center" style="margin-top: 10px">
     <div class="row justify-content-center text-center" *ngIf="hideExpensesProgress || hideIncomesProgress">
       <span>Saldo Previsto:</span>
       <span
@@ -14,96 +25,126 @@
     </div>
   </div>
   <!-- EXPENSES TABLE -->
-  <div class="row expenses" *ngIf="hideExpensesProgress || hideIncomesProgress">
-    <div class="table-container mat-elevation-z8">
-      <table mat-table [dataSource]="expenses">
-        <!-- Despesas Column -->
-        <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef>Despesas</th>
-          <td mat-cell *matCellDef="let row">
-            {{row.description}}</td>
-          <td mat-footer-cell *matFooterCellDef> Total </td>
-        </ng-container>
+  <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false"
+    *ngIf="hideExpensesProgress || hideIncomesProgress">
+    <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false" [(expanded)]="expensesPanelExpanded">
+      <mat-expansion-panel-header class="accent">
+        <span class="material-icons center accent"><b>money_off</b></span>
+        <span class="center accent"><b>Despesas</b></span>
+      </mat-expansion-panel-header>
+      <div class="row center">
+        <div class="row center">
+          <button class="default-button" mat-mini-fab matTooltip="Adicionar despesa" matTooltipPosition="above"
+            color="accent" aria-label="Adicionar despesa" (click)="addExpense()">
+            <mat-icon class="default-icon">post_add</mat-icon>
+          </button>
+        </div>
+        <div class="table-container mat-elevation-z8 mytable2">
+          <table mat-table [dataSource]="expenses">
+            <!-- Descrição Column -->
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef>Descrição</th>
+              <td mat-cell *matCellDef="let row">
+                {{row.description}}</td>
+              <td mat-footer-cell *matFooterCellDef> Total </td>
+            </ng-container>
 
-        <!-- A Pagar Column -->
-        <ng-container matColumnDef="toPay">
-          <th mat-header-cell *matHeaderCellDef>A Pagar</th>
-          <td mat-cell *matCellDef="let row">
-            {{row.toPay | currency : '':''}}</td>
-          <td mat-footer-cell *matFooterCellDef>
-            {{toPayTotal | currency : '':''}}</td>
-        </ng-container>
+            <!-- A Pagar Column -->
+            <ng-container matColumnDef="toPay">
+              <th mat-header-cell *matHeaderCellDef>A Pagar</th>
+              <td mat-cell *matCellDef="let row">
+                {{row.toPay | currency : '':''}}</td>
+              <td mat-footer-cell *matFooterCellDef>
+                {{toPayTotal | currency : '':''}}</td>
+            </ng-container>
 
-        <!-- Pago Column -->
-        <ng-container matColumnDef="paid">
-          <th mat-header-cell *matHeaderCellDef>Pago</th>
-          <td mat-cell *matCellDef="let row" [ngClass]="'negative'">
-            {{row.paid | currency : '':''}}</td>
-          <td mat-footer-cell *matFooterCellDef [ngClass]="'negative'">
-            {{paidTotal | currency : '':''}}</td>
-        </ng-container>
+            <!-- Pago Column -->
+            <ng-container matColumnDef="paid">
+              <th mat-header-cell *matHeaderCellDef>Pago</th>
+              <td mat-cell *matCellDef="let row" [ngClass]="'negative'">
+                {{row.paid | currency : '':''}}</td>
+              <td mat-footer-cell *matFooterCellDef [ngClass]="'negative'">
+                {{paidTotal | currency : '':''}}</td>
+            </ng-container>
 
-        <!-- Restante Column -->
-        <ng-container matColumnDef="remaining">
-          <th mat-header-cell *matHeaderCellDef>Restante</th>
-          <td mat-cell *matCellDef="let row" [ngClass]="'negative'">
-            {{row.remaining | currency : '':''}}</td>
-          <td mat-footer-cell *matFooterCellDef [ngClass]="'negative'">
-            {{expensesRemainingTotal | currency : '':''}}</td>
-        </ng-container>
+            <!-- Restante Column -->
+            <ng-container matColumnDef="remaining">
+              <th mat-header-cell *matHeaderCellDef>Restante</th>
+              <td mat-cell *matCellDef="let row" [ngClass]="'negative'">
+                {{row.remaining | currency : '':''}}</td>
+              <td mat-footer-cell *matFooterCellDef [ngClass]="'negative'">
+                {{expensesRemainingTotal | currency : '':''}}</td>
+            </ng-container>
 
-        <tr class="expenses mat-header-cell-expenses" mat-header-row
-          *matHeaderRowDef="displayedExpensesColumns; sticky: false"></tr>
-        <tr class="expenses" mat-row *matRowDef="let row; columns: displayedExpensesColumns"></tr>
-        <tr class="expenses" mat-footer-row *matFooterRowDef="displayedExpensesColumns; sticky: false"></tr>
-      </table>
-    </div>
-  </div>
-  <hr>
+            <tr class="expenses mat-header-cell-expenses" mat-header-row
+              *matHeaderRowDef="displayedExpensesColumns; sticky: false"></tr>
+            <tr class="expenses" mat-row *matRowDef="let row; columns: displayedExpensesColumns"></tr>
+            <tr class="expenses" mat-footer-row *matFooterRowDef="displayedExpensesColumns; sticky: false"></tr>
+          </table>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
   <!-- INCOMES TABLE -->
-  <div class="row" *ngIf="hideExpensesProgress || hideIncomesProgress">
-    <div class="table-container mat-elevation-z8">
-      <table mat-table [dataSource]="incomes">
-        <!-- Receitas Column -->
-        <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef>Receitas</th>
-          <td mat-cell *matCellDef="let row">
-            {{row.description}}</td>
-          <td mat-footer-cell *matFooterCellDef> Total </td>
-        </ng-container>
+  <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false"
+    *ngIf="hideExpensesProgress || hideIncomesProgress">
+    <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false" [(expanded)]="incomesPanelExpanded">
+      <mat-expansion-panel-header>
+        <span class="material-icons center primary"><b>attach_money</b></span>
+        <span class="center primary"><b>Receitas</b></span>
+      </mat-expansion-panel-header>
+      <div class="row center">
+        <div class="row center">
+          <button class="default-button" mat-mini-fab matTooltip="Adicionar receita" matTooltipPosition="above"
+            color="primary" aria-label="Adicionar receita" (click)="addIncome()">
+            <mat-icon class="default-icon">post_add</mat-icon>
+          </button>
+        </div>
+        <div class="table-container mat-elevation-z8 mytable2">
+          <table mat-table [dataSource]="incomes">
+            <!-- Descrição Column -->
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef>Descrição</th>
+              <td mat-cell *matCellDef="let row">
+                {{row.description}}</td>
+              <td mat-footer-cell *matFooterCellDef> Total </td>
+            </ng-container>
 
-        <!-- A Receber Column -->
-        <ng-container matColumnDef="toReceive">
-          <th mat-header-cell *matHeaderCellDef>A Receber</th>
-          <td mat-cell *matCellDef="let row">
-            {{row.toReceive | currency : '':''}}</td>
-          <td mat-footer-cell *matFooterCellDef>
-            {{toReceiveTotal | currency : '':''}}</td>
-        </ng-container>
+            <!-- A Receber Column -->
+            <ng-container matColumnDef="toReceive">
+              <th mat-header-cell *matHeaderCellDef>A Receber</th>
+              <td mat-cell *matCellDef="let row">
+                {{row.toReceive | currency : '':''}}</td>
+              <td mat-footer-cell *matFooterCellDef>
+                {{toReceiveTotal | currency : '':''}}</td>
+            </ng-container>
 
-        <!-- Recebido Column -->
-        <ng-container matColumnDef="received">
-          <th mat-header-cell *matHeaderCellDef>Recebido</th>
-          <td mat-cell *matCellDef="let row">
-            {{row.received | currency : '':''}}</td>
-          <td mat-footer-cell *matFooterCellDef>
-            {{receivedTotal | currency : '':''}}</td>
-        </ng-container>
+            <!-- Recebido Column -->
+            <ng-container matColumnDef="received">
+              <th mat-header-cell *matHeaderCellDef>Recebido</th>
+              <td mat-cell *matCellDef="let row">
+                {{row.received | currency : '':''}}</td>
+              <td mat-footer-cell *matFooterCellDef>
+                {{receivedTotal | currency : '':''}}</td>
+            </ng-container>
 
-        <!-- Restante Column -->
-        <ng-container matColumnDef="remaining">
-          <th mat-header-cell *matHeaderCellDef>Restante</th>
-          <td mat-cell *matCellDef="let row">
-            {{row.remaining | currency : '':''}}</td>
-          <td mat-footer-cell *matFooterCellDef>
-            {{incomesRemainingTotal | currency : '':''}}</td>
-        </ng-container>
+            <!-- Restante Column -->
+            <ng-container matColumnDef="remaining">
+              <th mat-header-cell *matHeaderCellDef>Restante</th>
+              <td mat-cell *matCellDef="let row">
+                {{row.remaining | currency : '':''}}</td>
+              <td mat-footer-cell *matFooterCellDef>
+                {{incomesRemainingTotal | currency : '':''}}</td>
+            </ng-container>
 
-        <tr class="incomes mat-header-cell-incomes" mat-header-row
-          *matHeaderRowDef="displayedIncomesColumns; sticky: false"></tr>
-        <tr class="incomes" mat-row *matRowDef="let row; columns: displayedIncomesColumns"></tr>
-        <tr class="incomes" mat-footer-row *matFooterRowDef="displayedIncomesColumns; sticky: false"></tr>
-      </table>
-    </div>
-  </div>
+            <tr class="incomes mat-header-cell-incomes" mat-header-row
+              *matHeaderRowDef="displayedIncomesColumns; sticky: false"></tr>
+            <tr class="incomes" mat-row *matRowDef="let row; columns: displayedIncomesColumns"></tr>
+            <tr class="incomes" mat-footer-row *matFooterRowDef="displayedIncomesColumns; sticky: false"></tr>
+          </table>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>
