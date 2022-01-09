@@ -1,0 +1,96 @@
+<div class="">
+  <form [formGroup]="expensesFormGroup">
+
+    <div class="cancel">
+      <button class="default-button" mat-mini-fab matTooltip="Cancelar" color="accent" aria-label="Cancelar"
+        (click)="cancel()">
+        <mat-icon class="default-icon">close</mat-icon>
+      </button>
+    </div>
+
+    <div mat-dialog-content>
+
+      <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-label>Descrição</mat-label>
+          <input type="text" id="descriptionFormControl" required matInput formControlName="descriptionFormControl"
+            [(ngModel)]="expenses.description" cdkFocusInitial>
+          <mat-error *ngIf="expensesFormGroup.get('descriptionFormControl')?.hasError('required')">
+            Campo <strong>obrigatório</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="row center">
+
+        <div class="col-6">
+          <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
+            <mat-label>A pagar</mat-label>
+            <input matInput type="number" inputmode="numeric" formControlName="toPayFormControl"
+              [(ngModel)]="expenses.toPay" placeholder="0" (change)="calculateRemaining()">
+            <mat-error *ngIf="expensesFormGroup.get('toPayFormControl')?.hasError('required')">
+              Campo <strong>obrigatório</strong>.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-6">
+          <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
+            <mat-label>Pago</mat-label>
+            <input matInput type="number" inputmode="numeric" formControlName="paidFormControl"
+              [(ngModel)]="expenses.paid" placeholder="0" (change)="calculateRemaining()">
+            <mat-error *ngIf="expensesFormGroup.get('paidFormControl')?.hasError('required')">
+              Campo <strong>obrigatório</strong>.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-6">
+          <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
+            <mat-label>Restante</mat-label>
+            <input matInput type="number" inputmode="numeric" formControlName="remainingFormControl" readonly
+              [(ngModel)]="expenses.remaining" placeholder="0">
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <mat-form-field appearance="fill" floatLabel="always">
+          <mat-label>Cartão</mat-label>
+          <mat-select mat-input [(ngModel)]="expenses.cardId" formControlName="cardIdFormControl"
+            (selectionChange)="setCard()">
+            <mat-option>-- Nenhuma --</mat-option>
+            <mat-option *ngFor="let c of cards" [value]="c.id">{{ c.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field appearance="fill">
+          <mat-label>Comentário</mat-label>
+          <textarea matInput [(ngModel)]="expenses.note" formControlName="noteFormControl"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div mat-dialog-actions>
+          <button [disabled]="!expensesFormGroup.valid" class="default-button" mat-mini-fab matTooltip="Salvar"
+            matTooltipPosition="above" color="primary" aria-label="Salvar" [mat-dialog-close]="expenses"
+            (click)="save()">
+            <mat-icon class="default-icon">save</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="col" *ngIf="expenses.editing">
+        <div mat-dialog-actions>
+          <button class="default-button" mat-mini-fab matTooltip="Excluir" matTooltipPosition="above" color="warn"
+            aria-label="Excluir" (click)="delete()">
+            <mat-icon class="default-icon">delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

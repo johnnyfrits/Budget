@@ -86,6 +86,12 @@ export class AccountPostingsComponent implements OnInit {
 
   add() {
 
+    // this.accountpostings.push(this.accountpostings[0]);
+
+    // console.log(this.accountpostings.length);
+
+    // return;
+
     this.editing = false;
 
     const dialogRef = this.dialog.open(AccountPostingsDialog, {

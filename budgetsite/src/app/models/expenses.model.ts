@@ -1,3 +1,5 @@
+import { Cards } from "./cards.model";
+
 export interface Expenses {
 	id?: number;
 	userId: number;
@@ -6,6 +8,11 @@ export interface Expenses {
 	description: string;
 	toPay: number;
 	paid: number;
-	remaining: number;
+	remaining?: number;
 	note?: string;
+	cardId?: number;
+	editing?: boolean;
+	deleting?: boolean;
+	card?: Cards;
+	cardsList?: Cards[];
 }

@@ -18,7 +18,7 @@
     </div>
   </div>
   <div class="row center" style="margin-top: 10px">
-    <div class="row justify-content-center text-center" *ngIf="hideExpensesProgress || hideIncomesProgress">
+    <div class="row justify-content-center text-center" *ngIf="hideExpensesProgress && hideIncomesProgress">
       <span>Saldo Previsto:</span>
       <span
         [ngClass]="expectedBalance < 0 ? 'negative' : 'positive'"><b>{{expectedBalance | currency : '':''}}</b></span>
@@ -78,7 +78,8 @@
 
             <tr class="expenses mat-header-cell-expenses" mat-header-row
               *matHeaderRowDef="displayedExpensesColumns; sticky: false"></tr>
-            <tr class="expenses" mat-row *matRowDef="let row; columns: displayedExpensesColumns"></tr>
+            <tr class="expenses" (click)="editOrDeleteExpense(row)" mat-row
+              *matRowDef="let row; columns: displayedExpensesColumns"></tr>
             <tr class="expenses" mat-footer-row *matFooterRowDef="displayedExpensesColumns; sticky: false"></tr>
           </table>
         </div>
@@ -123,24 +124,25 @@
             <!-- Recebido Column -->
             <ng-container matColumnDef="received">
               <th mat-header-cell *matHeaderCellDef>Recebido</th>
-              <td mat-cell *matCellDef="let row">
+              <td mat-cell *matCellDef="let row" [ngClass]="'primary'">
                 {{row.received | currency : '':''}}</td>
-              <td mat-footer-cell *matFooterCellDef>
+              <td mat-footer-cell *matFooterCellDef [ngClass]="'primary'">
                 {{receivedTotal | currency : '':''}}</td>
             </ng-container>
 
             <!-- Restante Column -->
             <ng-container matColumnDef="remaining">
               <th mat-header-cell *matHeaderCellDef>Restante</th>
-              <td mat-cell *matCellDef="let row">
+              <td mat-cell *matCellDef="let row" [ngClass]="'primary'">
                 {{row.remaining | currency : '':''}}</td>
-              <td mat-footer-cell *matFooterCellDef>
+              <td mat-footer-cell *matFooterCellDef [ngClass]="'primary'">
                 {{incomesRemainingTotal | currency : '':''}}</td>
             </ng-container>
 
             <tr class="incomes mat-header-cell-incomes" mat-header-row
               *matHeaderRowDef="displayedIncomesColumns; sticky: false"></tr>
-            <tr class="incomes" mat-row *matRowDef="let row; columns: displayedIncomesColumns"></tr>
+            <tr class="incomes" (click)="editOrDeleteIncome(row)" mat-row
+              *matRowDef="let row; columns: displayedIncomesColumns"></tr>
             <tr class="incomes" mat-footer-row *matFooterRowDef="displayedIncomesColumns; sticky: false"></tr>
           </table>
         </div>
