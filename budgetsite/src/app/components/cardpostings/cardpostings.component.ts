@@ -30,6 +30,8 @@ export class CardPostingsComponent implements OnInit {
   hideProgress: boolean = true;
   editing: boolean = false;
   peopleList?: People[];
+  cardPostingsPanelExpanded: boolean = false;
+  peoplePanelExpanded: boolean = false;
 
   constructor(private cardPostingsService: CardPostingsService,
     private peopleService: PeopleService,
@@ -52,6 +54,9 @@ export class CardPostingsComponent implements OnInit {
         error: () => this.hideProgress = true
       }
     );
+
+    this.cardPostingsPanelExpanded = localStorage.getItem('cardPostingsPanelExpanded') === 'true';
+    this.peoplePanelExpanded = localStorage.getItem('peoplePanelExpanded') === 'true';
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -119,7 +124,7 @@ export class CardPostingsComponent implements OnInit {
           {
             next: cardpostings => {
 
-              this.cardpostings.push(cardpostings);
+              this.cardpostings = [...this.cardpostings, cardpostings];
 
               this.getTotalAmount();
 
@@ -209,6 +214,26 @@ export class CardPostingsComponent implements OnInit {
         }
       }
     });
+  }
+
+  cardPostingsPanelClosed() {
+
+    localStorage.setItem('cardPostingsPanelExpanded', 'false');
+  }
+
+  cardPostingsPanelOpened() {
+
+    localStorage.setItem('cardPostingsPanelExpanded', 'true');
+  }
+
+  peoplePanelClosed() {
+
+    localStorage.setItem('peoplePanelExpanded', 'false');
+  }
+
+  peoplePanelOpened() {
+
+    localStorage.setItem('peoplePanelExpanded', 'true');
   }
 }
 

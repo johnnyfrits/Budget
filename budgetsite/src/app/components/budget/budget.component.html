@@ -27,7 +27,8 @@
   <!-- EXPENSES TABLE -->
   <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false"
     *ngIf="hideExpensesProgress || hideIncomesProgress">
-    <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false" [(expanded)]="expensesPanelExpanded">
+    <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false" [(expanded)]="expensesPanelExpanded"
+      (closed)="expensesPanelClosed()" (opened)="expensesPanelOpened()">
       <mat-expansion-panel-header class="accent">
         <span class="material-icons center accent"><b>money_off</b></span>
         <span class="center accent"><b>Despesas</b></span>
@@ -90,7 +91,8 @@
   <!-- INCOMES TABLE -->
   <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false"
     *ngIf="hideExpensesProgress || hideIncomesProgress">
-    <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false" [(expanded)]="incomesPanelExpanded">
+    <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false" [(expanded)]="incomesPanelExpanded"
+      (closed)="incomesPanelClosed()" (opened)="incomesPanelOpened()">
       <mat-expansion-panel-header>
         <span class="material-icons center primary"><b>attach_money</b></span>
         <span class="center primary"><b>Receitas</b></span>

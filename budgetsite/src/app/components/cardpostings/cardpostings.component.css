@@ -37,3 +37,8 @@ tr.mat-footer-row {
 .bold {
   font-weight: bold;
 }
+
+.mat-panel-cards {
+  margin-top: 10px !important;
+  padding-bottom: -50px !important;
+}

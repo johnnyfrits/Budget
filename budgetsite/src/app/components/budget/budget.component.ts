@@ -61,6 +61,9 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         }
       }
     );
+
+    this.expensesPanelExpanded = localStorage.getItem('expensesPanelExpanded') === 'true';
+    this.incomesPanelExpanded = localStorage.getItem('incomesPanelExpanded') === 'true';
   }
 
   ngAfterViewInit(): void {
@@ -392,6 +395,26 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         }
       }
     });
+  }
+
+  expensesPanelClosed() {
+
+    localStorage.setItem('expensesPanelExpanded', 'false');
+  }
+
+  expensesPanelOpened() {
+
+    localStorage.setItem('expensesPanelExpanded', 'true');
+  }
+
+  incomesPanelClosed() {
+
+    localStorage.setItem('incomesPanelExpanded', 'false');
+  }
+
+  incomesPanelOpened() {
+
+    localStorage.setItem('incomesPanelExpanded', 'true');
   }
 }
 
