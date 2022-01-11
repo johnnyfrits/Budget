@@ -7,8 +7,14 @@ import { People } from 'src/app/models/people.model';
 import { PeopleService } from 'src/app/services/people/people.service';
 import { default as _rollupMoment } from 'moment';
 import * as _moment from 'moment';
+import { CardsPostingsDTO } from 'src/app/models/cardspostingsdto.model';
+import { CardReceiptsService } from 'src/app/services/cardreceipts/cardreceipts.service';
+import { CardsReceipts } from 'src/app/models/cardsreceipts.model';
+import { Accounts } from 'src/app/models/accounts.model';
+import { AccountService } from 'src/app/services/account/account.service';
 
 let moment = _rollupMoment || _moment;
+
 @Component({
   selector: 'app-cardpostings',
   templateUrl: './cardpostings.component.html',
@@ -21,8 +27,13 @@ export class CardPostingsComponent implements OnInit {
   @Input() reference?: string;
 
   cardpostings!: CardsPostings[];
+  cardpostingspeople!: CardsPostingsDTO[];
   displayedColumns = ['index', 'date', 'description', 'amount'];
+  displayedPeopleColumns = ['person', 'toReceive', 'received', 'remaining', 'actions'];
   total: number = 0;
+  toReceiveTotalPeople: number = 0;
+  receivedTotalPeople: number = 0;
+  remainingTotalPeople: number = 0;
   myTotal: number = 0;
   percMyTotal: string = '0,00%';
   othersTotal: number = 0;
@@ -30,11 +41,14 @@ export class CardPostingsComponent implements OnInit {
   hideProgress: boolean = true;
   editing: boolean = false;
   peopleList?: People[];
+  accountsList?: Accounts[];
   cardPostingsPanelExpanded: boolean = false;
   peoplePanelExpanded: boolean = false;
 
   constructor(private cardPostingsService: CardPostingsService,
+    private cardReceiptsService: CardReceiptsService,
     private peopleService: PeopleService,
+    private accountService: AccountService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -48,6 +62,18 @@ export class CardPostingsComponent implements OnInit {
         next: people => {
 
           this.peopleList = people;
+
+          this.hideProgress = true;
+        },
+        error: () => this.hideProgress = true
+      }
+    );
+
+    this.accountService.read().subscribe(
+      {
+        next: accounts => {
+
+          this.accountsList = accounts;
 
           this.hideProgress = true;
         },
@@ -78,6 +104,20 @@ export class CardPostingsComponent implements OnInit {
           error: () => this.hideProgress = true
         }
       );
+
+      this.cardPostingsService.readCardsPostingsPeople(this.reference!, this.cardId).subscribe(
+        {
+          next: cardpostingspeople => {
+
+            this.cardpostingspeople = cardpostingspeople.filter(t => t.person !== '');
+
+            this.getTotalPeople();
+
+            this.hideProgress = true;
+          },
+          error: () => this.hideProgress = true
+        }
+      );
     }
   }
 
@@ -95,6 +135,21 @@ export class CardPostingsComponent implements OnInit {
 
     this.percMyTotal = (this.total ? this.myTotal / this.total * 100 : 0).toFixed(2)?.toString() + '%';;
     this.percOthersTotal = (this.total ? this.othersTotal / this.total * 100 : 0).toFixed(2)?.toString() + '%';
+  }
+
+  getTotalPeople() {
+
+    this.toReceiveTotalPeople =
+      this.cardpostingspeople ?
+        this.cardpostingspeople.map(t => t.toReceive).reduce((acc, value) => acc + value, 0) : 0;
+
+    this.receivedTotalPeople =
+      this.cardpostingspeople ?
+        this.cardpostingspeople.map(t => t.received).reduce((acc, value) => acc + value, 0) : 0;
+
+    this.remainingTotalPeople =
+      this.cardpostingspeople ?
+        this.cardpostingspeople.map(t => t.remaining).reduce((acc, value) => acc + value, 0) : 0;
   }
 
   add() {
@@ -235,6 +290,50 @@ export class CardPostingsComponent implements OnInit {
 
     localStorage.setItem('peoplePanelExpanded', 'true');
   }
+
+  receive(cardspostingsdto: CardsPostingsDTO) {
+
+    const dialogRef = this.dialog.open(CardReceiptsDialog, {
+      width: '400px',
+      data: {
+        date: new Date(),
+        reference: this.reference,
+        cardId: this.cardId,
+        peopleId: cardspostingsdto.person,
+        amount: null,
+        change: null,
+        toReceive: cardspostingsdto.toReceive,
+        received: cardspostingsdto.received,
+        remaining: cardspostingsdto.remaining,
+        accountsList: this.accountsList
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      debugger;
+
+      if (result) {
+
+        this.hideProgress = false;
+
+        this.cardReceiptsService.create(result).subscribe(
+          {
+            next: () => {
+
+              cardspostingsdto.received = result.received + result.amount;
+              cardspostingsdto.remaining = +(result.remaining - result.amount).toFixed(2) + result.change;
+
+              this.getTotalPeople();
+
+              this.hideProgress = true;
+            },
+            error: () => this.hideProgress = true
+          }
+        );
+      }
+    });
+  }
 }
 
 @Component({
@@ -319,5 +418,60 @@ export class CardPostingsDialog implements OnInit {
   calculateAmount(): void {
 
     this.cardPosting.amount = +(this.cardPosting.totalAmount! / this.cardPosting.parcels!).toFixed(2);
+  }
+}
+
+@Component({
+  selector: 'cardreceipts-dialog',
+  templateUrl: 'cardreceipts-dialog.html',
+})
+export class CardReceiptsDialog implements OnInit {
+
+  accounts?: Accounts[];
+
+  cardReceiptsFormGroup = new FormGroup({
+
+    dateFormControl: new FormControl(''),
+    toReceiveFormControl: new FormControl(''),
+    receivedFormControl: new FormControl(''),
+    remainingFormControl: new FormControl(''),
+    amountFormControl: new FormControl('', Validators.required),
+    changeFormControl: new FormControl(''),
+    peopleFormControl: new FormControl(''),
+    accountFormControl: new FormControl('', Validators.required),
+    noteFormControl: new FormControl(''),
+  });
+
+  constructor(public dialogRef: MatDialogRef<CardReceiptsDialog>,
+    @Inject(MAT_DIALOG_DATA) public cardReceipts: CardsReceipts) { }
+
+  ngOnInit(): void {
+
+    this.accounts = this.cardReceipts.accountsList;
+
+    this.cardReceiptsFormGroup.get('toReceiveFormControl')!.disable();
+    this.cardReceiptsFormGroup.get('receivedFormControl')!.disable();
+    this.cardReceiptsFormGroup.get('remainingFormControl')!.disable();
+    this.cardReceiptsFormGroup.get('changeFormControl')!.disable();
+  }
+
+  cancel(): void {
+
+    this.dialogRef.close();
+  }
+
+  currentDateChanged(date: Date) {
+
+    this.cardReceipts.date = date;
+  }
+
+  save(): void {
+
+    this.dialogRef.close(this.cardReceipts);
+  }
+
+  onAmountChange(): void {
+
+    this.cardReceipts.change = +(this.cardReceipts.amount - this.cardReceipts.remaining!).toFixed(2);
   }
 }

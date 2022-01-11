@@ -5,6 +5,7 @@ import { ApiUrls } from 'src/app/common/api-urls'
 import { CardsPostings } from 'src/app/models/cardspostings.model';
 import { catchError, map } from 'rxjs/operators';
 import { Messenger } from 'src/app/common/messenger';
+import { CardsPostingsDTO } from 'src/app/models/cardspostingsdto.model';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +41,14 @@ export class CardPostingsService {
   read(cardId: number, reference: string): Observable<CardsPostings[]> {
 
     return this.http.get<CardsPostings[]>(`${ApiUrls.cardspostings}/${cardId}/${reference}`).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
+  readCardsPostingsPeople(reference: string, cardId: number): Observable<CardsPostingsDTO[]> {
+
+    return this.http.get<CardsPostingsDTO[]>(`${ApiUrls.cardspostingspeople}card=${cardId}&reference=${reference}`).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );

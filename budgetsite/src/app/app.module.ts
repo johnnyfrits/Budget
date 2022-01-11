@@ -36,6 +36,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { HeaderComponent } from './components/template/header/header.component';
 import { NavComponent } from './components/template/nav/nav.component';
@@ -44,7 +45,7 @@ import { AccountComponent } from './components/account/account.component';
 import { AccountPostingsComponent, AccountPostingsDialog } from './components/accountpostings/accountpostings.component';
 import { CardViewComponent } from './views/card-view/card-view.component';
 import { CardComponent } from './components/card/card.component';
-import { CardPostingsComponent, CardPostingsDialog } from './components/cardpostings/cardpostings.component';
+import { CardPostingsComponent, CardPostingsDialog, CardReceiptsDialog } from './components/cardpostings/cardpostings.component';
 import { BudgetComponent, ExpensesDialog, IncomesDialog } from './components/budget/budget.component';
 import { DatepickerComponent } from './shared/datepicker/datepicker.component';
 import { BudgetViewComponent } from './views/budget-view/budget-view.component';
@@ -67,6 +68,7 @@ registerLocaleData(localePt);
     DatepickerComponent,
     BudgetViewComponent,
     CardPostingsDialog,
+    CardReceiptsDialog,
     AccountPostingsDialog,
     ExpensesDialog,
     IncomesDialog,
@@ -101,7 +103,8 @@ registerLocaleData(localePt);
     MatSelectModule,
     MatExpansionModule,
     MatRadioModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatMenuModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' }

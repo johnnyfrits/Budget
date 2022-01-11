@@ -42,3 +42,23 @@ tr.mat-footer-row {
   margin-top: 10px !important;
   padding-bottom: -50px !important;
 }
+
+.mat-column-toReceive,
+.mat-column-received,
+.mat-column-remaining,
+.mat-column-actions {
+  text-align: right;
+}
+
+.mat-column-actions {
+  width: 5px;
+  padding-right: 0px !important;
+}
+
+.mat-menu-item {
+  color: #669966;
+}
+
+.mat-menu-item>.mat-icon {
+  color: #669966;
+}

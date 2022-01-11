@@ -8,6 +8,8 @@ export class ApiUrls {
     public static accountspostings: string = ApiUrls.baseUrl + 'accountspostings';
     public static cards: string = ApiUrls.baseUrl + 'cards';
     public static cardspostings: string = ApiUrls.baseUrl + 'cardspostings';
+    public static cardspostingspeople: string = ApiUrls.baseUrl + 'cardspostings/people?';
+    public static cardsreceipts: string = ApiUrls.baseUrl + 'cardsreceipts';
     public static expenses: string = ApiUrls.baseUrl + 'expenses';
     public static incomes: string = ApiUrls.baseUrl + 'incomes';
     public static people: string = ApiUrls.baseUrl + 'people';
