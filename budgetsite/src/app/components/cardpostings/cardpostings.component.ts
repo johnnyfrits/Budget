@@ -105,20 +105,25 @@ export class CardPostingsComponent implements OnInit {
         }
       );
 
-      this.cardPostingsService.readCardsPostingsPeople(this.reference!, this.cardId).subscribe(
-        {
-          next: cardpostingspeople => {
-
-            this.cardpostingspeople = cardpostingspeople.filter(t => t.person !== '');
-
-            this.getTotalPeople();
-
-            this.hideProgress = true;
-          },
-          error: () => this.hideProgress = true
-        }
-      );
+      this.getCardsPostingsPeople();
     }
+  }
+
+  getCardsPostingsPeople() {
+
+    this.cardPostingsService.readCardsPostingsPeople(this.reference!, this.cardId!).subscribe(
+      {
+        next: cardpostingspeople => {
+
+          this.cardpostingspeople = cardpostingspeople.filter(t => t.person !== '');
+
+          this.getTotalPeople();
+
+          this.hideProgress = true;
+        },
+        error: () => this.hideProgress = true
+      }
+    );
   }
 
   getTotalAmount() {
@@ -183,6 +188,8 @@ export class CardPostingsComponent implements OnInit {
 
               this.getTotalAmount();
 
+              this.getCardsPostingsPeople();
+
               this.hideProgress = true;
             },
             error: () => this.hideProgress = true
@@ -233,6 +240,8 @@ export class CardPostingsComponent implements OnInit {
                 this.cardpostings = this.cardpostings.filter(t => t.id! != result.id!);
 
                 this.getTotalAmount();
+
+                this.getCardsPostingsPeople();
 
                 this.hideProgress = true;
               },
@@ -311,8 +320,6 @@ export class CardPostingsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
 
-      debugger;
-
       if (result) {
 
         this.hideProgress = false;
@@ -322,7 +329,7 @@ export class CardPostingsComponent implements OnInit {
             next: () => {
 
               cardspostingsdto.received = result.received + result.amount;
-              cardspostingsdto.remaining = +(result.remaining - result.amount).toFixed(2) + result.change;
+              cardspostingsdto.remaining = cardspostingsdto.toReceive - cardspostingsdto.received;
 
               this.getTotalPeople();
 

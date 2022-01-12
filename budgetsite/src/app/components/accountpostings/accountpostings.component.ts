@@ -250,8 +250,13 @@ export class AccountPostingsDialog implements OnInit {
 
       this.accountPosting.description = 'Rendimento';
     }
+    else if (this.accountPosting.type === 'C') {
+
+      this.accountPosting.description = 'Troco';
+    }
     else {
-      if (this.accountPosting.description === 'Rendimento') {
+      if (this.accountPosting.description === 'Rendimento' ||
+        this.accountPosting.description === 'Troco') {
 
         this.accountPosting.description = '';
       }

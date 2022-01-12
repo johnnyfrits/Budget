@@ -14,9 +14,14 @@
         <mat-radio-group name="typeFormControl" id="typeFormControl" formControlName="typeFormControl"
           [(ngModel)]="accountPosting.type" (change)="onTypeChange()"
           style="padding: 10px; display: flex;flex-wrap: wrap; justify-content: center; align-items: center">
-          <mat-radio-button value='R' style="padding-right: 10px">Recebimento </mat-radio-button>
-          <mat-radio-button value='P' style="padding-right: 10px">Pagamento </mat-radio-button>
-          <mat-radio-button value='Y'>Rendimento</mat-radio-button>
+          <div class="col-6">
+            <mat-radio-button value='R' style="padding-bottom: 5px;">Recebimento </mat-radio-button>
+            <mat-radio-button value='P'>Pagamento </mat-radio-button>
+          </div>
+          <div class="col-6">
+            <mat-radio-button value='Y' style="padding-bottom: 5px;">Rendimento</mat-radio-button>
+            <mat-radio-button value='C'>Troco</mat-radio-button>
+          </div>
         </mat-radio-group>
       </div>
 

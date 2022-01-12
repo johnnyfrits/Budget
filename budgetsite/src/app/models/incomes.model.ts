@@ -1,3 +1,4 @@
+import { Accounts } from "./accounts.model";
 import { Cards } from "./cards.model";
 
 export interface Incomes {
@@ -12,8 +13,11 @@ export interface Incomes {
 	note?: string;
 	card?: Cards;
 	cardId?: number;
+	accountId?: number;
+	type?: string;
 	editing?: boolean;
 	deleting?: boolean;
 	cardsList?: Cards[];
-
+	accountsList?: Accounts[];
+	typesList?: [];
 }

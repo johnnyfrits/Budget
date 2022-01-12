@@ -56,11 +56,31 @@
 
       <div class="row">
         <mat-form-field appearance="fill" floatLabel="always">
+          <mat-label>Tipo</mat-label>
+          <mat-select mat-input [(ngModel)]="incomes.type" formControlName="typeFormControl">
+            <mat-option>-- Nenhum --</mat-option>
+            <mat-option *ngFor="let t of types" [value]="t.id">{{ t.description }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field appearance="fill" floatLabel="always">
           <mat-label>Cartão</mat-label>
           <mat-select mat-input [(ngModel)]="incomes.cardId" formControlName="cardIdFormControl"
             (selectionChange)="setCard()">
-            <mat-option>-- Nenhuma --</mat-option>
+            <mat-option>-- Nenhum --</mat-option>
             <mat-option *ngFor="let c of cards" [value]="c.id">{{ c.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field appearance="fill" floatLabel="always">
+          <mat-label>Conta</mat-label>
+          <mat-select mat-input [(ngModel)]="incomes.accountId" formControlName="accountIdFormControl">
+            <mat-option>-- Nenhuma --</mat-option>
+            <mat-option *ngFor="let a of accounts" [value]="a.id">{{ a.name }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>

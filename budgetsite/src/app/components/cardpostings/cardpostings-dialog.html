@@ -33,7 +33,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
             <mat-label>Valor Total</mat-label>
             <input matInput type="number" formControlName="totalAmountFormControl" [(ngModel)]="cardPosting.totalAmount"
-              placeholder="0">
+              placeholder="0" (change)="calculateAmount()">
             <mat-error *ngIf="cardPostingFormGroup.get('totalAmountFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>

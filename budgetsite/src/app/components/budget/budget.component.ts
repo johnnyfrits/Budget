@@ -1,9 +1,12 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Accounts } from 'src/app/models/accounts.model';
 import { Cards } from 'src/app/models/cards.model';
 import { Expenses } from 'src/app/models/expenses.model';
 import { Incomes } from 'src/app/models/incomes.model';
+import { IncomesTypes } from 'src/app/models/types.model';
+import { AccountService } from 'src/app/services/account/account.service';
 import { CardService } from 'src/app/services/card/card.service';
 import { ExpenseService } from 'src/app/services/expense/expense.service';
 import { IncomeService } from 'src/app/services/income/income.service';
@@ -36,10 +39,28 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   incomesPanelExpanded: boolean = false;
   editing: boolean = false;
   cardsList?: Cards[];
-
+  accountsList?: Accounts[];
+  typesList = [
+    {
+      id: 'R',
+      description: 'Recebimento'
+    },
+    {
+      id: 'P',
+      description: 'Pagamento'
+    },
+    {
+      id: 'Y',
+      description: 'Rendimento'
+    },
+    {
+      id: 'C',
+      description: 'Troco'
+    },
+  ];
 
   constructor(private expenseService: ExpenseService, private incomeService: IncomeService, private cd: ChangeDetectorRef,
-    public dialog: MatDialog, private cardService: CardService,) { }
+    public dialog: MatDialog, private cardService: CardService, private accountService: AccountService) { }
 
   ngOnInit(): void {
 
@@ -51,6 +72,19 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         next: cards => {
 
           this.cardsList = cards;
+        },
+        error: () => {
+          this.hideExpensesProgress = false;
+          this.hideIncomesProgress = false;
+        }
+      }
+    );
+
+    this.accountService.read().subscribe(
+      {
+        next: accounts => {
+
+          this.accountsList = accounts;
 
           this.hideExpensesProgress = false;
           this.hideIncomesProgress = false;
@@ -296,7 +330,9 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         userId: 1,
         reference: this.reference,
         editing: this.editing,
-        cardsList: this.cardsList
+        cardsList: this.cardsList,
+        accountsList: this.accountsList,
+        typesList: this.typesList
       }
     });
 
@@ -329,12 +365,15 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
     this.editing = true;
 
+    debugger;
+
     const dialogRef = this.dialog.open(IncomesDialog, {
       width: '400px',
       data: {
         id: income.id,
         userId: income.userId,
         cardId: income.cardId,
+        accountId: income.accountId,
         reference: income.reference,
         position: income.position,
         description: income.description,
@@ -342,9 +381,12 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         received: income.received,
         remaining: income.remaining,
         note: income.note,
+        type: income.type,
         editing: this.editing,
         deleting: false,
-        cardsList: this.cardsList
+        cardsList: this.cardsList,
+        accountsList: this.accountsList,
+        typesList: this.typesList
       }
     });
 
@@ -369,6 +411,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
           );
         } else {
 
+          debugger;
+
           this.incomeService.update(result).subscribe(
             {
               next: () => {
@@ -385,6 +429,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                   t.remaining = result.remaining;
                   t.note = result.note;
                   t.cardId = result.cardId;
+                  t.accountId = result.accountId;
+                  t.type = result.type;
                 });
 
                 this.getIncomesTotals();
@@ -482,6 +528,8 @@ export class ExpensesDialog implements OnInit {
 export class IncomesDialog implements OnInit {
 
   cards?: Cards[];
+  accounts?: Accounts[];
+  types?: IncomesTypes[];
 
   incomesFormGroup = new FormGroup({
 
@@ -491,6 +539,8 @@ export class IncomesDialog implements OnInit {
     remainingFormControl: new FormControl(''),
     noteFormControl: new FormControl(''),
     cardIdFormControl: new FormControl(''),
+    accountIdFormControl: new FormControl(''),
+    typeFormControl: new FormControl(''),
   });
 
   constructor(
@@ -501,6 +551,8 @@ export class IncomesDialog implements OnInit {
   ngOnInit(): void {
 
     this.cards = this.incomes.cardsList;
+    this.accounts = this.incomes.accountsList;
+    this.types = this.incomes.typesList;
   }
 
   cancel(): void {
