@@ -12,17 +12,27 @@
     </mat-expansion-panel>
   </mat-accordion>
   <!-- SPINNER -->
-  <div class="row center">
+  <div class="row center" style="margin-top: 10px">
     <div class="row justify-content-center">
       <mat-spinner color="accent" *ngIf="!hideExpensesProgress || !hideIncomesProgress"></mat-spinner>
     </div>
   </div>
-  <div class="row center" style="margin-top: 10px">
-    <div class="row justify-content-center text-center" *ngIf="hideExpensesProgress && hideIncomesProgress">
-      <span>Saldo Previsto:</span>
-      <span
-        [ngClass]="expectedBalance < 0 ? 'negative' : 'positive'"><b>{{expectedBalance | currency : '':''}}</b></span>
+  <div class="row center" style="margin-top: 10px" *ngIf="hideExpensesProgress && hideIncomesProgress">
+    <div class="col"></div>
+    <div class="col">
+      <div class="row justify-content-center text-center">
+        <span>Saldo Previsto:</span>
+        <span
+          [ngClass]="expectedBalance < 0 ? 'negative' : 'positive'"><b>{{expectedBalance | currency : '':''}}</b></span>
+      </div>
     </div>
+    <div class="col refresh">
+      <button class="default-button" mat-mini-fab matTooltip="atualizar" matTooltipPosition="left" color="warn"
+        aria-label="Atualizar" (click)="refresh()">
+        <mat-icon class="default-icon">autorenew</mat-icon>
+      </button>
+    </div>
+
   </div>
   <!-- EXPENSES TABLE -->
   <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false"
@@ -77,9 +87,26 @@
                 {{expensesRemainingTotal | currency : '':''}}</td>
             </ng-container>
 
+            <!-- Ações Column -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let row">
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon color="warn">more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item id="menu-expenses" (click)="pay(row)">
+                    <mat-icon id="menu-icon-expenses">price_check</mat-icon>
+                    <span>Pagar</span>
+                  </button>
+                </mat-menu>
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
             <tr class="expenses mat-header-cell-expenses" mat-header-row
               *matHeaderRowDef="displayedExpensesColumns; sticky: false"></tr>
-            <tr class="expenses" (click)="editOrDeleteExpense(row)" mat-row
+            <tr class="expenses" (click)="editOrDeleteExpense(row, $event)" mat-row
               *matRowDef="let row; columns: displayedExpensesColumns"></tr>
             <tr class="expenses" mat-footer-row *matFooterRowDef="displayedExpensesColumns; sticky: false"></tr>
           </table>
@@ -141,9 +168,26 @@
                 {{incomesRemainingTotal | currency : '':''}}</td>
             </ng-container>
 
+            <!-- Ações Column -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let row">
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon color="primary">more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item id="menu-incomes" (click)="receive(row)">
+                    <mat-icon id="menu-icon-incomes">price_check</mat-icon>
+                    <span>Receber</span>
+                  </button>
+                </mat-menu>
+              </td>
+              <td mat-footer-cell *matFooterCellDef></td>
+            </ng-container>
+
             <tr class="incomes mat-header-cell-incomes" mat-header-row
               *matHeaderRowDef="displayedIncomesColumns; sticky: false"></tr>
-            <tr class="incomes" (click)="editOrDeleteIncome(row)" mat-row
+            <tr class="incomes" (click)="editOrDeleteIncome(row, $event)" mat-row
               *matRowDef="let row; columns: displayedIncomesColumns"></tr>
             <tr class="incomes" mat-footer-row *matFooterRowDef="displayedIncomesColumns; sticky: false"></tr>
           </table>

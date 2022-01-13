@@ -85,3 +85,19 @@ tr.incomes:nth-child(odd) {
   margin-top: 10px !important;
   padding-bottom: -50px !important;
 }
+
+.mat-column-actions {
+  width: 5px;
+  padding-right: 0px !important;
+  text-align: right;
+}
+
+#menu-expenses,
+#menu-icon-expenses {
+  color: red;
+}
+
+#menu-incomes,
+#menu-icon-incomes {
+  color: #669966;
+}

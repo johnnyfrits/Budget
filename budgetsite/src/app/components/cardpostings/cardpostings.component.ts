@@ -12,6 +12,7 @@ import { CardReceiptsService } from 'src/app/services/cardreceipts/cardreceipts.
 import { CardsReceipts } from 'src/app/models/cardsreceipts.model';
 import { Accounts } from 'src/app/models/accounts.model';
 import { AccountService } from 'src/app/services/account/account.service';
+import { AccountPostingsService } from 'src/app/services/accountpostings/accountpostings.service';
 
 let moment = _rollupMoment || _moment;
 
@@ -49,6 +50,7 @@ export class CardPostingsComponent implements OnInit {
     private cardReceiptsService: CardReceiptsService,
     private peopleService: PeopleService,
     private accountService: AccountService,
+    private accountPostingsService: AccountPostingsService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -328,7 +330,7 @@ export class CardPostingsComponent implements OnInit {
           {
             next: () => {
 
-              cardspostingsdto.received = result.received + result.amount;
+              cardspostingsdto.received = result.received + result.amount - result.change;
               cardspostingsdto.remaining = cardspostingsdto.toReceive - cardspostingsdto.received;
 
               this.getTotalPeople();

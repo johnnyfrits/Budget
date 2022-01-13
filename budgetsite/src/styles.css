@@ -161,3 +161,9 @@ body {
 input[type="number"] {
   text-align: right;
 }
+
+.refresh {
+  display: flex;
+  align-content: center;
+  justify-content: flex-end;
+}

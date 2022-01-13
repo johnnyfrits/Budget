@@ -23,8 +23,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
   expenses!: Expenses[];
   incomes!: Incomes[];
-  displayedExpensesColumns = ['description', 'toPay', 'paid', 'remaining'];
-  displayedIncomesColumns = ['description', 'toReceive', 'received', 'remaining'];
+  displayedExpensesColumns = ['description', 'toPay', 'paid', 'remaining', 'actions'];
+  displayedIncomesColumns = ['description', 'toReceive', 'received', 'remaining', 'actions'];
   toPayTotal: number = 0;
   paidTotal: number = 0;
   expensesRemainingTotal?: number = 0;
@@ -64,6 +64,24 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
+  }
+
+  ngAfterViewInit(): void {
+
+    this.cd.detectChanges();
+  }
+
+  referenceChanges(reference: string) {
+
+    this.reference = reference;
+
+    this.referenceHead = this.reference.substr(4, 2) + "/" + this.reference.substr(0, 4);
+
+    this.refresh();
+  }
+
+  refresh() {
+
     this.hideExpensesProgress = false;
     this.hideIncomesProgress = false;
 
@@ -86,32 +104,20 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
           this.accountsList = accounts;
 
-          this.hideExpensesProgress = false;
-          this.hideIncomesProgress = false;
+          this.hideExpensesProgress = true;
+          this.hideIncomesProgress = true;
         },
         error: () => {
-          this.hideExpensesProgress = false;
-          this.hideIncomesProgress = false;
+          this.hideExpensesProgress = true;
+          this.hideIncomesProgress = true;
         }
       }
     );
 
+    this.getData();
+
     this.expensesPanelExpanded = localStorage.getItem('expensesPanelExpanded') === 'true';
     this.incomesPanelExpanded = localStorage.getItem('incomesPanelExpanded') === 'true';
-  }
-
-  ngAfterViewInit(): void {
-
-    this.cd.detectChanges();
-  }
-
-  referenceChanges(reference: string) {
-
-    this.reference = reference;
-
-    this.referenceHead = this.reference.substr(4, 2) + "/" + this.reference.substr(0, 4);
-
-    this.getData();
   }
 
   getData() {
@@ -248,7 +254,12 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     });
   }
 
-  editOrDeleteExpense(expense: Expenses) {
+  editOrDeleteExpense(expense: Expenses, event: any): void {
+
+    if (event.target.textContent! == "more_vert") {
+
+      return;
+    }
 
     this.editing = true;
 
@@ -361,11 +372,14 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     });
   }
 
-  editOrDeleteIncome(income: Incomes) {
+  editOrDeleteIncome(income: Incomes, event: any) {
+
+    if (event.target.textContent! == "more_vert") {
+
+      return;
+    }
 
     this.editing = true;
-
-    debugger;
 
     const dialogRef = this.dialog.open(IncomesDialog, {
       width: '400px',
@@ -410,8 +424,6 @@ export class BudgetComponent implements OnInit, AfterViewInit {
             }
           );
         } else {
-
-          debugger;
 
           this.incomeService.update(result).subscribe(
             {
@@ -461,6 +473,14 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   incomesPanelOpened() {
 
     localStorage.setItem('incomesPanelExpanded', 'true');
+  }
+
+  pay(expense: Expenses) {
+
+  }
+
+  receive(income: Incomes) {
+
   }
 }
 
