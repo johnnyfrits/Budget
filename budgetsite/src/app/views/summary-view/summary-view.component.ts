@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavService } from 'src/app/components/template/nav/nav.service';
 
 @Component({
   selector: 'app-summary-view',
@@ -7,8 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SummaryViewComponent implements OnInit {
 
-  constructor() { }
+  constructor(private navService: NavService) {
 
+    navService.navData = {
+
+      title: 'Saldos',
+      icon: 'account_balance_wallet',
+      routeUrl: '/sumary'
+    };
+  }
   ngOnInit(): void {
   }
 
