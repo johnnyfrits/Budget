@@ -51,6 +51,7 @@ tr.summary:nth-child(odd) {
 
 .saldos {
   background-color: rgb(188, 216, 239);
+  height: 30px;
 }
 
 .saldos2 {

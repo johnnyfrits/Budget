@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { NavService } from './nav.service';
+import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-nav',
@@ -10,6 +11,10 @@ import { NavService } from './nav.service';
   styleUrls: ['./nav.component.css']
 })
 export class NavComponent implements OnInit {
+
+  mobile: boolean = false;
+
+  @ViewChild('drawer') drawer!: MatDrawer;
 
   constructor(private breakpointObserver: BreakpointObserver, private navService: NavService) { }
 
@@ -35,5 +40,13 @@ export class NavComponent implements OnInit {
   get routeUrl(): string {
 
     return this.navService.navData.routeUrl;
+  }
+
+  closeSideNav() {
+
+    if (this.drawer.mode == 'over') {
+
+      this.drawer.close();
+    }
   }
 }
