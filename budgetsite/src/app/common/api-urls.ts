@@ -5,6 +5,8 @@ export class ApiUrls {
     public static baseUrl: string = environment.baseUrl;
     public static accounts: string = ApiUrls.baseUrl + 'accounts';
     public static accounttotals: string = ApiUrls.baseUrl + 'accounts/totals?';
+    public static accountssummary: string = ApiUrls.baseUrl + 'accounts/accountssummary?';
+    public static totalsaccountssummary: string = ApiUrls.baseUrl + 'accounts/totalsaccountssummary?';
     public static accountspostings: string = ApiUrls.baseUrl + 'accountspostings';
     public static cards: string = ApiUrls.baseUrl + 'cards';
     public static cardspostings: string = ApiUrls.baseUrl + 'cardspostings';

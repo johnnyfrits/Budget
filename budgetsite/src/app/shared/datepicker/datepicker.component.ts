@@ -54,6 +54,7 @@ export class DatepickerComponent implements OnInit {
   @Input() accountId?: number;
   @Input() cardId?: number;
   @Input() budgetId?: number;
+  @Input() summaryId?: number;
   @Input() showMonthName?: boolean = true;
 
   @Output() referenceChange = new EventEmitter<string>();
@@ -71,6 +72,9 @@ export class DatepickerComponent implements OnInit {
     }
     else if (this.budgetId) {
       localDate = localStorage.getItem('budgetDate');
+    }
+    else if (this.summaryId) {
+      localDate = localStorage.getItem('summaryDate');
     }
 
     if (localDate) {
@@ -97,6 +101,9 @@ export class DatepickerComponent implements OnInit {
     }
     else if (this.budgetId) {
       localStorage.setItem('budgetDate', this.date.value);
+    }
+    else if (this.summaryId) {
+      localStorage.setItem('summaryDate', this.date.value);
     }
   }
 

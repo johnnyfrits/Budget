@@ -5,11 +5,16 @@ import { RouterModule, Routes } from '@angular/router';
 import { BudgetViewComponent } from './views/budget-view/budget-view.component';
 import { AccountViewComponent } from './views/account-view/account-view.component';
 import { CardViewComponent } from './views/card-view/card-view.component';
+import { SummaryViewComponent } from './views/summary-view/summary-view.component';
 
 const routes: Routes = [
   {
     path: "",
-    component: AccountViewComponent
+    component: SummaryViewComponent
+  },
+  {
+    path: "summary",
+    component: SummaryViewComponent
   },
   {
     path: "budget",

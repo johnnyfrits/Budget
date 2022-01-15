@@ -50,6 +50,8 @@ import { BudgetComponent, ExpensesDialog, IncomesDialog } from './components/bud
 import { DatepickerComponent } from './shared/datepicker/datepicker.component';
 import { BudgetViewComponent } from './views/budget-view/budget-view.component';
 import { DatepickerinputComponent } from './shared/datepickerinput/datepickerinput.component';
+import { SummaryComponent } from './components/summary/summary.component';
+import { SummaryViewComponent } from './views/summary-view/summary-view.component';
 
 registerLocaleData(localePt);
 
@@ -72,7 +74,9 @@ registerLocaleData(localePt);
     AccountPostingsDialog,
     ExpensesDialog,
     IncomesDialog,
-    DatepickerinputComponent
+    DatepickerinputComponent,
+    SummaryComponent,
+    SummaryViewComponent
   ],
   imports: [
     BrowserModule,

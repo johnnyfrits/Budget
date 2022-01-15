@@ -1,0 +1,134 @@
+<div class="container">
+  <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false">
+    <mat-expansion-panel class="mat-panel-summary" [hideToggle]="false">
+      <mat-expansion-panel-header>
+        <span class="material-icons center"> calendar_month </span>
+        <span class="center"><b>{{referenceHead}}</b></span>
+        <div class="center accent month-name2"><b>{{monthName}}</b></div>
+      </mat-expansion-panel-header>
+      <app-datepicker [showMonthName]="false" (referenceChange)="referenceChanges($event)"
+        (monthChange)="monthName=$event" [summaryId]=1>
+      </app-datepicker>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <!-- SPINNER -->
+  <div class="row center" style="margin-top: 10px">
+    <div class="row justify-content-center">
+      <mat-spinner color="accent" *ngIf="!hideAccountsSummaryProgress || !hideTotalsAccountsSummaryProgress">
+      </mat-spinner>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="row center" *ngIf="hideAccountsSummaryProgress && hideTotalsAccountsSummaryProgress">
+    <div class="row">
+      <div class="table-container mat-elevation-z8 mytable2">
+        <table mat-table [dataSource]="accountsSummary">
+          <!-- Descrição Column -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Descrição</th>
+            <td mat-cell *matCellDef="let row">
+              {{row.description}}</td>
+            <td mat-footer-cell *matFooterCellDef> Total </td>
+          </ng-container>
+
+          <!-- Saldo Previsto Column -->
+          <ng-container matColumnDef="forecastBalance">
+            <th mat-header-cell *matHeaderCellDef>Saldo Previsto</th>
+            <td mat-cell *matCellDef="let row" [ngClass]="row.forecastBalance >= 0 ? 'positive' : 'negative'">
+              {{row.forecastBalance | currency : '':''}}</td>
+            <td mat-footer-cell *matFooterCellDef [ngClass]="forecastBalanceTotal >= 0 ? 'positive' : 'negative'">
+              {{forecastBalanceTotal | currency : '':''}}</td>
+          </ng-container>
+
+          <!-- Saldo Disponível Column -->
+          <ng-container matColumnDef="availableBalance">
+            <th mat-header-cell *matHeaderCellDef>Saldo Disponível</th>
+            <td mat-cell *matCellDef="let row" [ngClass]="row.availableBalance >= 0 ? 'positive' : 'negative'">
+              {{row.availableBalance | currency : '':''}}</td>
+            <td mat-footer-cell *matFooterCellDef [ngClass]="availableBalanceTotal >= 0 ? 'positive' : 'negative'">
+              {{availableBalanceTotal | currency : '':''}}</td>
+          </ng-container>
+
+          <tr class="summary mat-header-cell-summary" mat-header-row *matHeaderRowDef="displayedColumns; sticky: false">
+          </tr>
+          <tr class="summary" mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          <tr class="summary" mat-footer-row *matFooterRowDef="displayedColumns; sticky: false"></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="row center" *ngIf="hideAccountsSummaryProgress && hideTotalsAccountsSummaryProgress">
+    <div class="row">
+      <p></p>
+      <mat-divider></mat-divider>
+      <p></p>
+    </div>
+  </div>
+
+  <!-- RESUMO -->
+  <div class="row center" *ngIf="hideAccountsSummaryProgress && hideTotalsAccountsSummaryProgress">
+
+    <div class="row center" style="width: 80%">
+
+      <div class="row center">
+        <div class="row saldos center">
+          <div class="col-6" style="text-align:center">
+            <span><b>Saldos</b></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row center">
+        <div class="row center saldos2">
+          <div class="col-4" style="text-align:center">
+            <span><b>Previsto</b></span>
+          </div>
+          <div class="col-4" style="text-align:center">
+            <span><b>Disponível</b></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row center">
+        <div class="row center saldos3">
+          <div class="col-4 center">
+            <span
+              [ngClass]="totalsAccountsSummary && totalsAccountsSummary.forecastBalance >= 0 ? 'positive' : 'negative'">
+              {{totalsAccountsSummary?.forecastBalance | currency : '':''}}</span>
+          </div>
+          <div class="col-4 center">
+            <span
+              [ngClass]="totalsAccountsSummary && totalsAccountsSummary.availableBalance >= 0 ? 'positive' : 'negative'">
+              {{totalsAccountsSummary?.availableBalance | currency : '':''}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row center">
+        <div class="row center saldos" style="text-align:center">
+          <span><b>Poupado</b></span>
+        </div>
+      </div>
+
+      <div class="row center">
+        <div class="row center saldos3">
+          <div class="col-4 center">
+            <span
+              [ngClass]="totalsAccountsSummary && totalsAccountsSummary.forecastSpared >= 0 ? 'positive' : 'negative'"><b>
+                {{totalsAccountsSummary?.forecastSpared | currency : '':''}}</b></span>
+          </div>
+          <div class="col-4 center">
+            <span
+              [ngClass]="totalsAccountsSummary && totalsAccountsSummary.availableSpared >= 0 ? 'positive' : 'negative'"><b>
+                {{totalsAccountsSummary?.availableSpared | currency : '':''}}</b></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

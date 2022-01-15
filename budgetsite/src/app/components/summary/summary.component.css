@@ -1,0 +1,62 @@
+.table-container {
+  width: 100%;
+  height: auto;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-table-sticky {
+  border-top: 1px solid #e0e0e0;
+}
+
+tr.mat-footer-row {
+  font-weight: bold;
+}
+
+tr.summary.mat-footer-row {
+  background-color: rgb(159, 199, 232, 0.7) !important;
+}
+
+.mat-header-cell-summary {
+  background-color: rgb(159, 199, 232, 0.7) !important;
+}
+
+tr.summary:nth-child(even) {
+  background: rgb(220, 235, 247)
+}
+
+tr.summary:nth-child(odd) {
+  background: rgba(200, 223, 242, 0.4)
+}
+
+.mat-panel-summary {
+  margin-top: 10px !important;
+  padding-bottom: -50px !important;
+}
+
+.mat-column-forecastBalance {
+  width: 150px;
+  text-align: right;
+  padding-right: 5px;
+}
+
+.mat-column-availableBalance {
+  width: 150px;
+  text-align: right;
+  padding-right: 5px;
+}
+
+.saldos {
+  background-color: rgb(188, 216, 239);
+}
+
+.saldos2 {
+  background-color: rgb(233, 242, 250)
+}
+
+.saldos3 {
+  background-color: rgb(220, 235, 247)
+}
