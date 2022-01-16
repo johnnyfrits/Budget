@@ -46,7 +46,7 @@ import { AccountPostingsComponent, AccountPostingsDialog } from './components/ac
 import { CardViewComponent } from './views/card-view/card-view.component';
 import { CardComponent } from './components/card/card.component';
 import { CardPostingsComponent, CardPostingsDialog, CardReceiptsDialog } from './components/cardpostings/cardpostings.component';
-import { BudgetComponent, ExpensesDialog, IncomesDialog } from './components/budget/budget.component';
+import { BudgetComponent, ExpensesDialog, IncomesDialog, ExpensesReceiveDialog } from './components/budget/budget.component';
 import { DatepickerComponent } from './shared/datepicker/datepicker.component';
 import { BudgetViewComponent } from './views/budget-view/budget-view.component';
 import { DatepickerinputComponent } from './shared/datepickerinput/datepickerinput.component';
@@ -73,6 +73,7 @@ registerLocaleData(localePt);
     CardReceiptsDialog,
     AccountPostingsDialog,
     ExpensesDialog,
+    ExpensesReceiveDialog,
     IncomesDialog,
     DatepickerinputComponent,
     SummaryComponent,

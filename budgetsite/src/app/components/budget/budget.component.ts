@@ -602,3 +602,60 @@ export class IncomesDialog implements OnInit {
     this.incomes.remaining = this.incomes.toReceive - this.incomes.received;
   }
 }
+
+@Component({
+  selector: 'expenses.receive-dialog',
+  templateUrl: 'expenses.receive-dialog.html',
+})
+export class ExpensesReceiveDialog implements OnInit {
+
+  cards?: Cards[];
+
+  expensesFormGroup = new FormGroup({
+
+    descriptionFormControl: new FormControl('', Validators.required),
+    toPayFormControl: new FormControl('', Validators.required),
+    paidFormControl: new FormControl(''),
+    remainingFormControl: new FormControl(''),
+    noteFormControl: new FormControl(''),
+    cardIdFormControl: new FormControl(''),
+  });
+
+  constructor(
+    public dialogRef: MatDialogRef<ExpensesReceiveDialog>,
+    @Inject(MAT_DIALOG_DATA) public expenses: Expenses) {
+  }
+
+  ngOnInit(): void {
+
+    this.cards = this.expenses.cardsList;
+
+  }
+
+  cancel(): void {
+
+    this.dialogRef.close();
+  }
+
+  save(): void {
+
+    this.dialogRef.close(this.expenses);
+  }
+
+  delete(): void {
+
+    this.expenses.deleting = true;
+
+    this.dialogRef.close(this.expenses);
+  }
+
+  setCard(): void {
+
+    this.expenses.card = this.expenses.cardsList?.find(t => t.id == this.expenses.cardId);
+  }
+
+  calculateRemaining(): void {
+
+    this.expenses.remaining = this.expenses.toPay - this.expenses.paid;
+  }
+}
