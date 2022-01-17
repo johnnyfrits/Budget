@@ -1,13 +1,16 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Messenger } from 'src/app/common/messenger';
 import { Accounts } from 'src/app/models/accounts.model';
 import { Cards } from 'src/app/models/cards.model';
+import { CardsPostingsDTO } from 'src/app/models/cardspostingsdto.model';
 import { Expenses } from 'src/app/models/expenses.model';
 import { Incomes } from 'src/app/models/incomes.model';
 import { IncomesTypes } from 'src/app/models/types.model';
 import { AccountService } from 'src/app/services/account/account.service';
 import { CardService } from 'src/app/services/card/card.service';
+import { CardPostingsService } from 'src/app/services/cardpostings/cardpostings.service';
 import { ExpenseService } from 'src/app/services/expense/expense.service';
 import { IncomeService } from 'src/app/services/income/income.service';
 
@@ -23,8 +26,10 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
   expenses!: Expenses[];
   incomes!: Incomes[];
+  cardpostingspeople!: CardsPostingsDTO[];
   displayedExpensesColumns = ['description', 'toPay', 'paid', 'remaining', 'actions'];
   displayedIncomesColumns = ['description', 'toReceive', 'received', 'remaining', 'actions'];
+  displayedPeopleColumns = ['person', 'toReceive', 'received', 'remaining', 'actions'];
   toPayTotal: number = 0;
   paidTotal: number = 0;
   expensesRemainingTotal?: number = 0;
@@ -32,11 +37,16 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   toReceiveTotal: number = 0;
   receivedTotal: number = 0;
   incomesRemainingTotal: number = 0;
+  toReceiveTotalPeople: number = 0;
+  receivedTotalPeople: number = 0;
+  remainingTotalPeople: number = 0;
   monthName: string = "";
   hideExpensesProgress: boolean = true;
   hideIncomesProgress: boolean = true;
+  hidePeopleProgress: boolean = true;
   expensesPanelExpanded: boolean = false;
   incomesPanelExpanded: boolean = false;
+  peoplePanelExpanded: boolean = false;
   editing: boolean = false;
   cardsList?: Cards[];
   accountsList?: Accounts[];
@@ -59,8 +69,14 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     },
   ];
 
-  constructor(private expenseService: ExpenseService, private incomeService: IncomeService, private cd: ChangeDetectorRef,
-    public dialog: MatDialog, private cardService: CardService, private accountService: AccountService) { }
+  constructor(private expenseService: ExpenseService,
+    private incomeService: IncomeService,
+    private cardPostingsService: CardPostingsService,
+    private cd: ChangeDetectorRef,
+    public dialog: MatDialog,
+    private cardService: CardService,
+    private accountService: AccountService,
+    private messenger: Messenger) { }
 
   ngOnInit(): void {
 
@@ -84,6 +100,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
     this.hideExpensesProgress = false;
     this.hideIncomesProgress = false;
+    this.hidePeopleProgress = false;
 
     this.cardService.read().subscribe(
       {
@@ -94,6 +111,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         error: () => {
           this.hideExpensesProgress = false;
           this.hideIncomesProgress = false;
+          this.hidePeopleProgress = false;
         }
       }
     );
@@ -106,10 +124,12 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
           this.hideExpensesProgress = true;
           this.hideIncomesProgress = true;
+          this.hidePeopleProgress = true;
         },
         error: () => {
           this.hideExpensesProgress = true;
           this.hideIncomesProgress = true;
+          this.hidePeopleProgress = true;
         }
       }
     );
@@ -118,6 +138,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
     this.expensesPanelExpanded = localStorage.getItem('expensesPanelExpanded') === 'true';
     this.incomesPanelExpanded = localStorage.getItem('incomesPanelExpanded') === 'true';
+    this.peoplePanelExpanded = localStorage.getItem('peoplePanelExpanded') === 'true';
   }
 
   getData() {
@@ -126,12 +147,15 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
       this.hideExpensesProgress = false;
       this.hideIncomesProgress = false;
+      this.hidePeopleProgress = false;
 
       this.expenses = [];
       this.incomes = [];
+      this.cardpostingspeople = [];
 
       this.getExpenses();
       this.getIncomes();
+      this.getCardsPostingsPeople();
     }
   }
 
@@ -167,6 +191,23 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
           this.getIncomesTotals();
         }
+      }
+    );
+  }
+
+  getCardsPostingsPeople() {
+
+    this.cardPostingsService.readCardsPostingsPeople(this.reference!, 0).subscribe(
+      {
+        next: cardpostingspeople => {
+
+          this.cardpostingspeople = cardpostingspeople.sort((a, b) => a.person.localeCompare(b.person)).filter(t => t.person !== '');
+
+          this.getTotalPeople();
+
+          this.hidePeopleProgress = true;
+        },
+        error: () => this.hidePeopleProgress = true
       }
     );
   }
@@ -214,6 +255,22 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
     this.hideExpensesProgress = true;
   }
+
+  getTotalPeople() {
+
+    this.toReceiveTotalPeople =
+      this.cardpostingspeople ?
+        this.cardpostingspeople.map(t => t.toReceive).reduce((acc, value) => acc + value, 0) : 0;
+
+    this.receivedTotalPeople =
+      this.cardpostingspeople ?
+        this.cardpostingspeople.map(t => t.received).reduce((acc, value) => acc + value, 0) : 0;
+
+    this.remainingTotalPeople =
+      this.cardpostingspeople ?
+        this.cardpostingspeople.map(t => t.remaining).reduce((acc, value) => acc + value, 0) : 0;
+  }
+
 
   addExpense(): void {
 
@@ -470,9 +527,19 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     localStorage.setItem('incomesPanelExpanded', 'false');
   }
 
+  peoplePanelClosed() {
+
+    localStorage.setItem('peoplePanelExpanded', 'false');
+  }
+
   incomesPanelOpened() {
 
     localStorage.setItem('incomesPanelExpanded', 'true');
+  }
+
+  peoplePanelOpened() {
+
+    localStorage.setItem('peoplePanelExpanded', 'true');
   }
 
   pay(expense: Expenses) {
@@ -481,6 +548,15 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
   receive(income: Incomes) {
 
+  }
+
+  charge(cardPostingPeople: CardsPostingsDTO) {
+
+    // this.clipboard.copy('Teste');
+
+    this.messenger.message("Mensagen copiada para área de transfência.");
+
+    return 'Copiado';
   }
 }
 

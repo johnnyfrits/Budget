@@ -23,4 +23,14 @@ export class Messenger {
 
 		return throwError(err);
 	}
+
+	message(message: string) {
+
+		this.snackBar.open(message, "Fechar",
+			{
+				duration: 10000,
+				horizontalPosition: "center",
+				verticalPosition: "top"
+			});
+	}
 }
