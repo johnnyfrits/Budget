@@ -197,7 +197,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
   getCardsPostingsPeople() {
 
-    this.cardPostingsService.readCardsPostingsPeople(this.reference!, 0).subscribe(
+    this.cardPostingsService.readCardsPostingsPeople(0, this.reference!).subscribe(
       {
         next: cardpostingspeople => {
 

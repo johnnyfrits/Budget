@@ -113,7 +113,7 @@ export class CardPostingsComponent implements OnInit {
 
   getCardsPostingsPeople() {
 
-    this.cardPostingsService.readCardsPostingsPeople(this.reference!, this.cardId!).subscribe(
+    this.cardPostingsService.readCardsPostingsPeople(this.cardId, this.reference).subscribe(
       {
         next: cardpostingspeople => {
 

@@ -46,9 +46,9 @@ export class CardPostingsService {
     );
   }
 
-  readCardsPostingsPeople(reference: string, cardId: number): Observable<CardsPostingsDTO[]> {
+  readCardsPostingsPeople(cardId?: number, reference?: string): Observable<CardsPostingsDTO[]> {
 
-    return this.http.get<CardsPostingsDTO[]>(`${ApiUrls.cardspostingspeople}card=${cardId}&reference=${reference}`).pipe(
+    return this.http.get<CardsPostingsDTO[]>(`${ApiUrls.cardspostingspeople}cardId=${cardId}&reference=${reference}`).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );

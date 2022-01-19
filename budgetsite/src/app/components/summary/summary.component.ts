@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AccountsSummary } from 'src/app/models/accountssummary';
-import { TotalsAccountsSummary } from 'src/app/models/totalsaccountssummary';
+import { AccountsSummaryTotals } from 'src/app/models/accountssummarytotals';
 import { AccountService } from 'src/app/services/account/account.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class SummaryComponent implements OnInit, AfterViewInit {
   hideAccountsSummaryProgress: boolean = true;
   hideTotalsAccountsSummaryProgress: boolean = true;
   accountsSummary!: AccountsSummary[];
-  totalsAccountsSummary!: TotalsAccountsSummary;
+  totalsAccountsSummary!: AccountsSummaryTotals;
   forecastBalanceTotal: number = 0;
   availableBalanceTotal: number = 0;
   displayedColumns = ['description', 'forecastBalance', 'availableBalance'];

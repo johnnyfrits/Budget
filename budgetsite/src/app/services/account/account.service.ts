@@ -6,7 +6,7 @@ import { Accounts } from 'src/app/models/accounts.model';
 import { catchError, map } from 'rxjs/operators';
 import { Messenger } from 'src/app/common/messenger';
 import { AccountsSummary } from 'src/app/models/accountssummary';
-import { TotalsAccountsSummary } from 'src/app/models/totalsaccountssummary';
+import { AccountsSummaryTotals } from 'src/app/models/accountssummarytotals';
 
 @Injectable({
   providedIn: 'root'
@@ -37,8 +37,8 @@ export class AccountService {
     );
   }
 
-  getTotalsAccountsSummary(reference: string | undefined): Observable<TotalsAccountsSummary> {
-    return this.http.get<TotalsAccountsSummary>(`${ApiUrls.totalsaccountssummary}reference=${reference}`).pipe(
+  getTotalsAccountsSummary(reference: string | undefined): Observable<AccountsSummaryTotals> {
+    return this.http.get<AccountsSummaryTotals>(`${ApiUrls.totalsaccountssummary}reference=${reference}`).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );
