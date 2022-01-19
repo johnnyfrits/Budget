@@ -37,6 +37,14 @@ export class AccountPostingsService {
     );
   }
 
+  updatePositions(accountPostings: AccountsPostings[]): Observable<AccountsPostings> {
+
+    return this.http.put<any>(`${ApiUrls.accountspostings}/setpositions`, accountPostings).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
   delete(id: number): Observable<AccountsPostings> {
 
     return this.http.delete<AccountsPostings>(`${ApiUrls.accountspostings}/${id}`).pipe(

@@ -43,7 +43,8 @@
       <div class="mytable" *ngIf="hideProgress">
         <div class="table-container mat-elevation-z8">
           <!-- Table -->
-          <table mat-table [dataSource]="cardpostings">
+          <table mat-table [dataSource]="cardpostings" cdkDropList [cdkDropListData]="cardpostings"
+            (cdkDropListDropped)="drop($event)">
             <!-- # Column -->
             <ng-container matColumnDef="index">
               <th mat-header-cell *matHeaderCellDef>#</th>
@@ -87,7 +88,8 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-            <tr mat-row (click)="editOrDelete(row)" *matRowDef="let row; columns: displayedColumns"></tr>
+            <tr mat-row (click)="editOrDelete(row)" *matRowDef="let row; columns: displayedColumns" cdkDrag
+              [cdkDragData]=row></tr>
             <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
           </table>
         </div>

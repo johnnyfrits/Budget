@@ -13,6 +13,7 @@ import { CardsReceipts } from 'src/app/models/cardsreceipts.model';
 import { Accounts } from 'src/app/models/accounts.model';
 import { AccountService } from 'src/app/services/account/account.service';
 import { AccountPostingsService } from 'src/app/services/accountpostings/accountpostings.service';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 let moment = _rollupMoment || _moment;
 
@@ -97,7 +98,7 @@ export class CardPostingsComponent implements OnInit {
         {
           next: cardpostings => {
 
-            this.cardpostings = cardpostings.sort((a, b) => a.id! - b.id!);
+            this.cardpostings = cardpostings;
 
             this.getTotalAmount();
 
@@ -346,6 +347,22 @@ export class CardPostingsComponent implements OnInit {
         );
       }
     });
+  }
+
+  drop(event: CdkDragDrop<any[]>) {
+
+    const previousIndex = this.cardpostings.findIndex(row => row === event.item.data);
+
+    moveItemInArray(this.cardpostings, previousIndex, event.currentIndex);
+
+    this.cardpostings = this.cardpostings.slice();
+
+    this.cardpostings.forEach((cardposting, index) => {
+
+      cardposting.position = index + 1;
+    });
+
+    this.cardPostingsService.updatePositions(this.cardpostings).subscribe();
   }
 }
 

@@ -78,6 +78,14 @@ export class CardPostingsService {
     );
   }
 
+  updatePositions(cardPostings: CardsPostings[]): Observable<CardsPostings> {
+
+    return this.http.put<any>(`${ApiUrls.cardspostings}/setpositions`, cardPostings).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
   delete(id: number): Observable<CardsPostings> {
 
     return this.http.delete<CardsPostings>(`${ApiUrls.cardspostings}/${id}`).pipe(

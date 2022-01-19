@@ -6,6 +6,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { default as _rollupMoment } from 'moment';
 import * as _moment from 'moment';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 let moment = _rollupMoment || _moment;
 
@@ -85,12 +86,6 @@ export class AccountPostingsComponent implements OnInit {
   }
 
   add() {
-
-    // this.accountpostings.push(this.accountpostings[0]);
-
-    // console.log(this.accountpostings.length);
-
-    // return;
 
     this.editing = false;
 
@@ -199,6 +194,23 @@ export class AccountPostingsComponent implements OnInit {
         }
       }
     });
+  }
+
+  drop(event: CdkDragDrop<any[]>) {
+
+    const previousIndex = this.accountpostings.findIndex(row => row === event.item.data);
+
+    moveItemInArray(this.accountpostings, previousIndex, event.currentIndex);
+
+    this.accountpostings = this.accountpostings.slice();
+
+    this.accountpostings.forEach((accountposting, index) => {
+
+      accountposting.position = index + 1;
+
+    });
+
+    this.accountPostingsService.updatePositions(this.accountpostings).subscribe();
   }
 }
 

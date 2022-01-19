@@ -423,8 +423,6 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
               //this.incomes.push(incomes); não funcionou assim como nas outras funções, acredito que seja por causa do Expension Panel (mat-expansion-panel)
 
-              debugger;
-
               incomes.remaining = incomes.toReceive - incomes.received;
 
               this.incomes = [...this.incomes, incomes]; // somente funcionou assim
