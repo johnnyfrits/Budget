@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -76,7 +77,9 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     public dialog: MatDialog,
     private cardService: CardService,
     private accountService: AccountService,
-    private messenger: Messenger) { }
+    private messenger: Messenger,
+    // private clipboard: Clipboard
+  ) { }
 
   ngOnInit(): void {
 
@@ -298,6 +301,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
           {
             next: expenses => {
 
+              expenses.remaining = expenses.toPay - expenses.paid;
+
               //this.expenses.push(expenses); não funcionou assim como nas outras funções, acredito que seja por causa do Expension Panel (mat-expansion-panel)
 
               this.expenses = [...this.expenses, expenses]; // somente funcionou assim
@@ -417,6 +422,10 @@ export class BudgetComponent implements OnInit, AfterViewInit {
             next: incomes => {
 
               //this.incomes.push(incomes); não funcionou assim como nas outras funções, acredito que seja por causa do Expension Panel (mat-expansion-panel)
+
+              debugger;
+
+              incomes.remaining = incomes.toReceive - incomes.received;
 
               this.incomes = [...this.incomes, incomes]; // somente funcionou assim
 
@@ -557,6 +566,39 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     this.messenger.message("Mensagen copiada para área de transfência.");
 
     return 'Copiado';
+
+  }
+
+  dropExpenses(event: CdkDragDrop<any[]>) {
+
+    const previousIndex = this.expenses.findIndex(row => row === event.item.data);
+
+    moveItemInArray(this.expenses, previousIndex, event.currentIndex);
+
+    this.expenses = this.expenses.slice();
+
+    this.expenses.forEach((expense, index) => {
+
+      expense.position = index + 1;
+
+      this.expenseService.update(expense).subscribe();
+    });
+  }
+
+  dropIncomes(event: CdkDragDrop<any[]>) {
+
+    const previousIndex = this.incomes.findIndex(row => row === event.item.data);
+
+    moveItemInArray(this.incomes, previousIndex, event.currentIndex);
+
+    this.incomes = this.incomes.slice();
+
+    this.incomes.forEach((expense, index) => {
+
+      expense.position = index + 1;
+
+      this.incomeService.update(expense).subscribe();
+    });
   }
 }
 
@@ -675,7 +717,7 @@ export class IncomesDialog implements OnInit {
 
   calculateRemaining(): void {
 
-    this.incomes.remaining = this.incomes.toReceive - this.incomes.received;
+    this.incomes.remaining = +(this.incomes.toReceive - this.incomes.received).toFixed(2);
   }
 }
 
@@ -732,6 +774,6 @@ export class ExpensesReceiveDialog implements OnInit {
 
   calculateRemaining(): void {
 
-    this.expenses.remaining = this.expenses.toPay - this.expenses.paid;
+    this.expenses.remaining = +(this.expenses.toPay - this.expenses.paid).toFixed(2);
   }
 }

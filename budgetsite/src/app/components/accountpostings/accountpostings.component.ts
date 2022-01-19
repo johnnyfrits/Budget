@@ -113,6 +113,8 @@ export class AccountPostingsComponent implements OnInit {
 
         result.amount = result.amount * (result.type === 'P' ? -1 : 1);
 
+        result.position = this.accountpostings.length + 1;
+
         this.accountPostingsService.create(result).subscribe(
           {
             next: accountpostings => {
@@ -140,6 +142,7 @@ export class AccountPostingsComponent implements OnInit {
         accountId: accountPosting.accountId,
         date: accountPosting.date,
         reference: accountPosting.reference,
+        position: accountPosting.position,
         description: accountPosting.description,
         amount: accountPosting.amount,
         note: accountPosting.note,

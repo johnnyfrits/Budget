@@ -5,6 +5,7 @@ export interface CardsPostings {
 	cardId: number;
 	date: Date;
 	reference: string;
+	position?: number;
 	description: string;
 	peopleId?: string;
 	parcelNumber?: number;

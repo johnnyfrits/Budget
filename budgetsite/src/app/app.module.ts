@@ -13,6 +13,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { LayoutModule } from '@angular/cdk/layout';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -91,7 +93,12 @@ registerLocaleData(localePt);
     MatSidenavModule,
     MatListModule,
     MatIconModule,
+
+    // CDK
     LayoutModule,
+    ClipboardModule,
+    DragDropModule,
+
     MatButtonModule,
     MatDatepickerModule,
     MatFormFieldModule,

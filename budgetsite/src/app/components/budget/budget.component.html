@@ -54,7 +54,8 @@
           </button>
         </div>
         <div class="table-container mat-elevation-z8 mytable2">
-          <table mat-table [dataSource]="expenses">
+          <table mat-table [dataSource]="expenses" cdkDropList [cdkDropListData]="expenses"
+            (cdkDropListDropped)="dropExpenses($event)">
             <!-- Descrição Column -->
             <ng-container matColumnDef="description">
               <th mat-header-cell *matHeaderCellDef>Descrição</th>
@@ -110,7 +111,7 @@
             <tr class="expenses mat-header-cell-expenses" mat-header-row
               *matHeaderRowDef="displayedExpensesColumns; sticky: false"></tr>
             <tr class="expenses" (click)="editOrDeleteExpense(row, $event)" mat-row
-              *matRowDef="let row; columns: displayedExpensesColumns"></tr>
+              *matRowDef="let row; columns: displayedExpensesColumns" cdkDrag [cdkDragData]=row></tr>
             <tr class="expenses" mat-footer-row *matFooterRowDef="displayedExpensesColumns; sticky: false"></tr>
           </table>
         </div>
@@ -136,7 +137,8 @@
           </button>
         </div>
         <div class="table-container mat-elevation-z8 mytable2">
-          <table mat-table [dataSource]="incomes">
+          <table mat-table [dataSource]="incomes" cdkDropList [cdkDropListData]="incomes"
+            (cdkDropListDropped)="dropIncomes($event)">
             <!-- Descrição Column -->
             <ng-container matColumnDef="description">
               <th mat-header-cell *matHeaderCellDef>Descrição</th>
@@ -192,7 +194,7 @@
             <tr class="incomes mat-header-cell-incomes" mat-header-row
               *matHeaderRowDef="displayedIncomesColumns; sticky: false"></tr>
             <tr class="incomes" (click)="editOrDeleteIncome(row, $event)" mat-row
-              *matRowDef="let row; columns: displayedIncomesColumns"></tr>
+              *matRowDef="let row; columns: displayedIncomesColumns" cdkDrag [cdkDragData]=row></tr>
             <tr class="incomes" mat-footer-row *matFooterRowDef="displayedIncomesColumns; sticky: false"></tr>
           </table>
         </div>

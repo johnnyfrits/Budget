@@ -182,6 +182,8 @@ export class CardPostingsComponent implements OnInit {
 
         this.hideProgress = false;
 
+        result.position = this.cardpostings.length + 1;
+
         this.cardPostingsService.create(result).subscribe(
           {
             next: cardpostings => {
@@ -212,6 +214,7 @@ export class CardPostingsComponent implements OnInit {
         cardId: cardPosting.cardId,
         date: cardPosting.date,
         reference: cardPosting.reference,
+        position: cardPosting.position,
         description: cardPosting.description,
         peopleId: cardPosting.peopleId,
         parcelNumber: cardPosting.parcelNumber ? cardPosting.parcelNumber : 1,
@@ -259,6 +262,7 @@ export class CardPostingsComponent implements OnInit {
                 this.cardpostings.filter(t => t.id === result.id).map(t => {
                   t.date = result.date;
                   t.reference = result.reference;
+                  t.position = result.position;
                   t.description = result.description;
                   t.peopleId = result.peopleId;
                   t.parcelNumber = result.parcelNumber;

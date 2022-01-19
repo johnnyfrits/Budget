@@ -61,6 +61,7 @@ export class CardPostingsService {
       cardId: cardPosting.cardId,
       date: cardPosting.date,
       reference: cardPosting.reference,
+      position: cardPosting.position,
       description: cardPosting.description,
       peopleId: cardPosting.peopleId,
       parcelNumber: cardPosting.parcelNumber,

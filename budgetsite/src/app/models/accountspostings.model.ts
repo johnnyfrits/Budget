@@ -3,6 +3,7 @@ export interface AccountsPostings {
 	accountId: number;
 	date: Date;
 	reference: string;
+	position?: number;
 	description: string;
 	amount: number;
 	note?: string;
