@@ -18,4 +18,5 @@ export interface CardsPostings {
 	peopleList?: People[];
 	editing?: boolean;
 	deleting?: boolean;
+	isSelected?: boolean;
 }

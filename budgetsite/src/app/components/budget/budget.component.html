@@ -111,7 +111,8 @@
             <tr class="expenses mat-header-cell-expenses" mat-header-row
               *matHeaderRowDef="displayedExpensesColumns; sticky: false"></tr>
             <tr class="expenses" (click)="editOrDeleteExpense(row, $event)" mat-row
-              *matRowDef="let row; columns: displayedExpensesColumns" cdkDrag [cdkDragData]=row></tr>
+              *matRowDef="let row; columns: displayedExpensesColumns" cdkDrag [cdkDragData]=row>
+            </tr>
             <tr class="expenses" mat-footer-row *matFooterRowDef="displayedExpensesColumns; sticky: false"></tr>
           </table>
         </div>
@@ -194,7 +195,7 @@
             <tr class="incomes mat-header-cell-incomes" mat-header-row
               *matHeaderRowDef="displayedIncomesColumns; sticky: false"></tr>
             <tr class="incomes" (click)="editOrDeleteIncome(row, $event)" mat-row
-              *matRowDef="let row; columns: displayedIncomesColumns" cdkDrag [cdkDragData]=row></tr>
+              *matRowDef="let row; columns: displayedIncomesColumns" cdkDrag cdkDragDelay="2000" [cdkDragData]=row></tr>
             <tr class="incomes" mat-footer-row *matFooterRowDef="displayedIncomesColumns; sticky: false"></tr>
           </table>
         </div>

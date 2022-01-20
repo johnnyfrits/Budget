@@ -46,6 +46,7 @@ export class CardPostingsComponent implements OnInit {
   accountsList?: Accounts[];
   cardPostingsPanelExpanded: boolean = false;
   peoplePanelExpanded: boolean = false;
+  checkCard: boolean = false;
 
   constructor(private cardPostingsService: CardPostingsService,
     private cardReceiptsService: CardReceiptsService,
@@ -204,7 +205,14 @@ export class CardPostingsComponent implements OnInit {
     });
   }
 
-  editOrDelete(cardPosting: CardsPostings) {
+  editOrDelete(cardPosting: CardsPostings, event: any) {
+
+    if (this.checkCard) {
+
+      cardPosting.isSelected = !cardPosting.isSelected;
+
+      return;
+    }
 
     this.editing = true;
 

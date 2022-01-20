@@ -34,10 +34,16 @@
       </mat-expansion-panel-header>
       <!-- Add button -->
       <div class="row center" *ngIf="hideProgress">
-        <button class="default-button" mat-mini-fab matTooltip="Adicionar compra no cartão" matTooltipPosition="right"
-          color="accent" aria-label="Adicionar compra no cartão" (click)="add()">
-          <mat-icon class="default-icon">post_add</mat-icon>
-        </button>
+        <div class="col-2">
+          <mat-checkbox [(ngModel)]="checkCard">Conferir Cartão</mat-checkbox>
+        </div>
+        <div class="col center">
+          <button class="default-button" mat-mini-fab matTooltip="Adicionar compra no cartão" matTooltipPosition="right"
+            color="accent" aria-label="Adicionar compra no cartão" (click)="add()">
+            <mat-icon class="default-icon">post_add</mat-icon>
+          </button>
+        </div>
+        <div class="col-2"></div>
       </div>
 
       <div class="mytable" *ngIf="hideProgress">
@@ -88,8 +94,8 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-            <tr mat-row (click)="editOrDelete(row)" *matRowDef="let row; columns: displayedColumns" cdkDrag
-              [cdkDragData]=row></tr>
+            <tr mat-row (click)="editOrDelete(row, $event)" *matRowDef="let row; columns: displayedColumns" cdkDrag
+              [cdkDragData]=row [ngClass]="{'card-yield-checked': row.isSelected}"></tr>
             <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
           </table>
         </div>
