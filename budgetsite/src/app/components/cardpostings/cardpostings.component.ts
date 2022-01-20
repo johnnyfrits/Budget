@@ -510,6 +510,8 @@ export class CardReceiptsDialog implements OnInit {
 
   onAmountChange(): void {
 
-    this.cardReceipts.change = +(this.cardReceipts.amount - this.cardReceipts.remaining!).toFixed(2);
+    this.cardReceipts.change = this.cardReceipts.amount > this.cardReceipts.toReceive! ?
+      +(this.cardReceipts.amount - this.cardReceipts.remaining!).toFixed(2) :
+      0;
   }
 }

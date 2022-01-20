@@ -20,38 +20,38 @@ export class CardReceiptsService {
     );
   }
 
-  read(cardId: number, reference: string, peopleId: string): Observable<CardsReceipts[]> {
+  // read(cardId: number, reference: string, peopleId: string): Observable<CardsReceipts[]> {
 
-    return this.http.get<CardsReceipts[]>(`${ApiUrls.cardspostings}/${cardId}/${reference}/${peopleId}`).pipe(
-      map(obj => obj),
-      catchError(e => this.messenger.errorHandler(e))
-    );
-  }
+  //   return this.http.get<CardsReceipts[]>(`${ApiUrls.cardspostings}/${cardId}/${reference}/${peopleId}`).pipe(
+  //     map(obj => obj),
+  //     catchError(e => this.messenger.errorHandler(e))
+  //   );
+  // }
 
-  update(cardPosting: CardsReceipts): Observable<CardsReceipts> {
+  // update(cardPosting: CardsReceipts): Observable<CardsReceipts> {
 
-    let cr: CardsReceipts = {
-      id: cardPosting.id,
-      date: cardPosting.date,
-      reference: cardPosting.reference,
-      cardId: cardPosting.cardId,
-      peopleId: cardPosting.peopleId,
-      accountId: cardPosting.accountId,
-      amount: cardPosting.amount,
-      note: cardPosting.note
-    };
+  //   let cr: CardsReceipts = {
+  //     id: cardPosting.id,
+  //     date: cardPosting.date,
+  //     reference: cardPosting.reference,
+  //     cardId: cardPosting.cardId,
+  //     peopleId: cardPosting.peopleId,
+  //     accountId: cardPosting.accountId,
+  //     amount: cardPosting.amount,
+  //     note: cardPosting.note
+  //   };
 
-    return this.http.put<CardsReceipts>(`${ApiUrls.cardsreceipts}/${cr.id}`, cr).pipe(
-      map(obj => obj),
-      catchError(e => this.messenger.errorHandler(e))
-    );
-  }
+  //   return this.http.put<CardsReceipts>(`${ApiUrls.cardsreceipts}/${cr.id}`, cr).pipe(
+  //     map(obj => obj),
+  //     catchError(e => this.messenger.errorHandler(e))
+  //   );
+  // }
 
-  delete(id: number): Observable<CardsReceipts> {
+  // delete(id: number): Observable<CardsReceipts> {
 
-    return this.http.delete<CardsReceipts>(`${ApiUrls.cardsreceipts}/${id}`).pipe(
-      map(obj => obj),
-      catchError(e => this.messenger.errorHandler(e))
-    );
-  }
+  //   return this.http.delete<CardsReceipts>(`${ApiUrls.cardsreceipts}/${id}`).pipe(
+  //     map(obj => obj),
+  //     catchError(e => this.messenger.errorHandler(e))
+  //   );
+  // }
 }
