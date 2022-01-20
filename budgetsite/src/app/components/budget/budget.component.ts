@@ -2,6 +2,8 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Moment } from 'moment';
+import { ClipboardService } from 'ngx-clipboard';
 import { Messenger } from 'src/app/common/messenger';
 import { Accounts } from 'src/app/models/accounts.model';
 import { Cards } from 'src/app/models/cards.model';
@@ -14,6 +16,9 @@ import { CardService } from 'src/app/services/card/card.service';
 import { CardPostingsService } from 'src/app/services/cardpostings/cardpostings.service';
 import { ExpenseService } from 'src/app/services/expense/expense.service';
 import { IncomeService } from 'src/app/services/income/income.service';
+
+import { default as _rollupMoment } from 'moment';
+import * as _moment from 'moment';
 
 @Component({
   selector: 'app-budget',
@@ -78,7 +83,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     private cardService: CardService,
     private accountService: AccountService,
     private messenger: Messenger,
-    // private clipboard: Clipboard
+    private clipboardService: ClipboardService
   ) { }
 
   ngOnInit(): void {
@@ -559,12 +564,35 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
   charge(cardPostingPeople: CardsPostingsDTO) {
 
-    // this.clipboard.copy('Teste');
+    let message = "";
+
+    let hour = new Date().getMonth();
+
+    if (hour < 12) {
+
+      message = "Bom dia!";
+
+    } else if (hour < 18) {
+
+      message = "Boa tarde!";
+
+    } else {
+
+      message = "Boa noite!";
+    }
+
+    debugger;
+    message += "\n\nSeguem os valores deste mês:";
+    let month = Number(this.reference?.substring(4, 6));
+    message += "\n\n*Vencimento 01/" + (month + 1).toString().padStart(2, '0') + "*\n\n";
+    message += "```";
+
+    message += "----------------------------```";
+    message += "\n\n*Total*";
+
+    this.clipboardService.copy(message);
 
     this.messenger.message("Mensagen copiada para área de transfência.");
-
-    return 'Copiado';
-
   }
 
   dropExpenses(event: CdkDragDrop<any[]>) {

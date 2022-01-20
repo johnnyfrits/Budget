@@ -13,7 +13,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { LayoutModule } from '@angular/cdk/layout';
-import { ClipboardModule } from '@angular/cdk/clipboard';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { MatCardModule } from '@angular/material/card';
@@ -39,6 +38,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
+
+import { ClipboardModule } from 'ngx-clipboard';
 
 import { HeaderComponent } from './components/template/header/header.component';
 import { NavComponent } from './components/template/nav/nav.component';
@@ -96,7 +97,6 @@ registerLocaleData(localePt);
 
     // CDK
     LayoutModule,
-    ClipboardModule,
     DragDropModule,
 
     MatButtonModule,
@@ -117,6 +117,8 @@ registerLocaleData(localePt);
     MatRadioModule,
     MatCheckboxModule,
     MatMenuModule,
+
+    ClipboardModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' }
