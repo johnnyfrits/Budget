@@ -562,11 +562,11 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
   }
 
-  charge(cardPostingPeople: CardsPostingsDTO) {
+  charge(cpp: CardsPostingsDTO) {
 
     let message = "";
 
-    let hour = new Date().getMonth();
+    let hour = new Date().getHours();
 
     if (hour < 12) {
 
@@ -581,18 +581,49 @@ export class BudgetComponent implements OnInit, AfterViewInit {
       message = "Boa noite!";
     }
 
-    debugger;
-    message += "\n\nSeguem os valores deste mês:";
-    let month = Number(this.reference?.substring(4, 6));
-    message += "\n\n*Vencimento 01/" + (month + 1).toString().padStart(2, '0') + "*\n\n";
-    message += "```";
 
-    message += "----------------------------```";
-    message += "\n\n*Total*";
 
-    this.clipboardService.copy(message);
+    this.cardPostingsService.readCardsPostingsByPeople(cpp.person, this.reference!).subscribe(
+      {
+        next: cardpostings => {
 
-    this.messenger.message("Mensagen copiada para área de transfência.");
+          message += "\nSeguem os valores deste mês:";
+          let month = Number(this.reference?.substring(4, 6));
+          message += "\n\n*Vencimento 01/" + (month + 1).toString().padStart(2, '0') + "*\n\n";
+          message += "```";
+
+          cardpostings.forEach(cp => {
+
+            //x.toLocaleString('pt-br', {style:'currency', currency:'BRL'}).replace('R$ ', '')
+
+            let strAmount = cp.amount.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }).replace('R$ ', '').padStart(8, ' ');
+
+            let strParcels = cp.parcels! > 1 ? " (" + cp.parcelNumber! + "/" + cp.parcels! + ")" : "";
+
+            message += strAmount + " " + cp.description + strParcels + "\n";
+          });
+
+          let tax = 3;
+
+          message += tax.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }).replace('R$ ', '').padStart(8, ' ') + " Tarifa de Serviços\n";
+
+          let received = cpp.received > 0 ?
+            ("-" + cpp.received.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }).replace('R$ ', '')).padStart(8, ' ') + " (Valor pago)\n" :
+            "";
+
+          message += received;
+
+          let total = (cpp.remaining + tax).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
+
+          message += "----------------------------```\n";
+          message += "*Total: " + total + "*";
+
+          this.clipboardService.copy(message);
+
+          this.messenger.message("Mensagen copiada para área de transferência.");
+        }
+      }
+    );
   }
 
   dropExpenses(event: CdkDragDrop<any[]>) {
