@@ -19,4 +19,5 @@ export interface CardsPostings {
 	editing?: boolean;
 	deleting?: boolean;
 	isSelected?: boolean;
+	generateParcels?: boolean;
 }

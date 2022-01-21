@@ -382,7 +382,6 @@ export class CardPostingsDialog implements OnInit {
 
   people?: People[];
   disableCheck: boolean = true;
-  checkParcels = false;
 
   cardPostingFormGroup = new FormGroup({
 
@@ -393,7 +392,7 @@ export class CardPostingsDialog implements OnInit {
     parcelNumberFormControl: new FormControl('', [Validators.required, Validators.min(1)]),
     peopleFormControl: new FormControl(''),
     noteFormControl: new FormControl(''),
-    checkParcelsFormControl: new FormControl(''),
+    generateParcelsFormControl: new FormControl(''),
   });
 
   constructor(public dialogRef: MatDialogRef<CardPostingsDialog>,
@@ -436,7 +435,7 @@ export class CardPostingsDialog implements OnInit {
     this.disableCheck = event.target.value == '' || this.cardPosting.parcels! <= 1;
 
     if (this.disableCheck) {
-      this.checkParcels = false;
+      this.cardPosting.generateParcels = false;
     }
 
     if (event.target.value == '') {

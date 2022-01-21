@@ -29,10 +29,12 @@ export class CardPostingsService {
       amount: cardPosting.amount,
       totalAmount: cardPosting.totalAmount,
       others: cardPosting.peopleId ? true : false,
-      note: cardPosting.note,
+      note: cardPosting.note
     };
 
-    return this.http.post<CardsPostings>(`${ApiUrls.cardspostings}`, cp).pipe(
+    debugger;
+
+    return this.http.post<CardsPostings>(`${ApiUrls.cardspostings}${cardPosting.generateParcels ? '/allparcels' : ''}`, cp).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );
