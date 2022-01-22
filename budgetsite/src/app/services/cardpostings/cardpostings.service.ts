@@ -82,7 +82,8 @@ export class CardPostingsService {
       note: cardPosting.note,
     };
 
-    return this.http.put<CardsPostings>(`${ApiUrls.cardspostings}/${cp.id}`, cp).pipe(
+    debugger;
+    return this.http.put<CardsPostings>(`${ApiUrls.cardspostings}${cardPosting.generateParcels ? '/allparcels' : ''}/${cp.id}`, cp).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );

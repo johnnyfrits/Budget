@@ -52,7 +52,6 @@ export class CardPostingsComponent implements OnInit {
     private cardReceiptsService: CardReceiptsService,
     private peopleService: PeopleService,
     private accountService: AccountService,
-    private accountPostingsService: AccountPostingsService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -401,6 +400,10 @@ export class CardPostingsDialog implements OnInit {
   ngOnInit(): void {
 
     this.people = this.cardPosting.peopleList;
+    this.disableCheck =
+      this.cardPosting.parcels == undefined ||
+      this.cardPosting.parcels == null ||
+      this.cardPosting.parcels === 1;
   }
 
   cancel(): void {
