@@ -22,6 +22,7 @@ export class CardPostingsService {
       cardId: cardPosting.cardId,
       date: cardPosting.date,
       reference: cardPosting.reference,
+      position: cardPosting.position,
       description: cardPosting.description,
       peopleId: cardPosting.peopleId,
       parcelNumber: cardPosting.parcelNumber,
@@ -31,8 +32,6 @@ export class CardPostingsService {
       others: cardPosting.peopleId ? true : false,
       note: cardPosting.note
     };
-
-    debugger;
 
     return this.http.post<CardsPostings>(`${ApiUrls.cardspostings}${cardPosting.generateParcels ? '/allparcels' : ''}`, cp).pipe(
       map(obj => obj),
@@ -82,7 +81,6 @@ export class CardPostingsService {
       note: cardPosting.note,
     };
 
-    debugger;
     return this.http.put<CardsPostings>(`${ApiUrls.cardspostings}${cardPosting.generateParcels ? '/allparcels' : ''}/${cp.id}`, cp).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
