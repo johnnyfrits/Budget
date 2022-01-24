@@ -279,7 +279,6 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         this.cardpostingspeople.map(t => t.remaining).reduce((acc, value) => acc + value, 0) : 0;
   }
 
-
   addExpense(): void {
 
     this.editing = false;
@@ -290,7 +289,9 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         userId: 1,
         reference: this.reference,
         editing: this.editing,
-        cardsList: this.cardsList
+        cardsList: this.cardsList,
+        parcels: 1,
+        parcelNumber: 1
       }
     });
 
@@ -340,9 +341,13 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         position: expense.position,
         description: expense.description,
         toPay: expense.toPay,
+        totalToPay: expense.totalToPay,
         paid: expense.paid,
         remaining: expense.remaining,
         note: expense.note,
+        dueDate: expense.dueDate,
+        parcelNumber: expense.parcelNumber,
+        parcels: expense.parcels,
         editing: this.editing,
         deleting: false,
         cardsList: this.cardsList
@@ -382,10 +387,14 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                   t.position = result.position;
                   t.description = result.description;
                   t.toPay = result.toPay;
+                  t.totalToPay = result.toPay;
                   t.paid = result.paid;
                   t.remaining = result.remaining;
                   t.note = result.note;
                   t.cardId = result.cardId;
+                  t.dueDate = result.dueDate;
+                  t.parcelNumber = result.parcelNumber;
+                  t.parcels = result.parcels;
                 });
 
                 this.getExpensesTotals();
@@ -666,6 +675,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 export class ExpensesDialog implements OnInit {
 
   cards?: Cards[];
+  disableGenerateParcelsCheck: boolean = true;
+  disableRepeatParcelsCheck: boolean = false;
 
   expensesFormGroup = new FormGroup({
 
@@ -675,6 +686,13 @@ export class ExpensesDialog implements OnInit {
     remainingFormControl: new FormControl(''),
     noteFormControl: new FormControl(''),
     cardIdFormControl: new FormControl(''),
+    dueDateFormControl: new FormControl(''),
+    parcelNumberFormControl: new FormControl(''),
+    parcelsFormControl: new FormControl(''),
+    totalToPayFormControl: new FormControl('', Validators.required),
+    generateParcelsFormControl: new FormControl(''),
+    repeatParcelsFormControl: new FormControl(''),
+    monthsToRepeatFormControl: new FormControl(''),
   });
 
   constructor(
@@ -686,6 +704,15 @@ export class ExpensesDialog implements OnInit {
 
     this.cards = this.expenses.cardsList;
 
+    this.expenses.parcelNumber = this.expenses.parcelNumber ?? 1;
+    this.expenses.parcels = this.expenses.parcels ?? 1;
+
+    this.disableGenerateParcelsCheck =
+      this.expenses.parcels == undefined ||
+      this.expenses.parcels == null ||
+      this.expenses.parcels === 1;
+
+    this.expenses.monthsToRepeat = 12;
   }
 
   cancel(): void {
@@ -713,6 +740,58 @@ export class ExpensesDialog implements OnInit {
   calculateRemaining(): void {
 
     this.expenses.remaining = this.expenses.toPay - this.expenses.paid;
+  }
+
+  onParcelNumberChanged(event: any): void {
+  }
+
+  calculateToPay(): void {
+
+    this.expenses.toPay = +(this.expenses.totalToPay / this.expenses.parcels!).toFixed(2);
+  }
+
+  onParcelsChanged(event: any): void {
+
+    this.disableGenerateParcelsCheck = event.target.value == '' || this.expenses.parcels! <= 1;
+
+    if (this.disableGenerateParcelsCheck) {
+      this.expenses.generateParcels = false;
+    }
+
+    if (event.target.value == '') {
+      this.expenses.parcels = 1;
+    }
+
+    this.calculateToPay();
+  }
+
+  onGenerateParcelsChanged(event: any): void {
+
+    if (this.expenses.generateParcels) {
+
+      this.disableRepeatParcelsCheck = true;
+      this.expensesFormGroup.get('monthsToRepeatFormControl')!.disable();
+    }
+    else {
+
+      this.disableRepeatParcelsCheck = false;
+      this.expensesFormGroup.get('monthsToRepeatFormControl')!.enable();
+    }
+  }
+
+  onRepeatParcelsChanged(event: any): void {
+
+    if (this.expenses.repeatParcels) {
+
+      this.disableGenerateParcelsCheck = true;
+    }
+    else {
+
+      if (this.expenses.parcels! > 1) {
+
+        this.disableGenerateParcelsCheck = false;
+      }
+    }
   }
 }
 

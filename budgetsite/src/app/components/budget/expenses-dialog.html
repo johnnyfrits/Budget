@@ -14,7 +14,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Descrição</mat-label>
           <input type="text" id="descriptionFormControl" required matInput formControlName="descriptionFormControl"
-            [(ngModel)]="expenses.description" cdkFocusInitial>
+            [(ngModel)]="expenses.description" cdkFocusInitial onfocus="this.select()">
           <mat-error *ngIf="expensesFormGroup.get('descriptionFormControl')?.hasError('required')">
             Campo <strong>obrigatório</strong>.
           </mat-error>
@@ -25,10 +25,51 @@
 
         <div class="col-6">
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
+            <mat-label>Total da Despesa</mat-label>
+            <input matInput type="number" formControlName="totalToPayFormControl" [(ngModel)]="expenses.totalToPay"
+              placeholder="0" (change)="calculateToPay()" onfocus="this.select()">
+            <mat-error *ngIf="expensesFormGroup.get('totalToPayFormControl')?.hasError('required')">
+              Campo <strong>obrigatório</strong>.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-6">
+          <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
+            <mat-label>Total de Parcelas</mat-label>
+            <input matInput type="number" formControlName="parcelsFormControl" [(ngModel)]="expenses.parcels" min=1
+              (change)="onParcelsChanged($event)" onfocus="this.select()">
+            <mat-error
+              *ngIf="expensesFormGroup.get('parcelsFormControl')?.hasError('min') && !expensesFormGroup.get('parcelsFormControl')?.hasError('required')">
+              Valor mínimo é <strong>1</strong>.
+            </mat-error>
+            <mat-error *ngIf="expensesFormGroup.get('parcelsFormControl')?.hasError('required')">
+              Campo <strong>obrigatório</strong>.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-6">
+          <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>A pagar</mat-label>
             <input matInput type="number" inputmode="numeric" formControlName="toPayFormControl"
-              [(ngModel)]="expenses.toPay" placeholder="0" (change)="calculateRemaining()">
+              [(ngModel)]="expenses.toPay" placeholder="0" (change)="calculateRemaining()" onfocus="this.select()">
             <mat-error *ngIf="expensesFormGroup.get('toPayFormControl')?.hasError('required')">
+              Campo <strong>obrigatório</strong>.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-6">
+          <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
+            <mat-label>Nº. Parcela</mat-label>
+            <input matInput type="number" formControlName="parcelNumberFormControl" [(ngModel)]="expenses.parcelNumber"
+              min=1 (change)="onParcelNumberChanged($event)" onfocus="this.select()">
+            <mat-error
+              *ngIf="expensesFormGroup.get('parcelNumberFormControl')?.hasError('min') && !expensesFormGroup.get('parcelNumberFormControl')?.hasError('required')">
+              Valor mínimo é <strong>1</strong>.
+            </mat-error>
+            <mat-error *ngIf="expensesFormGroup.get('parcelNumberFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
           </mat-form-field>
@@ -38,7 +79,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Pago</mat-label>
             <input matInput type="number" inputmode="numeric" formControlName="paidFormControl"
-              [(ngModel)]="expenses.paid" placeholder="0" (change)="calculateRemaining()">
+              [(ngModel)]="expenses.paid" placeholder="0" (change)="calculateRemaining()" onfocus="this.select()">
             <mat-error *ngIf="expensesFormGroup.get('paidFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
@@ -52,7 +93,36 @@
               [(ngModel)]="expenses.remaining" placeholder="0">
           </mat-form-field>
         </div>
+
+        <div class="center">
+          <mat-form-field appearance="fill" style="width:180px !important">
+            <mat-label>Vencimento</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dueDateFormControl"
+              [(ngModel)]="expenses.dueDate">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
       </div>
+
+      <p>
+        <mat-checkbox [(ngModel)]="expenses.generateParcels" formControlName="generateParcelsFormControl"
+          [disabled]="disableGenerateParcelsCheck" (change)="onGenerateParcelsChanged($event)">
+          Gerar as demais parcelas
+        </mat-checkbox>
+      </p>
+
+      <p>
+        <mat-checkbox [(ngModel)]="expenses.repeatParcels" formControlName="repeatParcelsFormControl"
+          [disabled]="disableRepeatParcelsCheck" (change)="onRepeatParcelsChanged($event)">
+          Repetir para os próximos
+          <span>
+            <input type="number" inputmode="numeric" style="width:30px !important" onfocus="this.select()" min=1
+              formControlName="monthsToRepeatFormControl" [(ngModel)]="expenses.monthsToRepeat">
+          </span>
+          meses
+        </mat-checkbox>
+      </p>
 
       <div class="row">
         <mat-form-field appearance="fill" floatLabel="always">
