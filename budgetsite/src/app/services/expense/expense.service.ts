@@ -15,7 +15,7 @@ export class ExpenseService {
 
   create(expense: Expenses): Observable<Expenses> {
 
-    return this.http.post<Expenses>(`${ApiUrls.expenses}`, expense).pipe(
+    return this.http.post<Expenses>(`${ApiUrls.expenses}${expense.generateParcels || expense.repeatParcels ? `/allparcels?repeat=${expense.repeatParcels ?? false}&qtyMonths=${expense.monthsToRepeat ?? 0}` : ''}`, expense).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );
@@ -31,7 +31,7 @@ export class ExpenseService {
 
   update(expense: Expenses): Observable<Expenses> {
 
-    return this.http.put<Expenses>(`${ApiUrls.expenses}/${expense.id}`, expense).pipe(
+    return this.http.put<Expenses>(`${ApiUrls.expenses}${expense.generateParcels || expense.repeatParcels ? '/allparcels' : ''}/${expense.id}${expense.generateParcels || expense.repeatParcels ? `?repeat=${expense.repeatParcels ?? false}&qtyMonths=${expense.monthsToRepeat ?? 0}` : ''}`, expense).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );
