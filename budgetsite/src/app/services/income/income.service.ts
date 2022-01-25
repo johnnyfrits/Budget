@@ -15,7 +15,7 @@ export class IncomeService {
 
   create(income: Incomes): Observable<Incomes> {
 
-    return this.http.post<Incomes>(`${ApiUrls.incomes}`, income).pipe(
+    return this.http.post<Incomes>(`${ApiUrls.incomes}${income.repeatIncome ? `/repeat?qtyMonths=${income.monthsToRepeat}` : ''}`, income).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );
@@ -31,7 +31,7 @@ export class IncomeService {
 
   update(income: Incomes): Observable<Incomes> {
 
-    return this.http.put<Incomes>(`${ApiUrls.incomes}/${income.id}`, income).pipe(
+    return this.http.put<Incomes>(`${ApiUrls.incomes}${income.repeatIncome ? "/repeat" : ""}/${income.id}${income.repeatIncome ? `?qtyMonths=${income.monthsToRepeat}` : ""}`, income).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );

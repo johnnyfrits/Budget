@@ -20,4 +20,6 @@ export interface Incomes {
 	cardsList?: Cards[];
 	accountsList?: Accounts[];
 	typesList?: [];
+	repeatIncome?: boolean;
+	monthsToRepeat?: number;
 }

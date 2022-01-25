@@ -815,6 +815,8 @@ export class IncomesDialog implements OnInit {
     cardIdFormControl: new FormControl(''),
     accountIdFormControl: new FormControl(''),
     typeFormControl: new FormControl(''),
+    repeatIncomeFormControl: new FormControl(''),
+    monthsToRepeatFormControl: new FormControl(''),
   });
 
   constructor(
@@ -827,6 +829,8 @@ export class IncomesDialog implements OnInit {
     this.cards = this.incomes.cardsList;
     this.accounts = this.incomes.accountsList;
     this.types = this.incomes.typesList;
+
+    this.incomes.monthsToRepeat = 12;
   }
 
   cancel(): void {

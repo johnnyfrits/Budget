@@ -54,6 +54,17 @@
         </div>
       </div>
 
+      <p>
+        <mat-checkbox [(ngModel)]="incomes.repeatIncome" formControlName="repeatIncomeFormControl">
+          Repetir para os próximos
+          <span>
+            <input type="number" inputmode="numeric" style="width:30px !important" onfocus="this.select()" min=1
+              formControlName="monthsToRepeatFormControl" [(ngModel)]="incomes.monthsToRepeat">
+          </span>
+          meses
+        </mat-checkbox>
+      </p>
+
       <div class="row">
         <mat-form-field appearance="fill" floatLabel="always">
           <mat-label>Tipo</mat-label>
