@@ -15,7 +15,8 @@
           <mat-label>Descrição</mat-label>
           <input type="text" id="descriptionFormControl" required matInput formControlName="descriptionFormControl"
             [(ngModel)]="incomes.description" cdkFocusInitial>
-          <mat-error *ngIf="incomesFormGroup.get('descriptionFormControl')?.hasError('required')">
+          <mat-error *ngIf="incomesFormGroup.get('descriptionFormControl')?.hasError('required')"
+            onfocus="this.select()">
             Campo <strong>obrigatório</strong>.
           </mat-error>
         </mat-form-field>
@@ -27,7 +28,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>A receber</mat-label>
             <input matInput type="number" inputmode="numeric" formControlName="toReceiveFormControl"
-              [(ngModel)]="incomes.toReceive" placeholder="0" (change)="calculateRemaining()">
+              [(ngModel)]="incomes.toReceive" placeholder="0" (change)="calculateRemaining()" onfocus="this.select()">
             <mat-error *ngIf="incomesFormGroup.get('toReceiveFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
@@ -38,7 +39,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Recebido</mat-label>
             <input matInput type="number" inputmode="numeric" formControlName="receivedFormControl"
-              [(ngModel)]="incomes.received" placeholder="0" (change)="calculateRemaining()">
+              [(ngModel)]="incomes.received" placeholder="0" (change)="calculateRemaining()" onfocus="this.select()">
             <mat-error *ngIf="incomesFormGroup.get('receivedFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
@@ -49,7 +50,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Restante</mat-label>
             <input matInput type="number" inputmode="numeric" formControlName="remainingFormControl" readonly
-              [(ngModel)]="incomes.remaining" placeholder="0">
+              [(ngModel)]="incomes.remaining" placeholder="0" onfocus="this.select()">
           </mat-form-field>
         </div>
       </div>
@@ -99,7 +100,8 @@
       <div class="row">
         <mat-form-field appearance="fill">
           <mat-label>Comentário</mat-label>
-          <textarea matInput [(ngModel)]="incomes.note" formControlName="noteFormControl"></textarea>
+          <textarea matInput [(ngModel)]="incomes.note" formControlName="noteFormControl"
+            onfocus="this.select()"></textarea>
         </mat-form-field>
       </div>
     </div>

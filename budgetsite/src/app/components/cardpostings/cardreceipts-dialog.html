@@ -23,7 +23,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>A Receber</mat-label>
             <input matInput type="number" inputmode="numeric" formControlName="toReceiveFormControl" readonly
-              [(ngModel)]="cardReceipts.toReceive" placeholder="0">
+              [(ngModel)]="cardReceipts.toReceive" placeholder="0" onfocus="this.select()">
           </mat-form-field>
         </div>
 
@@ -31,7 +31,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Recebido</mat-label>
             <input matInput type="number" inputmode="numeric" formControlName="receivedFormControl" readonly
-              [(ngModel)]="cardReceipts.received" placeholder="0">
+              [(ngModel)]="cardReceipts.received" placeholder="0" onfocus="this.select()">
           </mat-form-field>
         </div>
 
@@ -39,7 +39,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Restante</mat-label>
             <input matInput type="number" inputmode="numeric" formControlName="remainingFormControl" readonly
-              [(ngModel)]="cardReceipts.remaining" placeholder="0">
+              [(ngModel)]="cardReceipts.remaining" placeholder="0" onfocus="this.select()">
           </mat-form-field>
         </div>
       </div>
@@ -50,7 +50,8 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Recebendo</mat-label>
             <input matInput type="number" inputmode="numeric" formControlName="amountFormControl"
-              [(ngModel)]="cardReceipts.amount" placeholder="0" cdkFocusInitial (change)="onAmountChange()">
+              [(ngModel)]="cardReceipts.amount" placeholder="0" cdkFocusInitial (change)="onAmountChange()"
+              onfocus="this.select()">
             <mat-error *ngIf="cardReceiptsFormGroup.get('amountFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
@@ -61,7 +62,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Troco</mat-label>
             <input matInput type="number" inputmode="numeric" formControlName="changeFormControl"
-              [(ngModel)]="cardReceipts.change" placeholder="0">
+              [(ngModel)]="cardReceipts.change" placeholder="0" onfocus="this.select()">
           </mat-form-field>
         </div>
 
@@ -83,7 +84,8 @@
       <div class="row">
         <mat-form-field appearance="fill">
           <mat-label>Comentário</mat-label>
-          <textarea matInput [(ngModel)]="cardReceipts.note" formControlName="noteFormControl"></textarea>
+          <textarea matInput [(ngModel)]="cardReceipts.note" formControlName="noteFormControl"
+            onfocus="this.select()"></textarea>
         </mat-form-field>
       </div>
     </div>

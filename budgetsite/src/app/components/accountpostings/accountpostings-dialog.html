@@ -36,7 +36,8 @@
         <mat-form-field appearance="fill">
           <mat-label>Descrição</mat-label>
           <input type="text" id="descriptionFormControl" required matInput formControlName="descriptionFormControl"
-            [(ngModel)]="accountPosting.description" cdkFocusInitial [readonly]="accountPosting.type == 'Y'">
+            [(ngModel)]="accountPosting.description" onfocus="this.select()" cdkFocusInitial
+            [readonly]="accountPosting.type == 'Y'">
           <mat-error *ngIf="accountPostingFormGroup.get('descriptionFormControl')?.hasError('required')">
             Campo <strong>obrigatório</strong>.
           </mat-error>
@@ -48,7 +49,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
             <mat-label>Valor</mat-label>
             <input matInput type="number" inputmode="numeric" formControlName="amountFormControl"
-              [(ngModel)]="accountPosting.amount" placeholder="0">
+              [(ngModel)]="accountPosting.amount" placeholder="0" onfocus="this.select()">
             <mat-error *ngIf="accountPostingFormGroup.get('amountFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
@@ -59,7 +60,8 @@
       <div class="row">
         <mat-form-field appearance="fill">
           <mat-label>Comentário</mat-label>
-          <textarea matInput [(ngModel)]="accountPosting.note" formControlName="noteFormControl"></textarea>
+          <textarea matInput [(ngModel)]="accountPosting.note" formControlName="noteFormControl"
+            onfocus="this.select()"></textarea>
         </mat-form-field>
       </div>
     </div>

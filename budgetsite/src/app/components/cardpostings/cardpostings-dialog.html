@@ -21,7 +21,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Descrição</mat-label>
           <input type="text" id="descriptionFormControl" required matInput formControlName="descriptionFormControl"
-            [(ngModel)]="cardPosting.description" cdkFocusInitial>
+            [(ngModel)]="cardPosting.description" cdkFocusInitial onfocus="this.select()">
           <mat-error *ngIf="cardPostingFormGroup.get('descriptionFormControl')?.hasError('required')">
             Campo <strong>obrigatório</strong>.
           </mat-error>
@@ -33,7 +33,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
             <mat-label>Valor Total</mat-label>
             <input matInput type="number" formControlName="totalAmountFormControl" [(ngModel)]="cardPosting.totalAmount"
-              placeholder="0" (change)="calculateAmount()">
+              placeholder="0" (change)="calculateAmount()" onfocus="this.select()">
             <mat-error *ngIf="cardPostingFormGroup.get('totalAmountFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
@@ -43,7 +43,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
             <mat-label>Total de Parcelas</mat-label>
             <input matInput type="number" formControlName="parcelsFormControl" [(ngModel)]="cardPosting.parcels" min=1
-              (change)="onParcelsChanged($event)">
+              (change)="onParcelsChanged($event)" onfocus="this.select()">
             <mat-error
               *ngIf="cardPostingFormGroup.get('parcelsFormControl')?.hasError('min') && !cardPostingFormGroup.get('parcelsFormControl')?.hasError('required')">
               Valor mínimo é <strong>1</strong>.
@@ -60,7 +60,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
             <mat-label>Valor Parcela</mat-label>
             <input matInput type="number" formControlName="amountFormControl" [(ngModel)]="cardPosting.amount"
-              placeholder="0">
+              placeholder="0" onfocus="this.select()">
             <mat-error *ngIf="cardPostingFormGroup.get('amountFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
@@ -70,7 +70,8 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
             <mat-label>Nº. Parcela</mat-label>
             <input matInput type="number" formControlName="parcelNumberFormControl"
-              [(ngModel)]="cardPosting.parcelNumber" min=1 (change)="onParcelNumberChanged($event)">
+              [(ngModel)]="cardPosting.parcelNumber" min=1 (change)="onParcelNumberChanged($event)"
+              onfocus="this.select()">
             <mat-error
               *ngIf="cardPostingFormGroup.get('parcelNumberFormControl')?.hasError('min') && !cardPostingFormGroup.get('parcelNumberFormControl')?.hasError('required')">
               Valor mínimo é <strong>1</strong>.
@@ -103,7 +104,8 @@
       <div class="row">
         <mat-form-field appearance="fill">
           <mat-label>Comentário</mat-label>
-          <textarea matInput [(ngModel)]="cardPosting.note" formControlName="noteFormControl"></textarea>
+          <textarea matInput [(ngModel)]="cardPosting.note" formControlName="noteFormControl"
+            onfocus="this.select()"></textarea>
         </mat-form-field>
       </div>
     </div>
