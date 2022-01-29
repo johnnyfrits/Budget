@@ -277,4 +277,9 @@ export class AccountPostingsDialog implements OnInit {
       }
     }
   }
+
+  setTitle() {
+
+    return 'Lançamento - ' + (this.accountPosting.editing ? 'Editar' : 'Incluir');
+  }
 }

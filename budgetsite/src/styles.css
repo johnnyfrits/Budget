@@ -195,3 +195,7 @@ input[type="number"] {
 .card-yield-checked {
   background-color: yellow !important;
 }
+
+.mat-dialog-title {
+  margin-top: -40px !important;
+}

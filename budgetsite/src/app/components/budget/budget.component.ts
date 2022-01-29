@@ -739,7 +739,8 @@ export class ExpensesDialog implements OnInit {
 
   calculateRemaining(): void {
 
-    this.expenses.remaining = this.expenses.toPay - this.expenses.paid;
+    this.expenses.paid = this.expenses.paid ?? 0 > this.expenses.toPay ? this.expenses.toPay : this.expenses.paid;
+    this.expenses.remaining = this.expenses.toPay - (this.expenses.paid ?? 0);
   }
 
   onParcelNumberChanged(event: any): void {
@@ -748,6 +749,8 @@ export class ExpensesDialog implements OnInit {
   calculateToPay(): void {
 
     this.expenses.toPay = +(this.expenses.totalToPay / this.expenses.parcels!).toFixed(2);
+
+    this.calculateRemaining();
   }
 
   onParcelsChanged(event: any): void {
@@ -792,6 +795,11 @@ export class ExpensesDialog implements OnInit {
         this.disableGenerateParcelsCheck = false;
       }
     }
+  }
+
+  setTitle() {
+
+    return 'Despesa - ' + (this.expenses.editing ? 'Editar' : 'Incluir');
   }
 }
 
@@ -857,7 +865,13 @@ export class IncomesDialog implements OnInit {
 
   calculateRemaining(): void {
 
-    this.incomes.remaining = +(this.incomes.toReceive - this.incomes.received).toFixed(2);
+    this.incomes.received = (this.incomes.received ?? 0) > this.incomes.toReceive ? this.incomes.toReceive : this.incomes.received;
+    this.incomes.remaining = +(this.incomes.toReceive - (this.incomes.received ?? 0)).toFixed(2);
+  }
+
+  setTitle() {
+
+    return 'Receita - ' + (this.incomes.editing ? 'Editar' : 'Incluir');
   }
 }
 

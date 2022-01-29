@@ -459,6 +459,11 @@ export class CardPostingsDialog implements OnInit {
 
     this.cardPosting.amount = +(this.cardPosting.totalAmount! / this.cardPosting.parcels!).toFixed(2);
   }
+
+  setTitle() {
+
+    return 'Compra - ' + (this.cardPosting.editing ? 'Editar' : 'Incluir');
+  }
 }
 
 @Component({
@@ -515,5 +520,10 @@ export class CardReceiptsDialog implements OnInit {
     this.cardReceipts.change = this.cardReceipts.amount > this.cardReceipts.toReceive! ?
       +(this.cardReceipts.amount - this.cardReceipts.remaining!).toFixed(2) :
       0;
+  }
+
+  setTitle() {
+
+    return 'Recebimento de Compra';
   }
 }
