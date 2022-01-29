@@ -323,7 +323,7 @@ export class CardPostingsComponent implements OnInit {
         reference: this.reference,
         cardId: this.cardId,
         peopleId: cardspostingsdto.person,
-        amount: null,
+        amount: cardspostingsdto.remaining,
         change: null,
         toReceive: cardspostingsdto.toReceive,
         received: cardspostingsdto.received,
