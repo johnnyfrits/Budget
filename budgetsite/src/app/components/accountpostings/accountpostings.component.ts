@@ -42,6 +42,12 @@ export class AccountPostingsComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     // if (changes['accountId']?.currentValue || changes['reference']?.currentValue) {
+
+    this.refresh();
+  }
+
+  refresh() {
+
     if (this.accountId) {
 
       this.hideProgress = false;

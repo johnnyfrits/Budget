@@ -1,6 +1,7 @@
 <div class="container">
   <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false">
-    <mat-expansion-panel class="mat-panel-summary" [hideToggle]="false">
+    <mat-expansion-panel class="mat-panel-summary" [hideToggle]="false" [(expanded)]="summaryPanelExpanded"
+      (closed)="summaryPanelClosed()" (opened)="summaryPanelOpened()">
       <mat-expansion-panel-header>
         <span class="material-icons center"> calendar_month </span>
         <span class="center"><b>{{referenceHead}}</b></span>
@@ -20,6 +21,14 @@
     </div>
   </div>
 
+  <div class="row center" *ngIf="hideAccountsSummaryProgress && hideTotalsAccountsSummaryProgress">
+    <div class="col refresh">
+      <button class="default-button" mat-mini-fab matTooltip="atualizar" matTooltipPosition="left" color="warn"
+        aria-label="Atualizar" (click)="refresh()">
+        <mat-icon class="default-icon">autorenew</mat-icon>
+      </button>
+    </div>
+  </div>
   <!-- TABLE -->
   <div class="row center" *ngIf="hideAccountsSummaryProgress && hideTotalsAccountsSummaryProgress">
     <div class="row">

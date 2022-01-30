@@ -9,8 +9,8 @@ export interface AccountsPostings {
 	note?: string;
 	type?: string;
 	cardIdReceipt?: number;
-	expensePaymentId?: number;
-	incomeReceiptId?: number;
+	expenseId?: number;
+	incomeId?: number;
 	editing?: boolean;
 	deleting?: boolean;
 }

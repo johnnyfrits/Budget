@@ -60,6 +60,14 @@ export class CardPostingsComponent implements OnInit {
 
     this.hideProgress = false;
 
+    this.getLists();
+
+    this.cardPostingsPanelExpanded = localStorage.getItem('cardPostingsPanelExpanded') === 'true';
+    this.peoplePanelExpanded = localStorage.getItem('peoplePanelExpanded') === 'true';
+  }
+
+  getLists() {
+
     this.peopleService.read().subscribe(
       {
         next: people => {
@@ -83,13 +91,12 @@ export class CardPostingsComponent implements OnInit {
         error: () => this.hideProgress = true
       }
     );
-
-    this.cardPostingsPanelExpanded = localStorage.getItem('cardPostingsPanelExpanded') === 'true';
-    this.peoplePanelExpanded = localStorage.getItem('peoplePanelExpanded') === 'true';
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // if (changes['cardId']?.currentValue || changes['reference']?.currentValue) {
+  refresh() {
+
+    this.getLists();
+
     if (this.cardId) {
 
       this.hideProgress = false;
@@ -110,6 +117,11 @@ export class CardPostingsComponent implements OnInit {
 
       this.getCardsPostingsPeople();
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // if (changes['cardId']?.currentValue || changes['reference']?.currentValue) {
+    this.refresh();
   }
 
   getCardsPostingsPeople() {

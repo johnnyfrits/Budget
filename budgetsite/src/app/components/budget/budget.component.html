@@ -18,14 +18,13 @@
       </mat-spinner>
     </div>
   </div>
-  <div class="row center" style="margin-top: 10px"
-    *ngIf="hideExpensesProgress && hideIncomesProgress && hidePeopleProgress">
+  <div class="row center" *ngIf="hideExpensesProgress && hideIncomesProgress && hidePeopleProgress">
     <div class="col"></div>
     <div class="col">
       <div class="row justify-content-center text-center">
         <span>Saldo Previsto:</span>
-        <span
-          [ngClass]="expectedBalance < 0 ? 'negative' : 'positive'"><b>{{expectedBalance | currency : '':''}}</b></span>
+        <span [ngClass]="expectedBalance < 0 ? 'negative' : 'positive'"><b>{{expectedBalance | currency : '':''}}</b>
+        </span>
       </div>
     </div>
     <div class="col refresh">

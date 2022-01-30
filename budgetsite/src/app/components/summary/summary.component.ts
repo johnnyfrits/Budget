@@ -20,10 +20,14 @@ export class SummaryComponent implements OnInit, AfterViewInit {
   forecastBalanceTotal: number = 0;
   availableBalanceTotal: number = 0;
   displayedColumns = ['description', 'forecastBalance', 'availableBalance'];
+  summaryPanelExpanded: boolean = false;
 
   constructor(private cd: ChangeDetectorRef, private accountService: AccountService) { }
 
   ngOnInit(): void {
+
+    this.summaryPanelExpanded = localStorage.getItem('summaryPanelExpanded') === 'true';
+
   }
 
   ngAfterViewInit(): void {
@@ -87,5 +91,15 @@ export class SummaryComponent implements OnInit, AfterViewInit {
         0;
 
     this.hideAccountsSummaryProgress = true;
+  }
+
+  summaryPanelClosed() {
+
+    localStorage.setItem('summaryPanelExpanded', 'false');
+  }
+
+  summaryPanelOpened() {
+
+    localStorage.setItem('summaryPanelExpanded', 'true');
   }
 }
