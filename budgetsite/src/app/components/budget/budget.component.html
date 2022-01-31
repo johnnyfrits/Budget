@@ -55,6 +55,7 @@
         <div class="table-container mat-elevation-z8 mytable2">
           <table mat-table [dataSource]="expenses" cdkDropList [cdkDropListData]="expenses"
             (cdkDropListDropped)="dropExpenses($event)">
+
             <!-- Descrição Column -->
             <ng-container matColumnDef="description">
               <th mat-header-cell *matHeaderCellDef>Descrição</th>

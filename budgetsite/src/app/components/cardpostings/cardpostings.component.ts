@@ -5,17 +5,12 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { People } from 'src/app/models/people.model';
 import { PeopleService } from 'src/app/services/people/people.service';
-import { default as _rollupMoment } from 'moment';
-import * as _moment from 'moment';
 import { CardsPostingsDTO } from 'src/app/models/cardspostingsdto.model';
 import { CardReceiptsService } from 'src/app/services/cardreceipts/cardreceipts.service';
 import { CardsReceipts } from 'src/app/models/cardsreceipts.model';
 import { Accounts } from 'src/app/models/accounts.model';
 import { AccountService } from 'src/app/services/account/account.service';
-import { AccountPostingsService } from 'src/app/services/accountpostings/accountpostings.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-
-let moment = _rollupMoment || _moment;
 
 @Component({
   selector: 'app-cardpostings',

@@ -2,7 +2,6 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Moment } from 'moment';
 import { ClipboardService } from 'ngx-clipboard';
 import { Messenger } from 'src/app/common/messenger';
 import { Accounts } from 'src/app/models/accounts.model';
@@ -16,6 +15,9 @@ import { CardService } from 'src/app/services/card/card.service';
 import { CardPostingsService } from 'src/app/services/cardpostings/cardpostings.service';
 import { ExpenseService } from 'src/app/services/expense/expense.service';
 import { IncomeService } from 'src/app/services/income/income.service';
+import { AccountsPostings } from 'src/app/models/accountspostings.model';
+import { AccountPostingsService } from 'src/app/services/accountpostings/accountpostings.service';
+import { Scroll } from './../../common/scroll';
 
 import { default as _rollupMoment } from 'moment';
 import * as _moment from 'moment';
@@ -61,10 +63,10 @@ export class BudgetComponent implements OnInit, AfterViewInit {
       id: 'R',
       description: 'Recebimento'
     },
-    {
-      id: 'P',
-      description: 'Pagamento'
-    },
+    // {
+    //   id: 'P',
+    //   description: 'Pagamento'
+    // },
     {
       id: 'Y',
       description: 'Rendimento'
@@ -83,7 +85,9 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     private cardService: CardService,
     private accountService: AccountService,
     private messenger: Messenger,
-    private clipboardService: ClipboardService
+    private clipboardService: ClipboardService,
+    private accountPostingsService: AccountPostingsService,
+    private scroll: Scroll
   ) { }
 
   ngOnInit(): void {
@@ -398,6 +402,12 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                 });
 
                 this.getExpensesTotals();
+
+                if (localStorage.getItem('lastElementIdBudget') !== null) {
+                  {
+                    this.scroll.scrollTo(localStorage.getItem('lastElementIdBudget'));
+                  }
+                }
               },
               error: () => this.hideExpensesProgress = true
             }
@@ -565,10 +575,89 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
   pay(expense: Expenses) {
 
+    const dialogRef = this.dialog.open(PaymentReceiveDialog, {
+      width: '400px',
+      data: {
+        date: new Date(),
+        reference: expense.reference,
+        description: 'Pag. ' + expense.description,
+        amount: expense.remaining,
+        note: expense.note,
+        type: 'P',
+        expenseId: expense.id
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result) {
+
+        this.hideExpensesProgress = false;
+
+        result.amount = result.amount * (result.type === 'P' ? -1 : 1);
+
+        this.accountPostingsService.create(result).subscribe({
+
+          next: () => {
+
+            expense.paid = +(expense.paid + Math.abs(result.amount)).toFixed(2);
+            expense.remaining = +(expense.toPay - expense.paid).toFixed(2);
+
+            if (result.type === 'P') {
+
+              localStorage.setItem('accountIdPayExpense', result.accountId);
+            }
+            else if (result.type === 'R') {
+
+              localStorage.setItem('accountIdReceiveIncome', result.accountId);
+            }
+
+            this.hideExpensesProgress = true
+          },
+          error: () => this.hideExpensesProgress = true
+        });
+      }
+    });
   }
 
   receive(income: Incomes) {
 
+    const dialogRef = this.dialog.open(PaymentReceiveDialog, {
+      width: '400px',
+      data: {
+        date: new Date(),
+        reference: income.reference,
+        description: 'Rec. ' + income.description,
+        amount: income.remaining,
+        note: income.note,
+        type: 'R',
+        incomeId: income.id
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result) {
+
+        this.hideExpensesProgress = false;
+
+        result.amount = result.amount * (result.type === 'P' ? -1 : 1);
+
+        this.accountPostingsService.create(result).subscribe({
+
+          next: () => {
+
+            income.received = +(income.received + Math.abs(result.amount)).toFixed(2);
+            income.remaining = +(income.toReceive - income.received).toFixed(2);
+
+            localStorage.setItem('accountIdReceiveIncome', result.accountId);
+
+            this.hideExpensesProgress = true
+          },
+          error: () => this.hideExpensesProgress = true
+        });
+      }
+    });
   }
 
   charge(cpp: CardsPostingsDTO) {
@@ -876,32 +965,47 @@ export class IncomesDialog implements OnInit {
 }
 
 @Component({
-  selector: 'expenses.receive-dialog',
-  templateUrl: 'expenses.receive-dialog.html',
+  selector: 'payment-receive-dialog',
+  templateUrl: 'payment-receive-dialog.html',
 })
-export class ExpensesReceiveDialog implements OnInit {
+export class PaymentReceiveDialog implements OnInit {
 
-  cards?: Cards[];
+  accountsList?: Accounts[];
 
-  expensesFormGroup = new FormGroup({
+  accountPostingFormGroup = new FormGroup({
 
     descriptionFormControl: new FormControl('', Validators.required),
-    toPayFormControl: new FormControl('', Validators.required),
-    paidFormControl: new FormControl(''),
-    remainingFormControl: new FormControl(''),
+    amountFormControl: new FormControl('', Validators.required),
+    accountFormControl: new FormControl('', Validators.required),
     noteFormControl: new FormControl(''),
-    cardIdFormControl: new FormControl(''),
+    typeFormControl: new FormControl(''),
   });
 
   constructor(
-    public dialogRef: MatDialogRef<ExpensesReceiveDialog>,
-    @Inject(MAT_DIALOG_DATA) public expenses: Expenses) {
+    public dialogRef: MatDialogRef<PaymentReceiveDialog>,
+    @Inject(MAT_DIALOG_DATA) public accountPosting: AccountsPostings,
+    private accountService: AccountService) {
   }
 
   ngOnInit(): void {
 
-    this.cards = this.expenses.cardsList;
+    this.accountService.read().subscribe(
+      {
+        next: accounts => {
 
+          this.accountsList = accounts;
+
+          if (this.accountPosting.type == 'P' && localStorage.getItem('accountIdPayExpense') != null) {
+
+            this.accountPosting.accountId = +(localStorage.getItem('accountIdPayExpense')!);
+          }
+          else if (this.accountPosting.type == 'R' && localStorage.getItem('accountIdReceiveIncome') != null) {
+
+            this.accountPosting.accountId = +(localStorage.getItem('accountIdReceiveIncome')!);
+          }
+        }
+      }
+    );
   }
 
   cancel(): void {
@@ -909,25 +1013,44 @@ export class ExpensesReceiveDialog implements OnInit {
     this.dialogRef.close();
   }
 
+  currentDateChanged(date: Date) {
+
+    this.accountPosting.date = date;
+  }
+
   save(): void {
 
-    this.dialogRef.close(this.expenses);
+    this.dialogRef.close(this.accountPosting);
   }
 
   delete(): void {
 
-    this.expenses.deleting = true;
+    this.accountPosting.deleting = true;
 
-    this.dialogRef.close(this.expenses);
+    this.dialogRef.close(this.accountPosting);
   }
 
-  setCard(): void {
+  onTypeChange(): void {
 
-    this.expenses.card = this.expenses.cardsList?.find(t => t.id == this.expenses.cardId);
+    if (this.accountPosting.type === 'Y') {
+
+      this.accountPosting.description = 'Rendimento';
+    }
+    else if (this.accountPosting.type === 'C') {
+
+      this.accountPosting.description = 'Troco';
+    }
+    else {
+      if (this.accountPosting.description === 'Rendimento' ||
+        this.accountPosting.description === 'Troco') {
+
+        this.accountPosting.description = '';
+      }
+    }
   }
 
-  calculateRemaining(): void {
+  setTitle() {
 
-    this.expenses.remaining = +(this.expenses.toPay - this.expenses.paid).toFixed(2);
+    return this.accountPosting.description.replace('Pag.', 'Pagar');
   }
 }

@@ -4,11 +4,8 @@ import { AccountService } from 'src/app/services/account/account.service';
 import { AccountPostingsService } from '../../services/accountpostings/accountpostings.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { default as _rollupMoment } from 'moment';
-import * as _moment from 'moment';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-
-let moment = _rollupMoment || _moment;
+import { Scroll } from './../../common/scroll';
 
 @Component({
   selector: 'app-accountpostings',
@@ -33,7 +30,9 @@ export class AccountPostingsComponent implements OnInit {
   constructor(
     private accountPostingsService: AccountPostingsService,
     private accountService: AccountService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private Scroll: Scroll
+  ) { }
 
   ngOnInit(): void {
 
