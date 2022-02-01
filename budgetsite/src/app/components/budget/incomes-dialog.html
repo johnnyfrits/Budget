@@ -16,8 +16,7 @@
           <mat-label>Descrição</mat-label>
           <input type="text" id="descriptionFormControl" required matInput formControlName="descriptionFormControl"
             [(ngModel)]="incomes.description" cdkFocusInitial>
-          <mat-error *ngIf="incomesFormGroup.get('descriptionFormControl')?.hasError('required')"
-            onfocus="this.select()">
+          <mat-error *ngIf="incomesFormGroup.get('descriptionFormControl')?.hasError('required')">
             Campo <strong>obrigatório</strong>.
           </mat-error>
         </mat-form-field>

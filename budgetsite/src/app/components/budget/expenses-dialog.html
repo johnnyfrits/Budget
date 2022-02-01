@@ -15,7 +15,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Descrição</mat-label>
           <input type="text" id="descriptionFormControl" required matInput formControlName="descriptionFormControl"
-            [(ngModel)]="expenses.description" cdkFocusInitial onfocus="this.select()">
+            [(ngModel)]="expenses.description" cdkFocusInitial>
           <mat-error *ngIf="expensesFormGroup.get('descriptionFormControl')?.hasError('required')">
             Campo <strong>obrigatório</strong>.
           </mat-error>
