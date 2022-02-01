@@ -6,6 +6,7 @@ export interface AccountsPostings {
 	position?: number;
 	description: string;
 	amount: number;
+	runningAmount: number;
 	note?: string;
 	type?: string;
 	cardIdReceipt?: number;

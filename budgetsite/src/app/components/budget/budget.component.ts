@@ -1,3 +1,4 @@
+import { BudgetTotals } from './../../models/budgettotals';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -21,6 +22,7 @@ import { Scroll } from './../../common/scroll';
 
 import { default as _rollupMoment } from 'moment';
 import * as _moment from 'moment';
+import { BudgetService } from 'src/app/services/budget/budget.service';
 
 @Component({
   selector: 'app-budget',
@@ -34,6 +36,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
   expenses!: Expenses[];
   incomes!: Incomes[];
+  budgetTotals!: BudgetTotals;
   cardpostingspeople!: CardsPostingsDTO[];
   displayedExpensesColumns = ['description', 'toPay', 'paid', 'remaining', 'actions'];
   displayedIncomesColumns = ['description', 'toReceive', 'received', 'remaining', 'actions'];
@@ -52,6 +55,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   hideExpensesProgress: boolean = true;
   hideIncomesProgress: boolean = true;
   hidePeopleProgress: boolean = true;
+  budgetPanelExpanded: boolean = false;
   expensesPanelExpanded: boolean = false;
   incomesPanelExpanded: boolean = false;
   peoplePanelExpanded: boolean = false;
@@ -87,6 +91,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     private messenger: Messenger,
     private clipboardService: ClipboardService,
     private accountPostingsService: AccountPostingsService,
+    private budget: BudgetService,
     private scroll: Scroll
   ) { }
 
@@ -148,6 +153,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
     this.getData();
 
+    this.budgetPanelExpanded = localStorage.getItem('budgetPanelExpanded') === 'true';
     this.expensesPanelExpanded = localStorage.getItem('expensesPanelExpanded') === 'true';
     this.incomesPanelExpanded = localStorage.getItem('incomesPanelExpanded') === 'true';
     this.peoplePanelExpanded = localStorage.getItem('peoplePanelExpanded') === 'true';
@@ -168,6 +174,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
       this.getExpenses();
       this.getIncomes();
       this.getCardsPostingsPeople();
+      this.getBudgetTotals();
     }
   }
 
@@ -202,6 +209,18 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         error: () => {
 
           this.getIncomesTotals();
+        }
+      }
+    );
+  }
+
+  getBudgetTotals() {
+
+    this.budget.getBudgetTotals(this.reference!).subscribe(
+      {
+        next: budgetTotals => {
+
+          this.budgetTotals = budgetTotals;
         }
       }
     );
@@ -541,6 +560,16 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         }
       }
     });
+  }
+
+  budgetPanelClosed() {
+
+    localStorage.setItem('budgetPanelExpanded', 'false');
+  }
+
+  budgetPanelOpened() {
+
+    localStorage.setItem('budgetPanelExpanded', 'true');
   }
 
   expensesPanelClosed() {

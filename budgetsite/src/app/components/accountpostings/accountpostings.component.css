@@ -30,6 +30,11 @@ table {
   text-align: right;
 }
 
+.mat-column-runningAmount {
+  width: 125px;
+  text-align: right;
+}
+
 tr.mat-footer-row {
   font-weight: bold;
 }

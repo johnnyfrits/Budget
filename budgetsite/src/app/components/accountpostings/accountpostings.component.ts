@@ -18,7 +18,7 @@ export class AccountPostingsComponent implements OnInit {
   @Input() reference?: string;
 
   accountpostings!: AccountsPostings[];
-  displayedColumns = ['index', 'date', 'description', 'amount'];
+  displayedColumns = ['index', 'date', 'description', 'amount', 'runningAmount'];
   total: number = 0;
   grandTotalBalance?: number = 0;
   totalBalance?: number = 0;
@@ -26,6 +26,7 @@ export class AccountPostingsComponent implements OnInit {
   totalYields?: number = 0;
   hideProgress: boolean = true;
   editing: boolean = false;
+  maxBalance: number = 0;
 
   constructor(
     private accountPostingsService: AccountPostingsService,
@@ -75,6 +76,17 @@ export class AccountPostingsComponent implements OnInit {
           this.totalBalance = account.totalBalance;
           this.previousBalance = account.previousBalance;
           this.totalYields = account.totalYields;
+
+          let runningValue = this.previousBalance ?? 0;
+
+          this.accountpostings.forEach(accountposting => {
+
+            accountposting.runningAmount = runningValue += accountposting.amount;
+
+            this.maxBalance = accountposting.runningAmount > this.maxBalance ?
+              accountposting.runningAmount :
+              this.maxBalance;
+          });
 
           this.hideProgress = true;
         },
