@@ -81,7 +81,8 @@
           <!-- Running Column -->
           <ng-container matColumnDef="runningAmount">
             <th mat-header-cell *matHeaderCellDef>Saldo</th>
-            <td mat-cell *matCellDef="let row" [ngClass]="(row.runningAmount < 0 ? 'negative' : 'positive')">
+            <td mat-cell *matCellDef="let row" [ngClass]="(row.runningAmount < 0 ? 'negative' : 'positive')"
+              style="padding-left: 15px;">
               {{row.runningAmount | currency : '':''}}</td>
             <td mat-footer-cell *matFooterCellDef></td>
           </ng-container>
@@ -97,5 +98,6 @@
       <p></p>
       <p></p>
       <span>Maior saldo:&nbsp;<b>{{maxBalance | currency : '':''}}</b></span>
+      <p></p>
     </div>
   </div>
