@@ -40,3 +40,14 @@ mat-toolbar a {
 
   padding-right: 1px;
 }
+
+.theme-button {
+  bottom: 0;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-left: 10px;
+  padding-bottom: 5px;
+  overflow: hidden;
+}

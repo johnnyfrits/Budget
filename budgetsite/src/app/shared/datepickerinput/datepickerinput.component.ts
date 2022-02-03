@@ -55,7 +55,7 @@ let moment = _rollupMoment || _moment;
 @Component({
   selector: 'app-datepickerinput',
   templateUrl: './datepickerinput.component.html',
-  styleUrls: ['./datepickerinput.component.css']
+  styleUrls: ['./datepickerinput.component.scss']
 })
 export class DatepickerinputComponent implements OnInit {
 

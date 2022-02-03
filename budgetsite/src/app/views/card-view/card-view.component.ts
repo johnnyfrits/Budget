@@ -4,7 +4,7 @@ import { NavService } from 'src/app/components/template/nav/nav.service';
 @Component({
   selector: 'app-card-view',
   templateUrl: './card-view.component.html',
-  styleUrls: ['./card-view.component.css']
+  styleUrls: ['./card-view.component.scss']
 })
 export class CardViewComponent implements OnInit {
 
