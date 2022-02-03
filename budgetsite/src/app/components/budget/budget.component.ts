@@ -632,6 +632,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
             expense.paid = +(expense.paid + Math.abs(result.amount)).toFixed(2);
             expense.remaining = +(expense.toPay - expense.paid).toFixed(2);
 
+            this.getExpensesTotals();
+
             if (result.type === 'P') {
 
               localStorage.setItem('accountIdPayExpense', result.accountId);
@@ -678,6 +680,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
             income.received = +(income.received + Math.abs(result.amount)).toFixed(2);
             income.remaining = +(income.toReceive - income.received).toFixed(2);
+
+            this.getIncomesTotals();
 
             localStorage.setItem('accountIdReceiveIncome', result.accountId);
 
