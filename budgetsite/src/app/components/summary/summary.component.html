@@ -4,8 +4,8 @@
       (closed)="summaryPanelClosed()" (opened)="summaryPanelOpened()">
       <mat-expansion-panel-header>
         <span class="material-icons center"> calendar_month </span>
-        <span class="center"><b>{{referenceHead}}</b></span>
-        <div class="center month-name2"><b>{{monthName}}</b></div>
+        <span class="center">{{referenceHead}}</span>
+        <div class="center month-name2">{{monthName}}</div>
       </mat-expansion-panel-header>
       <app-datepicker [showMonthName]="false" (referenceChange)="referenceChanges($event)"
         (monthChange)="monthName=$event" [summaryId]=1>

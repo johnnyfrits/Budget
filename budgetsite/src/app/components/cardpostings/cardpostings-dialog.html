@@ -113,7 +113,7 @@
       <div class="col">
         <div mat-dialog-actions>
           <button [disabled]="!cardPostingFormGroup.valid" class="default-button" mat-mini-fab matTooltip="Salvar"
-            matTooltipPosition="above" color="primary" aria-label="Salvar" [mat-dialog-close]="cardPosting"
+            matTooltipPosition="right" class="bg-primary" aria-label="Salvar" [mat-dialog-close]="cardPosting"
             (click)="save()">
             <mat-icon class="default-icon">save</mat-icon>
           </button>
@@ -121,7 +121,7 @@
       </div>
       <div class="col" *ngIf="cardPosting.editing">
         <div mat-dialog-actions>
-          <button class="default-button" mat-mini-fab matTooltip="Excluir" matTooltipPosition="above" color="warn"
+          <button class="default-button" mat-mini-fab matTooltip="Excluir" matTooltipPosition="left" color="warn"
             aria-label="Excluir" (click)="delete()">
             <mat-icon class="default-icon">delete</mat-icon>
           </button>

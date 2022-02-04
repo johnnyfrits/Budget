@@ -3,7 +3,7 @@
     <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false">
       <mat-expansion-panel-header>
         <span class="material-icons center"> calendar_month </span>
-        <span class="center"><b>{{referenceHead}}</b></span>
+        <span class="center">{{referenceHead}}</span>
         <div class="center month-name2"><b>{{monthName}}</b></div>
       </mat-expansion-panel-header>
       <app-datepicker [showMonthName]="false" (referenceChange)="referenceChanges($event)"
@@ -42,8 +42,8 @@
     <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false" [(expanded)]="budgetPanelExpanded"
       (closed)="budgetPanelClosed()" (opened)="budgetPanelOpened()">
       <mat-expansion-panel-header class="primary">
-        <span class="material-icons center primary"><b>numbers</b></span>
-        <span class="center primary"><b>Totais</b></span>
+        <span class="material-icons center primary">numbers</span>
+        <span class="center primary">Totais</span>
       </mat-expansion-panel-header>
 
       <div class="center">
@@ -83,13 +83,13 @@
     <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false" [(expanded)]="expensesPanelExpanded"
       (closed)="expensesPanelClosed()" (opened)="expensesPanelOpened()">
       <mat-expansion-panel-header class="accent">
-        <span class="material-icons center accent"><b>money_off</b></span>
-        <span class="center accent"><b>Despesas</b></span>
+        <span class="material-icons center accent">money_off</span>
+        <span class="center accent">Despesas</span>
       </mat-expansion-panel-header>
       <div class="row center">
         <div class="row center">
-          <button class="default-button" mat-mini-fab matTooltip="Adicionar despesa" matTooltipPosition="above"
-            color="primary" aria-label="Adicionar despesa" (click)="addExpense()">
+          <button class="default-button" color="accent" mat-mini-fab matTooltip="Adicionar despesa"
+            matTooltipPosition="above" aria-label="Adicionar despesa" (click)="addExpense()">
             <mat-icon class="default-icon">post_add</mat-icon>
           </button>
         </div>
@@ -141,7 +141,7 @@
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let row">
                 <button mat-icon-button [matMenuTriggerFor]="menu">
-                  <mat-icon color="warn">more_vert</mat-icon>
+                  <mat-icon class="expenses-actions">more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
                   <button mat-menu-item id="menu-expenses" (click)="pay(row)">
@@ -171,14 +171,14 @@
     <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false" [(expanded)]="incomesPanelExpanded"
       (closed)="incomesPanelClosed()" (opened)="incomesPanelOpened()">
       <mat-expansion-panel-header>
-        <span class="material-icons center primary"><b>attach_money</b></span>
-        <span class="center primary"><b>Receitas</b></span>
+        <span class="material-icons center primary">attach_money</span>
+        <span class="center primary">Receitas</span>
       </mat-expansion-panel-header>
 
       <div class="row center">
         <div class="row center">
-          <button class="default-button" mat-mini-fab matTooltip="Adicionar receita" matTooltipPosition="above"
-            color="primary" aria-label="Adicionar receita" (click)="addIncome()">
+          <button class="default-button incomes-add" mat-mini-fab matTooltip="Adicionar receita"
+            matTooltipPosition="above" aria-label="Adicionar receita" (click)="addIncome()">
             <mat-icon class="default-icon">post_add</mat-icon>
           </button>
         </div>
@@ -225,7 +225,7 @@
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let row">
                 <button mat-icon-button [matMenuTriggerFor]="menu">
-                  <mat-icon color="primary">more_vert</mat-icon>
+                  <mat-icon class="incomes-actions">more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
                   <button mat-menu-item id="menu-incomes" (click)="receive(row)">
@@ -254,8 +254,8 @@
     <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false" [(expanded)]="peoplePanelExpanded"
       (closed)="peoplePanelClosed()" (opened)="peoplePanelOpened()">
       <mat-expansion-panel-header>
-        <span class="material-icons center warn"><b>people</b></span>
-        <span class="center warn"><b>Pessoas</b></span>
+        <span class="material-icons center accent">people</span>
+        <span class="center accent">Pessoas</span>
       </mat-expansion-panel-header>
 
       <div class="row center">
@@ -295,11 +295,11 @@
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let row">
                 <button mat-icon-button [matMenuTriggerFor]="menu">
-                  <mat-icon color="primary">more_vert</mat-icon>
+                  <mat-icon class="people-actions">more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item (click)="charge(row)">
-                    <mat-icon>whatsapp</mat-icon>
+                  <button mat-menu-item id="menu-people" (click)="charge(row)">
+                    <mat-icon id="menu-icon-people">whatsapp</mat-icon>
                     <span>Copiar lançamentos p/ WhatsApp</span>
                   </button>
                 </mat-menu>

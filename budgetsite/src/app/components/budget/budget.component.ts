@@ -861,8 +861,6 @@ export class ExpensesDialog implements OnInit {
 
   calculateRemaining(): void {
 
-    debugger;
-
     this.expenses.paid = (this.expenses.paid ?? 0) > this.expenses.toPay ? this.expenses.toPay : this.expenses.paid;
     this.expenses.remaining = +(this.expenses.toPay - (this.expenses.paid ?? 0)).toFixed(2);
   }

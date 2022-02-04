@@ -32,6 +32,14 @@
   .table-container {
     border-radius: var(--border-radius);
   }
+
+  .bold {
+    font-weight: 500;
+  }
+
+  .mat-expansion-panel-header {
+    font-weight: 500 !important;
+  }
 }
 
 // Define a light theme
@@ -45,8 +53,8 @@ $light-theme: mat.define-light-theme((color: (primary: $light-primary,
     )));
 
 // Define a dark theme
-$dark-primary: mat.define-palette(mat.$pink-palette, 900);
-$dark-accent: mat.define-palette(mat.$deep-orange-palette);
+$dark-primary: mat.define-palette(mat.$grey-palette, 800);
+$dark-accent: mat.define-palette(mat.$pink-palette);
 $dark-warn: mat.define-palette(mat.$amber-palette);
 
 $dark-theme: mat.define-dark-theme((color: (primary: $dark-primary,
@@ -54,6 +62,7 @@ $dark-theme: mat.define-dark-theme((color: (primary: $dark-primary,
       warn: $dark-warn,
     )));
 
+//$dark-colors: mat.get
 
 $custom-collection: (warning : #FFC116,
   success : #0a630f,
@@ -69,6 +78,7 @@ $dark-theme: map_merge($dark-theme, (custom: $dark-custom));
 $custom: map-get($dark-theme, custom);
 $sidenav-dark: map-get($dark-theme, primary);
 $sidenav-light: map-get($light-theme, primary);
+$primary-light: map-get($light-theme, primary);
 
 // $dark: map-get($dark-theme);
 
@@ -83,12 +93,49 @@ $sidenav-light: map-get($light-theme, primary);
   @include mat.all-component-colors($dark-theme);
   // @include nav.theme($dark-theme);
 
+  $accent: map-get($dark-theme, accent);
+  $warn: map-get($dark-theme, warn);
+
+  $underline-color-accent: mat-color($accent);
+  $underline-color-warn: mat-color($warn);
+
   --toolbar-color: #FFFFFF;
-  --positive-color: white;
-  --negative-color: rgb(255, 200, 200);
-  --yield-color: rgb(200, 255, 200);
+  --white-color: white;
+  --red-color: rgb(255, 144, 136);
+  --red2-color: rgb(255, 200, 200);
+  --green-color: rgb(200, 255, 200);
+  --blue-color: rgb(155, 170, 255);
+  --blue2-color: rgb(208, 215, 255);
+  --blue3-color: rgb(63, 81, 181);
+  --pink-color: rgb(255, 203, 221);
   --month-name-color: #FFFFFF;
   --summary-background-color: #424242;
+  --expansion-panel-header: var(--white-color);
+  --accent: rgb(233, 30, 99);
+
+  .bg-primary {
+    background-color: var(--blue3-color) !important;
+  }
+
+  .primary {
+    color: var(--blue-color);
+  }
+
+  .accent {
+    color: var(--red-color);
+  }
+
+  .red {
+    color: var(--red-color);
+  }
+
+  .red2 {
+    color: var(--red2-color);
+  }
+
+  .green {
+    color: var(--green-color);
+  }
 
   .sidenav {
     background-color: mat-color($sidenav-dark);
@@ -114,21 +161,37 @@ $sidenav-light: map-get($light-theme, primary);
     background-color: mat-color($custom, success);
   }
 
+  .incomes-add {
+    background-color: var(--blue3-color) !important;
+  }
+
+  .expenses-actions {
+    color: var(--red2-color);
+  }
+
+  .incomes-actions {
+    color: var(--blue2-color);
+  }
+
+  .people-actions {
+    color: var(--red2-color);
+  }
+
   th.mat-header-cell {
-    border-bottom: 2px white !important;
-    color: white !important;
+    border-bottom: 2px var(--white-color) !important;
+    color: var(--white-color) !important;
   }
 
   .positive {
-    color: var(--positive-color);
+    color: var(--white-color);
   }
 
   .negative {
-    color: var(--negative-color);
+    color: var(--red-color);
   }
 
   .yield {
-    color: var(--yield-color);
+    color: var(--green-color);
   }
 
   .month-name,
@@ -137,11 +200,95 @@ $sidenav-light: map-get($light-theme, primary);
   }
 
   .mat-expansion-panel-header {
-    color: #FFFFFF !important;
+    color: var(--expansion-panel-header) !important;
   }
 
   .summary {
     background-color: var(--summary-background-color);
+  }
+
+  #menu-expenses,
+  #menu-icon-expenses {
+    color: var(--red-color);
+  }
+
+  #menu-incomes,
+  #menu-icon-incomes {
+    color: var(--green-color);
+  }
+
+  #menu-people,
+  #menu-icon-people {
+    color: var(--green-color);
+  }
+
+  .mat-mini-fab.mat-button-disabled.mat-button-disabled {
+    background-color: #0000001f !important;
+  }
+
+  //accountspostings
+  .mat-input-element {
+    caret-color: var(--white-color);
+  }
+
+  .mat-form-field.mat-focused .mat-form-field-label {
+    color: var(--white-color);
+
+    &.mat-accent {
+      color: $underline-color-accent;
+    }
+
+    &.mat-warn {
+      color: $underline-color-warn;
+    }
+  }
+
+  .mat-focused .mat-form-field-required-marker {
+    color: var(--white-color);
+  }
+
+  .mat-form-field.mat-focused {
+    .mat-form-field-ripple {
+      background-color: var(--white-color);
+
+      &.mat-accent {
+        background-color: $underline-color-accent;
+      }
+
+      &.mat-warn {
+        background-color: $underline-color-warn;
+      }
+    }
+  }
+
+  .mat-form-field.mat-form-field-invalid {
+    .mat-form-field-label {
+      color: $underline-color-warn;
+
+      &.mat-accent,
+      .mat-form-field-required-marker {
+        color: $underline-color-warn;
+      }
+    }
+
+    .mat-form-field-ripple,
+    .mat-form-field-ripple.mat-accent {
+      background-color: $underline-color-warn;
+    }
+  }
+
+  .mat-form-field-type-mat-native-select.mat-focused:not(.mat-form-field-invalid) {
+    .mat-form-field-infix::after {
+      color: var(--white-color);
+    }
+
+    &.mat-accent .mat-form-field-infix::after {
+      color: $underline-color-accent;
+    }
+
+    &.mat-warn .mat-form-field-infix::after {
+      color: $underline-color-warn;
+    }
   }
 }
 
@@ -150,15 +297,20 @@ $sidenav-light: map-get($light-theme, primary);
   // @include nav.theme($light-theme);
 
   --toolbar-color: #FFFFFF;
-  --positive-color: black;
-  --negative-color: red;
-  --yield-color: green;
+  --black-color: black;
+  --red-color: red;
+  --green-color: green;
   --month-name-color: rgb(255, 64, 129);
+  --previous-next-month-color: #6e6e6e;
   --mat-expansion-panel-header-color: rgb(112, 112, 112);
   --mat-footer-row-color: rgb(159, 199, 232, 0.7);
   --header-cell-color: var(--mat-footer-row-color);
   --nth-child-even-color: rgb(220, 235, 247);
   --nth-child-odd-color: rgba(200, 223, 242, 0.4);
+
+  .bg-primary {
+    background-color: mat-color($primary-light) !important;
+  }
 
   .sidenav {
     background-color: mat-color($sidenav-light);
@@ -186,15 +338,15 @@ $sidenav-light: map-get($light-theme, primary);
   }
 
   .positive {
-    color: var(--positive-color);
+    color: var(--black-color);
   }
 
   .negative {
-    color: var(--negative-color);
+    color: var(--red-color);
   }
 
   .yield {
-    color: var(--yield-color);
+    color: var(--green-color);
   }
 
   .month-name,
@@ -204,11 +356,28 @@ $sidenav-light: map-get($light-theme, primary);
 
   .previous-month,
   .next-month {
-    color: #6e6e6e
+    color: var(--previous-next-month-color);
   }
 
   .mat-expansion-panel-header {
     color: var(--mat-expansion-panel-header-color) !important;
+  }
+
+  //summary
+  .expenses-actions {
+    color: var(--red-color);
+  }
+
+  .incomes-actions {
+    color: mat-color($primary-light);
+  }
+
+  .people-actions {
+    color: var(--red-color);
+  }
+
+  .incomes-add {
+    background-color: mat-color($primary-light) !important;
   }
 
   tr.summary.mat-footer-row {
@@ -238,6 +407,23 @@ $sidenav-light: map-get($light-theme, primary);
   .saldos3 {
     background-color: var(--nth-child-even-color);
   }
+
+  #menu-expenses,
+  #menu-icon-expenses {
+    color: var(--red-color);
+  }
+
+  #menu-incomes,
+  #menu-icon-incomes {
+    color: var(--green-color);
+  }
+
+  #menu-people,
+  #menu-icon-people {
+    color: var(--green-color);
+  }
+
+  //summary
 
   //budget
 
@@ -274,6 +460,10 @@ $sidenav-light: map-get($light-theme, primary);
   }
 
   //budget
+
+  .mat-mini-fab.mat-button-disabled.mat-button-disabled {
+    background-color: #0000001f !important;
+  }
 }
 
 
@@ -303,10 +493,6 @@ td.mat-cell {
 tr.mat-row {
   cursor: pointer;
   height: 2em !important;
-}
-
-tr:nth-child(even) {
-  background: #e0e0e0
 }
 
 tr:nth-child(even) {
@@ -384,7 +570,7 @@ input.right-align {
 }
 
 .bg-primary {
-  background-color: #3f51b5;
+  background-color: mat-color($primary-light);
 }
 
 .bg-accent {
