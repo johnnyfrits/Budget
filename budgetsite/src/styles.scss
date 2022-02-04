@@ -1,23 +1,281 @@
-/* You can add global styles to this file, and also import other style files */
+// @import '~@angular/material/theming';
+// @include mat-core();
+
+// $light-app-theme: mat-light-theme((color: (primary: mat-palette($mat-indigo),
+//       accent: mat-palette($mat-pink, A200, A100, A400),
+//       warn: mat-palette($mat-red),
+//     )));
+
+// $dark-app-theme: mat-dark-theme((color: (primary: mat-palette($mat-blue-gray),
+//       // accent: mat-palette($mat-blue-gray, A200, A100, A400),
+//       accent: mat-palette($mat-deep-orange),
+//       warn: mat-palette($mat-amber),
+//     )));
+
+// @include angular-material-theme($light-app-theme);
+
+// .dark-theme {
+//   @include angular-material-color($dark-app-theme);
+// }
+
+
+@use '@angular/material'as mat;
+@use '../src/app/components/template/nav/nav.component-theme'as nav;
+
 @import '~@angular/material/theming';
-@include mat-core();
+@include mat.core();
 
-$light-app-theme: mat-light-theme((color: (primary: mat-palette($mat-indigo),
-      accent: mat-palette($mat-pink, A200, A100, A400),
-      warn: mat-palette($mat-red),
-    )));
+:root {
 
-$dark-app-theme: mat-dark-theme((color: (primary: mat-palette($mat-blue-gray),
-      // accent: mat-palette($mat-blue-gray, A200, A100, A400),
-      accent: mat-palette($mat-deep-orange),
-      warn: mat-palette($mat-amber),
-    )));
+  --border-radius: 4px;
 
-@include angular-material-theme($light-app-theme);
-
-.dark-theme {
-  @include angular-material-color($dark-app-theme);
+  .table-container {
+    border-radius: var(--border-radius);
+  }
 }
+
+// Define a light theme
+$light-primary: mat.define-palette(mat.$indigo-palette, 900);
+$light-accent: mat.define-palette(mat.$pink-palette);
+//$light-warn: mat.define-palette(mat.$pink-palette);
+
+$light-theme: mat.define-light-theme((color: (primary: $light-primary,
+      accent: $light-accent,
+      //warn: $light-warn,
+    )));
+
+// Define a dark theme
+$dark-primary: mat.define-palette(mat.$pink-palette, 900);
+$dark-accent: mat.define-palette(mat.$deep-orange-palette);
+$dark-warn: mat.define-palette(mat.$amber-palette);
+
+$dark-theme: mat.define-dark-theme((color: (primary: $dark-primary,
+      accent: $dark-accent,
+      warn: $dark-warn,
+    )));
+
+
+$custom-collection: (warning : #FFC116,
+  success : #0a630f,
+  danger: #c00000,
+  contrast: (warning : #000000,
+    success : #FFFFFF,
+    danger: #FFFFFF,
+  ));
+
+$dark-custom: mat-palette($custom-collection, custom);
+$dark-theme: map_merge($dark-theme, (custom: $dark-custom));
+
+$custom: map-get($dark-theme, custom);
+$sidenav-dark: map-get($dark-theme, primary);
+$sidenav-light: map-get($light-theme, primary);
+
+// $dark: map-get($dark-theme);
+
+// Apply the light theme by default
+@include mat.all-component-colors($light-theme);
+// @include nav.theme($light-theme);
+
+// Apply the dark theme only when the `.dark-theme` CSS class is applied
+// to an ancestor element of the components (such as `body`).
+.dark-theme {
+
+  @include mat.all-component-colors($dark-theme);
+  // @include nav.theme($dark-theme);
+
+  --toolbar-color: #FFFFFF;
+  --positive-color: white;
+  --negative-color: rgb(255, 200, 200);
+  --yield-color: rgb(200, 255, 200);
+  --month-name-color: #FFFFFF;
+  --summary-background-color: #424242;
+
+  .sidenav {
+    background-color: mat-color($sidenav-dark);
+  }
+
+  .mat-list-item-content {
+    color: var(--toolbar-color);
+  }
+
+  .mat-toolbar {
+    color: var(--toolbar-color);
+  }
+
+  .mat-toolbar a {
+    color: var(--toolbar-color)
+  }
+
+  .mat-nav-list {
+    color: var(--toolbar-color);
+  }
+
+  .mat-success {
+    background-color: mat-color($custom, success);
+  }
+
+  th.mat-header-cell {
+    border-bottom: 2px white !important;
+    color: white !important;
+  }
+
+  .positive {
+    color: var(--positive-color);
+  }
+
+  .negative {
+    color: var(--negative-color);
+  }
+
+  .yield {
+    color: var(--yield-color);
+  }
+
+  .month-name,
+  .month-name2 {
+    color: var(--month-name-color);
+  }
+
+  .mat-expansion-panel-header {
+    color: #FFFFFF !important;
+  }
+
+  .summary {
+    background-color: var(--summary-background-color);
+  }
+}
+
+.light-theme {
+  @include mat.all-component-colors($light-theme);
+  // @include nav.theme($light-theme);
+
+  --toolbar-color: #FFFFFF;
+  --positive-color: black;
+  --negative-color: red;
+  --yield-color: green;
+  --month-name-color: rgb(255, 64, 129);
+  --mat-expansion-panel-header-color: rgb(112, 112, 112);
+  --mat-footer-row-color: rgb(159, 199, 232, 0.7);
+  --header-cell-color: var(--mat-footer-row-color);
+  --nth-child-even-color: rgb(220, 235, 247);
+  --nth-child-odd-color: rgba(200, 223, 242, 0.4);
+
+  .sidenav {
+    background-color: mat-color($sidenav-light);
+  }
+
+  .mat-list-item-content {
+    color: var(--toolbar-color);
+  }
+
+  .mat-toolbar {
+    color: var(--toolbar-color);
+  }
+
+  .mat-toolbar a {
+    color: var(--toolbar-color)
+  }
+
+  .mat-nav-list {
+    color: var(--toolbar-color);
+  }
+
+  th.mat-header-cell {
+    border-bottom: 2px black !important;
+    color: rgb(30, 31, 32) !important;
+  }
+
+  .positive {
+    color: var(--positive-color);
+  }
+
+  .negative {
+    color: var(--negative-color);
+  }
+
+  .yield {
+    color: var(--yield-color);
+  }
+
+  .month-name,
+  .month-name2 {
+    color: var(--month-name-color);
+  }
+
+  .previous-month,
+  .next-month {
+    color: #6e6e6e
+  }
+
+  .mat-expansion-panel-header {
+    color: var(--mat-expansion-panel-header-color) !important;
+  }
+
+  tr.summary.mat-footer-row {
+    background-color: var(--mat-footer-row-color) !important;
+  }
+
+  .mat-header-cell-summary {
+    background-color: var(--header-cell-color) !important;
+  }
+
+  tr.summary:nth-child(even) {
+    background: var(--nth-child-even-color)
+  }
+
+  tr.summary:nth-child(odd) {
+    background: var(--nth-child-odd-color)
+  }
+
+  .saldos {
+    background-color: var(--header-cell-color);
+  }
+
+  .saldos2 {
+    background-color: var(--nth-child-odd-color);
+  }
+
+  .saldos3 {
+    background-color: var(--nth-child-even-color);
+  }
+
+  //budget
+
+  tr.expenses.mat-footer-row {
+    background-color: rgba(244, 177, 132, 0.7) !important;
+  }
+
+  tr.incomes.mat-footer-row {
+    background-color: var(--mat-footer-row-color) !important;
+  }
+
+  .mat-header-cell-expenses {
+    background-color: rgba(244, 177, 132, 0.7) !important;
+  }
+
+  tr.expenses:nth-child(even) {
+    background: rgb(252, 228, 214);
+  }
+
+  tr.expenses:nth-child(odd) {
+    background: rgb(251, 221, 205)
+  }
+
+  .mat-header-cell-incomes {
+    background-color: var(--header-cell-color) !important;
+  }
+
+  tr.incomes:nth-child(even) {
+    background: var(--nth-child-even-color);
+  }
+
+  tr.incomes:nth-child(odd) {
+    background: var(--nth-child-odd-color);
+  }
+
+  //budget
+}
+
 
 html,
 body {
@@ -34,8 +292,8 @@ th.mat-header-cell {
   font-size: 1em !important;
   font-weight: bold !important;
   border-style: solid !important;
-  border-bottom: 2px black !important;
-  color: rgb(30, 31, 32) !important;
+  // border-bottom: 2px black !important;
+  // color: rgb(30, 31, 32) !important;
 }
 
 td.mat-cell {
@@ -63,30 +321,8 @@ tr.mat-footer-row {
   height: 3em !important;
 }
 
-.negative {
-  color: red;
-}
-
-.positive {
-  color: black;
-}
-
-.yield {
-  color: green;
-}
-
 input.right-align {
   -moz-appearance: textfield;
-}
-
-html,
-body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .cancel {
@@ -112,10 +348,6 @@ body {
 
 .small-text {
   font-size: 0.8em !important;
-}
-
-.mat-expansion-panel-header {
-  color: rgb(112, 112, 112) !important;
 }
 
 .center {
@@ -144,6 +376,7 @@ body {
 
 .accent {
   color: #ff4081;
+  ;
 }
 
 .warn {
@@ -165,14 +398,12 @@ body {
 .month-name {
   font-weight: bold;
   font-size: 20px;
-  color: rgb(255, 64, 129);
   padding-top: 20px;
 }
 
 .month-name2 {
   font-weight: bold;
   font-size: 20px;
-  color: rgb(255, 64, 129);
   width: 100%;
   margin-left: -80px;
 }

@@ -5,7 +5,7 @@
       <mat-expansion-panel-header>
         <span class="material-icons center"> calendar_month </span>
         <span class="center"><b>{{referenceHead}}</b></span>
-        <div class="center accent month-name2"><b>{{monthName}}</b></div>
+        <div class="center month-name2"><b>{{monthName}}</b></div>
       </mat-expansion-panel-header>
       <app-datepicker [showMonthName]="false" (referenceChange)="referenceChanges($event)"
         (monthChange)="monthName=$event" [summaryId]=1>
@@ -80,7 +80,7 @@
   <!-- RESUMO -->
   <div class="row center" *ngIf="hideAccountsSummaryProgress && hideTotalsAccountsSummaryProgress">
 
-    <div class="row center" style="width: 80%">
+    <div class="row center summary" style="width: 80%">
 
       <div class="row center">
         <div class="row saldos center">

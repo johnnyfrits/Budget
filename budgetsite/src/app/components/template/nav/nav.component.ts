@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { NavService } from './nav.service';
 import { MatDrawer } from '@angular/material/sidenav';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-nav',
@@ -12,7 +13,9 @@ import { MatDrawer } from '@angular/material/sidenav';
 })
 export class NavComponent implements OnInit {
 
+  theme = localStorage.getItem('theme') ?? 'light-theme';
   mobile: boolean = false;
+  themeToggle = false;
 
   @ViewChild('drawer') drawer!: MatDrawer;
 
@@ -25,6 +28,10 @@ export class NavComponent implements OnInit {
     );
 
   ngOnInit(): void {
+
+    this.themeToggle = this.theme == 'dark-theme';
+
+    document.documentElement.className = this.theme;
   }
 
   get icon(): string {
@@ -48,5 +55,14 @@ export class NavComponent implements OnInit {
 
       this.drawer.close();
     }
+  }
+
+  changeTheme() {
+
+    this.theme = this.themeToggle ? 'dark-theme' : 'light-theme'
+
+    document.documentElement.className = this.theme;
+
+    localStorage.setItem('theme', this.theme);
   }
 }
