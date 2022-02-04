@@ -15,7 +15,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 @Component({
   selector: 'app-cardpostings',
   templateUrl: './cardpostings.component.html',
-  styleUrls: ['./cardpostings.component.css']
+  styleUrls: ['./cardpostings.component.scss']
 })
 
 export class CardPostingsComponent implements OnInit {

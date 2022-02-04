@@ -4,7 +4,7 @@
       <mat-expansion-panel-header>
         <span class="material-icons center"> calendar_month </span>
         <span class="center"><b>{{referenceHead}}</b></span>
-        <div class="center accent month-name2"><b>{{monthName}}</b></div>
+        <div class="center month-name2"><b>{{monthName}}</b></div>
       </mat-expansion-panel-header>
       <app-datepicker [showMonthName]="false" (referenceChange)="referenceChanges($event)"
         (monthChange)="monthName=$event" [budgetId]=1>
@@ -89,7 +89,7 @@
       <div class="row center">
         <div class="row center">
           <button class="default-button" mat-mini-fab matTooltip="Adicionar despesa" matTooltipPosition="above"
-            color="accent" aria-label="Adicionar despesa" (click)="addExpense()">
+            color="primary" aria-label="Adicionar despesa" (click)="addExpense()">
             <mat-icon class="default-icon">post_add</mat-icon>
           </button>
         </div>

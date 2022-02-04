@@ -10,6 +10,9 @@
       <a mat-list-item (click)="closeSideNav()" routerLink="/accounts"><i
           class="material-icons">account_balance</i>Contas</a>
       <a mat-list-item (click)="closeSideNav()" routerLink="/cards"><i class="material-icons">credit_card</i>Cartões</a>
+      <div class="row" class="theme-button">
+        <mat-slide-toggle [(ngModel)]="themeToggle" (change)="changeTheme()">Tema escuro</mat-slide-toggle>
+      </div>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>

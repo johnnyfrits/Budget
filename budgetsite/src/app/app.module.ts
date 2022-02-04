@@ -38,6 +38,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { ClipboardModule } from 'ngx-clipboard';
 
@@ -94,6 +95,7 @@ registerLocaleData(localePt);
     MatSidenavModule,
     MatListModule,
     MatIconModule,
+    MatSlideToggleModule,
 
     // CDK
     LayoutModule,

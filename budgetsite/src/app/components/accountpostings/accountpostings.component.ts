@@ -10,7 +10,7 @@ import { Scroll } from './../../common/scroll';
 @Component({
   selector: 'app-accountpostings',
   templateUrl: './accountpostings.component.html',
-  styleUrls: ['./accountpostings.component.css']
+  styleUrls: ['./accountpostings.component.scss']
 })
 export class AccountPostingsComponent implements OnInit {
 

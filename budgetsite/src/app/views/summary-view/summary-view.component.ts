@@ -4,7 +4,7 @@ import { NavService } from 'src/app/components/template/nav/nav.service';
 @Component({
   selector: 'app-summary-view',
   templateUrl: './summary-view.component.html',
-  styleUrls: ['./summary-view.component.css']
+  styleUrls: ['./summary-view.component.scss']
 })
 export class SummaryViewComponent implements OnInit {
 

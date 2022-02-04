@@ -49,38 +49,6 @@ tr.mat-footer-row {
   font-weight: bold;
 }
 
-tr.expenses.mat-footer-row {
-  background-color: rgba(244, 177, 132, 0.7) !important;
-}
-
-tr.incomes.mat-footer-row {
-  background-color: rgb(159, 199, 232, 0.7) !important;
-}
-
-.mat-header-cell-expenses {
-  background-color: rgba(244, 177, 132, 0.7) !important;
-}
-
-tr.expenses:nth-child(even) {
-  background: rgb(252, 228, 214);
-}
-
-tr.expenses:nth-child(odd) {
-  background: rgb(251, 221, 205)
-}
-
-.mat-header-cell-incomes {
-  background-color: rgb(159, 199, 232, 0.7) !important;
-}
-
-tr.incomes:nth-child(even) {
-  background: rgb(220, 235, 247)
-}
-
-tr.incomes:nth-child(odd) {
-  background: rgba(200, 223, 242, 0.4)
-}
-
 .mat-panel-budget {
   margin-top: 10px !important;
   padding-bottom: -50px !important;
