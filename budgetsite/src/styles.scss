@@ -117,6 +117,10 @@ $primary-light: map-get($light-theme, primary);
     background-color: var(--blue3-color) !important;
   }
 
+  .text-color {
+    color: var(--white-color);
+  }
+
   .primary {
     color: var(--blue-color);
   }

@@ -42,6 +42,7 @@ export class CardPostingsComponent implements OnInit {
   cardPostingsPanelExpanded: boolean = false;
   peoplePanelExpanded: boolean = false;
   checkCard: boolean = false;
+  darkTheme?: boolean;
 
   constructor(private cardPostingsService: CardPostingsService,
     private cardReceiptsService: CardReceiptsService,
@@ -50,6 +51,8 @@ export class CardPostingsComponent implements OnInit {
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
+
+    this.darkTheme = document.documentElement.classList.contains('dark-theme');
 
     this.getTotalAmount();
 
