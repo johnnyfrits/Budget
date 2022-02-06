@@ -21,6 +21,7 @@
 
 @use '@angular/material'as mat;
 @use '../src/app/components/template/nav/nav.component-theme'as nav;
+@use '../src/app/shared/datepicker/datepicker.component'as datepicker;
 
 @import '~@angular/material/theming';
 @include mat.core();
@@ -92,6 +93,7 @@ $primary-light: map-get($light-theme, primary);
 
   @include mat.all-component-colors($dark-theme);
   // @include nav.theme($dark-theme);
+  @include datepicker.theme($dark-theme);
 
   $accent: map-get($dark-theme, accent);
   $warn: map-get($dark-theme, warn);
@@ -293,6 +295,18 @@ $primary-light: map-get($light-theme, primary);
     &.mat-warn .mat-form-field-infix::after {
       color: $underline-color-warn;
     }
+  }
+
+  tr:nth-child(even) {
+    background: #393939;
+  }
+
+  tr:nth-child(odd) {
+    background: #424242;
+  }
+
+  .mat-header-cell {
+    background-color: #393939 !important;
   }
 }
 
