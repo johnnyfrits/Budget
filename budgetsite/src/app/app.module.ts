@@ -39,6 +39,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { ClipboardModule } from 'ngx-clipboard';
 
@@ -56,6 +57,7 @@ import { BudgetViewComponent } from './views/budget-view/budget-view.component';
 import { DatepickerinputComponent } from './shared/datepickerinput/datepickerinput.component';
 import { SummaryComponent } from './components/summary/summary.component';
 import { SummaryViewComponent } from './views/summary-view/summary-view.component';
+import { CategoryComponent } from './components/category/category.component';
 
 registerLocaleData(localePt);
 
@@ -81,7 +83,8 @@ registerLocaleData(localePt);
     IncomesDialog,
     DatepickerinputComponent,
     SummaryComponent,
-    SummaryViewComponent
+    SummaryViewComponent,
+    CategoryComponent
   ],
   imports: [
     BrowserModule,
@@ -96,6 +99,7 @@ registerLocaleData(localePt);
     MatListModule,
     MatIconModule,
     MatSlideToggleModule,
+    MatAutocompleteModule,
 
     // CDK
     LayoutModule,

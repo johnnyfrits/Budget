@@ -15,6 +15,7 @@ export interface Expenses {
 	dueDate?: Date;
 	parcelNumber?: number;
 	parcels?: number;
+	categoryId?: number;
 	editing?: boolean;
 	deleting?: boolean;
 	generateParcels?: boolean;
@@ -22,4 +23,5 @@ export interface Expenses {
 	monthsToRepeat?: number;
 	card?: Cards;
 	cardsList?: Cards[];
+	categoriesList?: Cards[];
 }

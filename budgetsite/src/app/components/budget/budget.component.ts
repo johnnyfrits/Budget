@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { BudgetTotals } from './../../models/budgettotals';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, Input, OnInit, SimpleChanges } from '@angular/core';
@@ -23,6 +24,9 @@ import { Scroll } from './../../common/scroll';
 import { default as _rollupMoment } from 'moment';
 import * as _moment from 'moment';
 import { BudgetService } from 'src/app/services/budget/budget.service';
+import { Categories } from 'src/app/models/categories.model';
+import { CategoryService } from 'src/app/services/category/category.service';
+import { CategoryComponent } from '../category/category.component';
 
 @Component({
   selector: 'app-budget',
@@ -61,6 +65,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   peoplePanelExpanded: boolean = false;
   editing: boolean = false;
   cardsList?: Cards[];
+  categoriesList?: Categories[];
   accountsList?: Accounts[];
   typesList = [
     {
@@ -87,6 +92,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     private cd: ChangeDetectorRef,
     public dialog: MatDialog,
     private cardService: CardService,
+    private categoryService: CategoryService,
     private accountService: AccountService,
     private messenger: Messenger,
     private clipboardService: ClipboardService,
@@ -124,6 +130,20 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         next: cards => {
 
           this.cardsList = cards;
+        },
+        error: () => {
+          this.hideExpensesProgress = false;
+          this.hideIncomesProgress = false;
+          this.hidePeopleProgress = false;
+        }
+      }
+    );
+
+    this.categoryService.read().subscribe(
+      {
+        next: categories => {
+
+          this.categoriesList = categories.sort((a, b) => a.name.localeCompare(b.name));
         },
         error: () => {
           this.hideExpensesProgress = false;
@@ -313,6 +333,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         reference: this.reference,
         editing: this.editing,
         cardsList: this.cardsList,
+        categoriesList: this.categoriesList,
         parcels: 1,
         parcelNumber: 1
       }
@@ -335,6 +356,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
               //this.expenses.push(expenses); não funcionou assim como nas outras funções, acredito que seja por causa do Expension Panel (mat-expansion-panel)
 
               this.expenses = [...this.expenses, expenses]; // somente funcionou assim
+
+              this.categoriesList = result.categoriesList;
 
               this.getExpensesTotals();
             },
@@ -360,6 +383,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         id: expense.id,
         userId: expense.userId,
         cardId: expense.cardId,
+        categoryId: expense.categoryId,
         reference: expense.reference,
         position: expense.position,
         description: expense.description,
@@ -373,7 +397,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         parcels: expense.parcels,
         editing: this.editing,
         deleting: false,
-        cardsList: this.cardsList
+        cardsList: this.cardsList,
+        categoriesList: this.categoriesList
       }
     });
 
@@ -415,10 +440,13 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                   t.remaining = result.remaining;
                   t.note = result.note;
                   t.cardId = result.cardId;
+                  t.categoryId = result.categoryId;
                   t.dueDate = result.dueDate;
                   t.parcelNumber = result.parcelNumber;
                   t.parcels = result.parcels;
                 });
+
+                this.categoriesList = result.categoriesList;
 
                 this.getExpensesTotals();
 
@@ -712,8 +740,6 @@ export class BudgetComponent implements OnInit, AfterViewInit {
       message = "Boa noite!";
     }
 
-
-
     this.cardPostingsService.readCardsPostingsByPeople(cpp.person, this.reference!).subscribe(
       {
         next: cardpostings => {
@@ -797,6 +823,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 export class ExpensesDialog implements OnInit {
 
   cards?: Cards[];
+  editing: boolean = false;
+
   disableGenerateParcelsCheck: boolean = true;
   disableRepeatParcelsCheck: boolean = false;
 
@@ -808,6 +836,7 @@ export class ExpensesDialog implements OnInit {
     remainingFormControl: new FormControl(''),
     noteFormControl: new FormControl(''),
     cardIdFormControl: new FormControl(''),
+    categoryIdFormControl: new FormControl(''),
     dueDateFormControl: new FormControl(''),
     parcelNumberFormControl: new FormControl(''),
     parcelsFormControl: new FormControl(''),
@@ -818,6 +847,7 @@ export class ExpensesDialog implements OnInit {
   });
 
   constructor(
+    public dialog: MatDialog,
     public dialogRef: MatDialogRef<ExpensesDialog>,
     @Inject(MAT_DIALOG_DATA) public expenses: Expenses) {
   }
@@ -922,6 +952,27 @@ export class ExpensesDialog implements OnInit {
   setTitle() {
 
     return 'Despesa - ' + (this.expenses.editing ? 'Editar' : 'Incluir');
+  }
+
+  addCategory() {
+
+    this.editing = false;
+
+    const dialogRef = this.dialog.open(CategoryComponent, {
+      width: '400px',
+      data: {
+        editing: this.editing
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result) {
+
+        this.expenses.categoryId = result.id;
+        this.expenses.categoriesList = [...this.expenses.categoriesList!, result].sort((a, b) => a.name.localeCompare(b.name));
+      }
+    });
   }
 }
 

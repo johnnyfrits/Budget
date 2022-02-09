@@ -1,0 +1,46 @@
+<form [formGroup]="categoryFormGroup">
+
+  <div class="cancel">
+    <button class="default-button" mat-mini-fab matTooltip="Cancelar" color="accent" aria-label="Cancelar"
+      (click)="cancel()">
+      <mat-icon class="default-icon">close</mat-icon>
+    </button>
+  </div>
+
+  <h2 mat-dialog-title>{{setTitle()}}</h2>
+
+  <div mat-dialog-content>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Nome</mat-label>
+        <input type="text" id="nameFormControl" required matInput formControlName="nameFormControl"
+          [(ngModel)]="category.name" cdkFocusInitial>
+        <mat-error *ngIf="categoryFormGroup.get('nameFormControl')?.hasError('required')">
+          Campo <strong>obrigatório</strong>.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div mat-dialog-actions>
+        <button [disabled]="!categoryFormGroup.valid" class="default-button" mat-mini-fab matTooltip="Salvar"
+          matTooltipPosition="right" class="bg-primary" aria-label="Salvar" [mat-dialog-close]="category"
+          (click)="save()">
+          <mat-icon class="default-icon">save</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="col" *ngIf="category.editing">
+      <div mat-dialog-actions>
+        <button class="default-button" mat-mini-fab matTooltip="Excluir" matTooltipPosition="left" color="warn"
+          aria-label="Excluir" (click)="delete()">
+          <mat-icon class="default-icon">delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

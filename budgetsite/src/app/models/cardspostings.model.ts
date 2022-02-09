@@ -1,3 +1,4 @@
+import { Categories } from "./categories.model";
 import { People } from "./people.model";
 
 export interface CardsPostings {
@@ -15,7 +16,9 @@ export interface CardsPostings {
 	others: boolean;
 	note?: string;
 	people?: People;
+	categoryId?: number;
 	peopleList?: People[];
+	categoriesList?: Categories[];
 	editing?: boolean;
 	deleting?: boolean;
 	isSelected?: boolean;

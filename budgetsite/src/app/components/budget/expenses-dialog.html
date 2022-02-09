@@ -118,7 +118,7 @@
           [disabled]="disableRepeatParcelsCheck" (change)="onRepeatParcelsChanged($event)">
           Repetir para os próximos
           <span>
-            <input type="number" inputmode="numeric" style="width:30px !important" onfocus="this.select()" min=1
+            <input type="number" inputmode="numeric" style="width:40px !important" onfocus="this.select()" min=1
               formControlName="monthsToRepeatFormControl" [(ngModel)]="expenses.monthsToRepeat">
           </span>
           meses
@@ -126,11 +126,28 @@
       </p>
 
       <div class="row">
+        <div class="col-10">
+          <mat-form-field appearance="fill" floatLabel="always" style="width: 100%;">
+            <mat-label>Categoria</mat-label>
+            <mat-select mat-input [(ngModel)]="expenses.categoryId" formControlName="categoryIdFormControl">
+              <mat-option>-- Nenhuma --</mat-option>
+              <mat-option *ngFor="let c of expenses.categoriesList" [value]="c.id">{{ c.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-2 center">
+          <span class="material-icons add-list-item" matTooltip="Adicionar Categoria" (click)="addCategory()">
+            playlist_add
+          </span>
+        </div>
+      </div>
+
+      <div class="row">
         <mat-form-field appearance="fill" floatLabel="always">
           <mat-label>Cartão</mat-label>
           <mat-select mat-input [(ngModel)]="expenses.cardId" formControlName="cardIdFormControl"
             (selectionChange)="setCard()">
-            <mat-option>-- Nenhuma --</mat-option>
+            <mat-option>-- Nenhum --</mat-option>
             <mat-option *ngFor="let c of cards" [value]="c.id">{{ c.name }}</mat-option>
           </mat-select>
         </mat-form-field>

@@ -16,7 +16,7 @@
           [(ngModel)]="accountPosting.type" (change)="onTypeChange()"
           style="padding: 10px; display: flex;flex-wrap: wrap; justify-content: center; align-items: center">
           <div class="col-6">
-            <mat-radio-button value='R' style="padding-bottom: 5px;">Recebimento </mat-radio-button>
+            <mat-radio-button value='R' style="padding-bottom: 5px;" cdkFocusInitial>Recebimento </mat-radio-button>
             <mat-radio-button value='P'>Pagamento </mat-radio-button>
           </div>
           <div class="col-6">
@@ -37,7 +37,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Descrição</mat-label>
           <input type="text" id="descriptionFormControl" required matInput formControlName="descriptionFormControl"
-            [(ngModel)]="accountPosting.description" cdkFocusInitial [readonly]="accountPosting.type == 'Y'">
+            [(ngModel)]="accountPosting.description" [readonly]="accountPosting.type == 'Y'">
           <mat-error *ngIf="accountPostingFormGroup.get('descriptionFormControl')?.hasError('required')">
             Campo <strong>obrigatório</strong>.
           </mat-error>

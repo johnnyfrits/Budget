@@ -41,6 +41,13 @@
   .mat-expansion-panel-header {
     font-weight: 500 !important;
   }
+
+  .add-list-item {
+    font-size: 40px;
+    cursor: pointer;
+    padding-bottom: 15px;
+    // margin-left: -20px;
+  }
 }
 
 // Define a light theme
@@ -307,6 +314,20 @@ $primary-light: map-get($light-theme, primary);
 
   .mat-header-cell {
     background-color: #393939 !important;
+  }
+
+  input[type="number"] {
+    text-align: right;
+    background-color: #555555;
+    color: #FFFFFF;
+  }
+
+  .mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+    color: #FFFFFF;
+  }
+
+  .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+    color: #FFFFFF;
   }
 }
 

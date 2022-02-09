@@ -1,3 +1,4 @@
+import { CategoryComponent } from './../category/category.component';
 import { Component, OnInit, Input, SimpleChanges, Inject } from '@angular/core';
 import { CardsPostings } from '../../models/cardspostings.model'
 import { CardPostingsService } from '../../services/cardpostings/cardpostings.service';
@@ -11,6 +12,8 @@ import { CardsReceipts } from 'src/app/models/cardsreceipts.model';
 import { Accounts } from 'src/app/models/accounts.model';
 import { AccountService } from 'src/app/services/account/account.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Categories } from 'src/app/models/categories.model';
+import { CategoryService } from 'src/app/services/category/category.service';
 
 @Component({
   selector: 'app-cardpostings',
@@ -38,6 +41,7 @@ export class CardPostingsComponent implements OnInit {
   hideProgress: boolean = true;
   editing: boolean = false;
   peopleList?: People[];
+  categoriesList?: Categories[];
   accountsList?: Accounts[];
   cardPostingsPanelExpanded: boolean = false;
   peoplePanelExpanded: boolean = false;
@@ -48,6 +52,7 @@ export class CardPostingsComponent implements OnInit {
     private cardReceiptsService: CardReceiptsService,
     private peopleService: PeopleService,
     private accountService: AccountService,
+    private categoryService: CategoryService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -71,6 +76,18 @@ export class CardPostingsComponent implements OnInit {
         next: people => {
 
           this.peopleList = people;
+
+          this.hideProgress = true;
+        },
+        error: () => this.hideProgress = true
+      }
+    );
+
+    this.categoryService.read().subscribe(
+      {
+        next: categories => {
+
+          this.categoriesList = categories.sort((a, b) => a.name.localeCompare(b.name));
 
           this.hideProgress = true;
         },
@@ -183,6 +200,7 @@ export class CardPostingsComponent implements OnInit {
         parcels: 1,
         parcelNumber: 1,
         peopleList: this.peopleList,
+        categoriesList: this.categoriesList,
         editing: this.editing
       }
     });
@@ -200,6 +218,8 @@ export class CardPostingsComponent implements OnInit {
             next: cardpostings => {
 
               this.cardpostings = [...this.cardpostings, cardpostings];
+
+              this.categoriesList = result.categoriesList;
 
               this.getTotalAmount();
 
@@ -242,7 +262,9 @@ export class CardPostingsComponent implements OnInit {
         others: cardPosting.others,
         note: cardPosting.note,
         people: cardPosting.people,
+        categoryId: cardPosting.categoryId,
         peopleList: this.peopleList,
+        categoriesList: this.categoriesList,
         editing: this.editing,
         deleting: false
       }
@@ -290,9 +312,12 @@ export class CardPostingsComponent implements OnInit {
                   t.others = result.others;
                   t.note = result.note;
                   t.people = result.people;
+                  t.categoryId = result.categoryId;
                 });
 
                 this.getTotalAmount();
+
+                this.categoriesList = result.categoriesList;
 
                 this.hideProgress = true;
               },
@@ -389,27 +414,29 @@ export class CardPostingsComponent implements OnInit {
 })
 export class CardPostingsDialog implements OnInit {
 
-  people?: People[];
   disableCheck: boolean = true;
+  editing: boolean = false;
 
-  cardPostingFormGroup = new FormGroup({
+  cardPostingFormGroup = new FormGroup(
+    {
+      descriptionFormControl: new FormControl('', Validators.required),
+      totalAmountFormControl: new FormControl('', Validators.required),
+      amountFormControl: new FormControl('', Validators.required),
+      parcelsFormControl: new FormControl('', Validators.min(1)),
+      parcelNumberFormControl: new FormControl('', [Validators.required, Validators.min(1)]),
+      peopleFormControl: new FormControl(''),
+      noteFormControl: new FormControl(''),
+      generateParcelsFormControl: new FormControl(''),
+      categoryIdFormControl: new FormControl(''),
+    });
 
-    descriptionFormControl: new FormControl('', Validators.required),
-    totalAmountFormControl: new FormControl('', Validators.required),
-    amountFormControl: new FormControl('', Validators.required),
-    parcelsFormControl: new FormControl('', Validators.min(1)),
-    parcelNumberFormControl: new FormControl('', [Validators.required, Validators.min(1)]),
-    peopleFormControl: new FormControl(''),
-    noteFormControl: new FormControl(''),
-    generateParcelsFormControl: new FormControl(''),
-  });
-
-  constructor(public dialogRef: MatDialogRef<CardPostingsDialog>,
+  constructor(
+    public dialog: MatDialog,
+    public dialogRef: MatDialogRef<CardPostingsDialog>,
     @Inject(MAT_DIALOG_DATA) public cardPosting: CardsPostings) { }
 
   ngOnInit(): void {
 
-    this.people = this.cardPosting.peopleList;
     this.disableCheck =
       this.cardPosting.parcels == undefined ||
       this.cardPosting.parcels == null ||
@@ -473,6 +500,27 @@ export class CardPostingsDialog implements OnInit {
   setTitle() {
 
     return 'Compra - ' + (this.cardPosting.editing ? 'Editar' : 'Incluir');
+  }
+
+  addCategory() {
+
+    this.editing = false;
+
+    const dialogRef = this.dialog.open(CategoryComponent, {
+      width: '400px',
+      data: {
+        editing: this.editing
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result) {
+
+        this.cardPosting.categoryId = result.id;
+        this.cardPosting.categoriesList = [...this.cardPosting.categoriesList!, result].sort((a, b) => a.name.localeCompare(b.name));
+      }
+    });
   }
 }
 
