@@ -969,8 +969,8 @@ export class ExpensesDialog implements OnInit {
 
       if (result) {
 
-        this.expenses.categoryId = result.id;
         this.expenses.categoriesList = [...this.expenses.categoriesList!, result].sort((a, b) => a.name.localeCompare(b.name));
+        this.expenses.categoryId = result.id;
       }
     });
   }

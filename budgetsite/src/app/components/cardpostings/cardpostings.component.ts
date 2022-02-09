@@ -517,8 +517,8 @@ export class CardPostingsDialog implements OnInit {
 
       if (result) {
 
-        this.cardPosting.categoryId = result.id;
         this.cardPosting.categoriesList = [...this.cardPosting.categoriesList!, result].sort((a, b) => a.name.localeCompare(b.name));
+        this.cardPosting.categoryId = result.id;
       }
     });
   }
