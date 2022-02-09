@@ -1,3 +1,4 @@
+import { Categories } from './categories.model';
 import { Cards } from "./cards.model";
 
 export interface Expenses {
@@ -23,5 +24,5 @@ export interface Expenses {
 	monthsToRepeat?: number;
 	card?: Cards;
 	cardsList?: Cards[];
-	categoriesList?: Cards[];
+	categoriesList?: Categories[];
 }

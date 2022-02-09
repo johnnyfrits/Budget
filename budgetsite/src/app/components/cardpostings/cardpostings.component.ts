@@ -433,7 +433,8 @@ export class CardPostingsDialog implements OnInit {
   constructor(
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<CardPostingsDialog>,
-    @Inject(MAT_DIALOG_DATA) public cardPosting: CardsPostings) { }
+    @Inject(MAT_DIALOG_DATA) public cardPosting: CardsPostings,
+    private categoryService: CategoryService) { }
 
   ngOnInit(): void {
 
@@ -515,10 +516,19 @@ export class CardPostingsDialog implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
 
+      debugger;
+
       if (result) {
 
-        this.cardPosting.categoriesList = [...this.cardPosting.categoriesList!, result].sort((a, b) => a.name.localeCompare(b.name));
-        this.cardPosting.categoryId = result.id;
+        this.categoryService.create(result).subscribe(
+          {
+            next: category => {
+
+              this.cardPosting.categoriesList = [...this.cardPosting.categoriesList!, category].sort((a, b) => a.name.localeCompare(b.name));
+              this.cardPosting.categoryId = category.id;
+            }
+          }
+        );
       }
     });
   }

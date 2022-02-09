@@ -2,7 +2,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Categories } from 'src/app/models/categories.model';
-import { CategoryService } from 'src/app/services/category/category.service';
 
 @Component({
   selector: 'app-category',
@@ -18,8 +17,7 @@ export class CategoryComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<CategoryComponent>,
-    @Inject(MAT_DIALOG_DATA) public category: Categories,
-    private categoryService: CategoryService) { }
+    @Inject(MAT_DIALOG_DATA) public category: Categories) { }
 
   ngOnInit(): void {
   }
@@ -36,14 +34,7 @@ export class CategoryComponent implements OnInit {
 
   save(): void {
 
-    this.categoryService.create(this.category).subscribe(
-      {
-        next: category => {
-
-          this.dialogRef.close(category);
-        }
-      }
-    );
+    this.dialogRef.close(this.category);
   }
 
   delete(): void {
