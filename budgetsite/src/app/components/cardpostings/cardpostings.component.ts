@@ -516,8 +516,6 @@ export class CardPostingsDialog implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
 
-      debugger;
-
       if (result) {
 
         this.categoryService.create(result).subscribe(

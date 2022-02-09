@@ -16,24 +16,7 @@ export class CardPostingsService {
 
   create(cardPosting: CardsPostings): Observable<CardsPostings> {
 
-    let cp: CardsPostings = {
-
-      id: cardPosting.id,
-      cardId: cardPosting.cardId,
-      date: cardPosting.date,
-      reference: cardPosting.reference,
-      position: cardPosting.position,
-      description: cardPosting.description,
-      peopleId: cardPosting.peopleId,
-      parcelNumber: cardPosting.parcelNumber,
-      parcels: cardPosting.parcels,
-      amount: cardPosting.amount,
-      totalAmount: cardPosting.totalAmount,
-      others: cardPosting.peopleId ? true : false,
-      note: cardPosting.note
-    };
-
-    return this.http.post<CardsPostings>(`${ApiUrls.cardspostings}${cardPosting.generateParcels ? '/allparcels' : ''}`, cp).pipe(
+    return this.http.post<CardsPostings>(`${ApiUrls.cardspostings}${cardPosting.generateParcels ? '/allparcels' : ''}`, cardPosting).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );
@@ -65,23 +48,7 @@ export class CardPostingsService {
 
   update(cardPosting: CardsPostings): Observable<CardsPostings> {
 
-    let cp: CardsPostings = {
-      id: cardPosting.id,
-      cardId: cardPosting.cardId,
-      date: cardPosting.date,
-      reference: cardPosting.reference,
-      position: cardPosting.position,
-      description: cardPosting.description,
-      peopleId: cardPosting.peopleId,
-      parcelNumber: cardPosting.parcelNumber,
-      parcels: cardPosting.parcels,
-      amount: cardPosting.amount,
-      totalAmount: cardPosting.totalAmount,
-      others: cardPosting.peopleId ? true : false,
-      note: cardPosting.note,
-    };
-
-    return this.http.put<CardsPostings>(`${ApiUrls.cardspostings}${cardPosting.generateParcels ? '/allparcels' : ''}/${cp.id}`, cp).pipe(
+    return this.http.put<CardsPostings>(`${ApiUrls.cardspostings}${cardPosting.generateParcels ? '/allparcels' : ''}/${cardPosting.id}`, cardPosting).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );
