@@ -1,3 +1,4 @@
+import { ExpensesByCategories } from './../../models/expensesbycategories';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -24,6 +25,14 @@ export class ExpenseService {
   read(reference: string): Observable<Expenses[]> {
 
     return this.http.get<Expenses[]>(`${ApiUrls.expenses}/reference/${reference}`).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
+  readByCategories(reference: string, cardId: number): Observable<ExpensesByCategories[]> {
+
+    return this.http.get<ExpensesByCategories[]>(`${ApiUrls.expenses}/categories?reference=${reference}&cardId=${cardId}`).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );

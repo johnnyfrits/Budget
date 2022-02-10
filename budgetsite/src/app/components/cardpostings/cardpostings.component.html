@@ -187,3 +187,48 @@
     </mat-expansion-panel>
   </mat-accordion>
 </div>
+
+<div class="row">
+  <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false" *ngIf="hideProgress">
+    <mat-expansion-panel class="mat-panel-cards" [hideToggle]="false" [(expanded)]="categoryPanelExpanded"
+      (closed)="categoryPanelClosed()" (opened)="categoryPanelOpened()">
+      <mat-expansion-panel-header>
+        <span class="material-icons center warn">category</span>
+        <span class="center warn">Categorias</span>
+      </mat-expansion-panel-header>
+
+      <div class="mytable" *ngIf="hideProgress">
+        <div class="table-container mat-elevation-z8">
+
+          <table mat-table [dataSource]="expensesByCategories">
+            <!-- Categoria Column -->
+            <ng-container matColumnDef="category">
+              <th mat-header-cell *matHeaderCellDef>Categoria</th>
+              <td mat-cell *matCellDef="let row">{{row.category}}
+              </td>
+              <td mat-footer-cell *matFooterCellDef> </td>
+            </ng-container>
+
+            <!-- Valor Column -->
+            <ng-container matColumnDef="amount">
+              <th mat-header-cell *matHeaderCellDef>Total</th>
+              <td mat-cell *matCellDef="let row">{{row.amount | currency : '':''}}</td>
+              <td mat-footer-cell *matFooterCellDef>{{amountTotalCategory | currency : '':''}}</td>
+            </ng-container>
+
+            <!-- Perc. Column -->
+            <ng-container matColumnDef="perc">
+              <th mat-header-cell *matHeaderCellDef>%</th>
+              <td mat-cell *matCellDef="let row">{{row.perc | currency : '':''}}%</td>
+              <td mat-footer-cell *matFooterCellDef>{{percTotalCategory | currency : '':''}}%</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedCategoriesColumns; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedCategoriesColumns"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedCategoriesColumns; sticky: true"></tr>
+          </table>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

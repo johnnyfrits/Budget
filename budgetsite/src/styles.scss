@@ -139,6 +139,14 @@ $primary-light: map-get($light-theme, primary);
     color: var(--red-color);
   }
 
+  .primary {
+    color: var(--blue3-color);
+  }
+
+  .warn {
+    color: var(--yellow);
+  }
+
   .red {
     color: var(--red-color);
   }
@@ -508,6 +516,19 @@ $primary-light: map-get($light-theme, primary);
   .mat-mini-fab.mat-button-disabled.mat-button-disabled {
     background-color: #0000001f !important;
   }
+
+  .primary {
+    color: #3f51b5;
+  }
+
+  .accent {
+    color: #ff4081;
+    ;
+  }
+
+  .warn {
+    color: #f44336;
+  }
 }
 
 
@@ -598,19 +619,6 @@ input.right-align {
 .mytable2 {
   padding-right: 0px !important;
   padding-left: 0px !important;
-}
-
-.primary {
-  color: #3f51b5;
-}
-
-.accent {
-  color: #ff4081;
-  ;
-}
-
-.warn {
-  color: #f44336;
 }
 
 .bg-primary {

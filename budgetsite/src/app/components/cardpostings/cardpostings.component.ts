@@ -14,6 +14,8 @@ import { AccountService } from 'src/app/services/account/account.service';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Categories } from 'src/app/models/categories.model';
 import { CategoryService } from 'src/app/services/category/category.service';
+import { ExpenseService } from 'src/app/services/expense/expense.service';
+import { ExpensesByCategories } from 'src/app/models/expensesbycategories';
 
 @Component({
   selector: 'app-cardpostings',
@@ -28,12 +30,16 @@ export class CardPostingsComponent implements OnInit {
 
   cardpostings!: CardsPostings[];
   cardpostingspeople!: CardsPostingsDTO[];
+  expensesByCategories!: ExpensesByCategories[];
   displayedColumns = ['index', 'date', 'description', 'amount'];
   displayedPeopleColumns = ['person', 'toReceive', 'received', 'remaining', 'actions'];
+  displayedCategoriesColumns = ['category', 'amount', 'perc'];
   total: number = 0;
   toReceiveTotalPeople: number = 0;
   receivedTotalPeople: number = 0;
   remainingTotalPeople: number = 0;
+  amountTotalCategory: number = 0;
+  percTotalCategory: number = 0;
   myTotal: number = 0;
   percMyTotal: string = '0,00%';
   othersTotal: number = 0;
@@ -45,6 +51,7 @@ export class CardPostingsComponent implements OnInit {
   accountsList?: Accounts[];
   cardPostingsPanelExpanded: boolean = false;
   peoplePanelExpanded: boolean = false;
+  categoryPanelExpanded: boolean = false;
   checkCard: boolean = false;
   darkTheme?: boolean;
 
@@ -52,6 +59,7 @@ export class CardPostingsComponent implements OnInit {
     private cardReceiptsService: CardReceiptsService,
     private peopleService: PeopleService,
     private accountService: AccountService,
+    private expenseService: ExpenseService,
     private categoryService: CategoryService,
     public dialog: MatDialog) { }
 
@@ -67,6 +75,7 @@ export class CardPostingsComponent implements OnInit {
 
     this.cardPostingsPanelExpanded = localStorage.getItem('cardPostingsPanelExpanded') === 'true';
     this.peoplePanelExpanded = localStorage.getItem('peoplePanelExpanded') === 'true';
+    this.categoryPanelExpanded = localStorage.getItem('categoryPanelExpanded') === 'true';
   }
 
   getLists() {
@@ -131,6 +140,8 @@ export class CardPostingsComponent implements OnInit {
       );
 
       this.getCardsPostingsPeople();
+
+      this.getExpensesByCategories();
     }
   }
 
@@ -148,6 +159,23 @@ export class CardPostingsComponent implements OnInit {
           this.cardpostingspeople = cardpostingspeople.filter(t => t.person !== '');
 
           this.getTotalPeople();
+
+          this.hideProgress = true;
+        },
+        error: () => this.hideProgress = true
+      }
+    );
+  }
+
+  getExpensesByCategories() {
+
+    this.expenseService.readByCategories(this.reference!, this.cardId!).subscribe(
+      {
+        next: expensesByCategories => {
+
+          this.expensesByCategories = expensesByCategories;
+
+          this.getTotalByCategories();
 
           this.hideProgress = true;
         },
@@ -185,6 +213,17 @@ export class CardPostingsComponent implements OnInit {
     this.remainingTotalPeople =
       this.cardpostingspeople ?
         this.cardpostingspeople.map(t => t.remaining).reduce((acc, value) => acc + value, 0) : 0;
+  }
+
+  getTotalByCategories() {
+
+    this.amountTotalCategory =
+      this.expensesByCategories ?
+        this.expensesByCategories.map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0;
+
+    this.percTotalCategory =
+      this.expensesByCategories ?
+        this.expensesByCategories.map(t => t.perc).reduce((acc, value) => acc + value, 0) : 0;
   }
 
   add() {
@@ -347,6 +386,16 @@ export class CardPostingsComponent implements OnInit {
   peoplePanelOpened() {
 
     localStorage.setItem('peoplePanelExpanded', 'true');
+  }
+
+  categoryPanelClosed() {
+
+    localStorage.setItem('categoryPanelExpanded', 'false');
+  }
+
+  categoryPanelOpened() {
+
+    localStorage.setItem('categoryPanelExpanded', 'true');
   }
 
   receive(cardspostingsdto: CardsPostingsDTO) {

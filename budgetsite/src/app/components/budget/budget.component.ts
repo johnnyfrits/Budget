@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs';
 import { BudgetTotals } from './../../models/budgettotals';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, Input, OnInit, SimpleChanges } from '@angular/core';
@@ -27,6 +26,7 @@ import { BudgetService } from 'src/app/services/budget/budget.service';
 import { Categories } from 'src/app/models/categories.model';
 import { CategoryService } from 'src/app/services/category/category.service';
 import { CategoryComponent } from '../category/category.component';
+import { ExpensesByCategories } from 'src/app/models/expensesbycategories';
 
 @Component({
   selector: 'app-budget',
@@ -40,11 +40,13 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
   expenses!: Expenses[];
   incomes!: Incomes[];
+  expensesByCategories!: ExpensesByCategories[];
   budgetTotals!: BudgetTotals;
   cardpostingspeople!: CardsPostingsDTO[];
   displayedExpensesColumns = ['description', 'toPay', 'paid', 'remaining', 'actions'];
   displayedIncomesColumns = ['description', 'toReceive', 'received', 'remaining', 'actions'];
   displayedPeopleColumns = ['person', 'toReceive', 'received', 'remaining', 'actions'];
+  displayedCategoriesColumns = ['category', 'amount', 'perc'];
   toPayTotal: number = 0;
   paidTotal: number = 0;
   expensesRemainingTotal?: number = 0;
@@ -55,14 +57,18 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   toReceiveTotalPeople: number = 0;
   receivedTotalPeople: number = 0;
   remainingTotalPeople: number = 0;
+  amountTotalCategory: number = 0;
+  percTotalCategory: number = 0;
   monthName: string = "";
   hideExpensesProgress: boolean = true;
   hideIncomesProgress: boolean = true;
   hidePeopleProgress: boolean = true;
+  hideCategoriesProgress: boolean = true;
   budgetPanelExpanded: boolean = false;
   expensesPanelExpanded: boolean = false;
   incomesPanelExpanded: boolean = false;
   peoplePanelExpanded: boolean = false;
+  categoryPanelExpanded: boolean = false;
   editing: boolean = false;
   cardsList?: Cards[];
   categoriesList?: Categories[];
@@ -124,6 +130,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     this.hideExpensesProgress = false;
     this.hideIncomesProgress = false;
     this.hidePeopleProgress = false;
+    this.hideCategoriesProgress = false;
 
     this.cardService.read().subscribe(
       {
@@ -135,6 +142,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
           this.hideExpensesProgress = false;
           this.hideIncomesProgress = false;
           this.hidePeopleProgress = false;
+          this.hideCategoriesProgress = false;
         }
       }
     );
@@ -149,6 +157,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
           this.hideExpensesProgress = false;
           this.hideIncomesProgress = false;
           this.hidePeopleProgress = false;
+          this.hideCategoriesProgress = false;
         }
       }
     );
@@ -162,11 +171,13 @@ export class BudgetComponent implements OnInit, AfterViewInit {
           this.hideExpensesProgress = true;
           this.hideIncomesProgress = true;
           this.hidePeopleProgress = true;
+          this.hideCategoriesProgress = true;
         },
         error: () => {
           this.hideExpensesProgress = true;
           this.hideIncomesProgress = true;
           this.hidePeopleProgress = true;
+          this.hideCategoriesProgress = true;
         }
       }
     );
@@ -177,6 +188,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     this.expensesPanelExpanded = localStorage.getItem('expensesPanelExpanded') === 'true';
     this.incomesPanelExpanded = localStorage.getItem('incomesPanelExpanded') === 'true';
     this.peoplePanelExpanded = localStorage.getItem('peoplePanelExpanded') === 'true';
+    this.categoryPanelExpanded = localStorage.getItem('categoryPanelExpanded') === 'true';
   }
 
   getData() {
@@ -186,6 +198,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
       this.hideExpensesProgress = false;
       this.hideIncomesProgress = false;
       this.hidePeopleProgress = false;
+      this.hideCategoriesProgress = false;
 
       this.expenses = [];
       this.incomes = [];
@@ -195,6 +208,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
       this.getIncomes();
       this.getCardsPostingsPeople();
       this.getBudgetTotals();
+      this.getExpensesByCategories();
     }
   }
 
@@ -263,6 +277,23 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     );
   }
 
+  getExpensesByCategories() {
+
+    this.expenseService.readByCategories(this.reference!, 0).subscribe(
+      {
+        next: expensesByCategories => {
+
+          this.expensesByCategories = expensesByCategories;
+
+          this.getTotalByCategories();
+
+          this.hideCategoriesProgress = true;
+        },
+        error: () => this.hideCategoriesProgress = true
+      }
+    );
+  }
+
   getIncomesTotals() {
 
     this.toReceiveTotal =
@@ -320,6 +351,17 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     this.remainingTotalPeople =
       this.cardpostingspeople ?
         this.cardpostingspeople.map(t => t.remaining).reduce((acc, value) => acc + value, 0) : 0;
+  }
+
+  getTotalByCategories() {
+
+    this.amountTotalCategory =
+      this.expensesByCategories ?
+        this.expensesByCategories.map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0;
+
+    this.percTotalCategory =
+      this.expensesByCategories ?
+        this.expensesByCategories.map(t => t.perc).reduce((acc, value) => acc + value, 0) : 0;
   }
 
   addExpense(): void {
@@ -628,6 +670,16 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   peoplePanelOpened() {
 
     localStorage.setItem('peoplePanelExpanded', 'true');
+  }
+
+  categoryPanelClosed() {
+
+    localStorage.setItem('categoryPanelExpanded', 'false');
+  }
+
+  categoryPanelOpened() {
+
+    localStorage.setItem('categoryPanelExpanded', 'true');
   }
 
   pay(expense: Expenses) {
