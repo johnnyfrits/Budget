@@ -260,7 +260,6 @@
       </mat-expansion-panel-header>
 
       <div class="row center">
-
         <div class="table-container mat-elevation-z8 mytable2">
           <table mat-table [dataSource]="cardpostingspeople">
             <!-- Descrição Column -->
@@ -327,10 +326,8 @@
         <span class="center warn">Categorias</span>
       </mat-expansion-panel-header>
 
-      <div class="mytable"
-        *ngIf="hideExpensesProgress && hideIncomesProgress && hidePeopleProgress && hideCategoriesProgress">
-        <div class="table-container mat-elevation-z8">
-
+      <div class="row center">
+        <div class="table-container mat-elevation-z8 mytable2">
           <table mat-table [dataSource]="expensesByCategories">
             <!-- Categoria Column -->
             <ng-container matColumnDef="category">
