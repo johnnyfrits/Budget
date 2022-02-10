@@ -121,6 +121,7 @@ $primary-light: map-get($light-theme, primary);
   --summary-background-color: #424242;
   --expansion-panel-header: var(--white-color);
   --accent: rgb(233, 30, 99);
+  --yellow: #ffc107;
 
   .bg-primary {
     background-color: var(--blue3-color) !important;
@@ -328,6 +329,10 @@ $primary-light: map-get($light-theme, primary);
 
   .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
     color: #FFFFFF;
+  }
+
+  .without-category {
+    color: var(--yellow) !important;
   }
 }
 

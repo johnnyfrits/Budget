@@ -66,7 +66,7 @@
             <ng-container matColumnDef="index">
               <th mat-header-cell *matHeaderCellDef>#</th>
               <td mat-cell *matCellDef="let row; let i = index"
-                [ngClass]="{'bold': row.people || row.parcels > 1, 'negative': row.amount < 0, 'positive': row.amount >= 0}"
+                [ngClass]="{'bold': row.people || row.parcels > 1, 'negative': row.amount < 0, 'positive': row.amount >= 0, 'without-category': row.others == 0 && row.categoryId == null}"
                 [ngStyle]="{color: row.people && !darkTheme ? row.people.color : ''}">
                 {{i + 1}}</td>
               <td mat-footer-cell *matFooterCellDef [ngClass]="total < 0 ? 'negative' : 'positive'"> Total </td>
@@ -76,7 +76,7 @@
             <ng-container matColumnDef="date">
               <th mat-header-cell *matHeaderCellDef>Data</th>
               <td mat-cell *matCellDef="let row"
-                [ngClass]="{'bold': row.people || row.parcels > 1, 'negative': row.amount < 0, 'positive': row.amount >= 0}"
+                [ngClass]="{'bold': row.people || row.parcels > 1, 'negative': row.amount < 0, 'positive': row.amount >= 0, 'without-category': row.others == 0 && row.categoryId == null}"
                 [ngStyle]="{color: row.people && !darkTheme ? row.people.color : ''}">
                 {{row.date | date: 'dd/MM'}}</td>
               <td mat-footer-cell *matFooterCellDef></td>
@@ -86,7 +86,7 @@
             <ng-container matColumnDef="description">
               <th mat-header-cell *matHeaderCellDef>Descrição</th>
               <td mat-cell *matCellDef="let row"
-                [ngClass]="{'bold': row.people || row.parcels > 1, 'negative': row.amount < 0, 'positive': row.amount >= 0}"
+                [ngClass]="{'bold': row.people || row.parcels > 1, 'negative': row.amount < 0, 'positive': row.amount >= 0, 'without-category': row.others == 0 && row.categoryId == null}"
                 [ngStyle]="{color: row.people && !darkTheme ? row.people.color : ''}">
                 {{row.description}}
                 <div class="small-text" *ngIf="row.peopleId !== null || row.parcels > 1">
@@ -101,7 +101,7 @@
             <ng-container matColumnDef="amount">
               <th mat-header-cell *matHeaderCellDef>Valor</th>
               <td mat-cell *matCellDef="let row"
-                [ngClass]="{'bold': row.people || row.parcels > 1, 'negative': row.amount < 0, 'positive': row.amount >= 0}"
+                [ngClass]="{'bold': row.people || row.parcels > 1, 'negative': row.amount < 0, 'positive': row.amount >= 0, 'without-category': row.others == 0 && row.categoryId == null}"
                 [ngStyle]="{color: row.people && !darkTheme ? row.people.color : ''}">
                 {{row.amount | currency : '':''}}</td>
               <td mat-footer-cell *matFooterCellDef [ngClass]="total < 0 ? 'negative' : 'positive'">
@@ -135,7 +135,8 @@
             <!-- Descrição Column -->
             <ng-container matColumnDef="person">
               <th mat-header-cell *matHeaderCellDef>Pessoa</th>
-              <td mat-cell *matCellDef="let row">{{row.person}}</td>
+              <td mat-cell *matCellDef="let row">{{row.person}}
+              </td>
               <td mat-footer-cell *matFooterCellDef> </td>
             </ng-container>
 
