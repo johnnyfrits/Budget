@@ -139,10 +139,6 @@ $primary-light: map-get($light-theme, primary);
     color: var(--red-color);
   }
 
-  .primary {
-    color: var(--blue3-color);
-  }
-
   .warn {
     color: var(--yellow);
   }
