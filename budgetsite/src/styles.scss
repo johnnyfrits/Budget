@@ -48,6 +48,26 @@
     padding-bottom: 15px;
     // margin-left: -20px;
   }
+
+  th.mat-header-cell:first-of-type,
+  td.mat-cell:first-of-type,
+  td.mat-footer-cell:first-of-type {
+    padding-left: 10px;
+  }
+
+  th.mat-header-cell:last-of-type,
+  td.mat-cell:last-of-type,
+  td.mat-footer-cell:last-of-type {
+    padding-right: 10px;
+  }
+
+  .icon-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+  }
 }
 
 // Define a light theme
@@ -123,6 +143,10 @@ $primary-light: map-get($light-theme, primary);
   --accent: rgb(233, 30, 99);
   --yellow: #ffc107;
 
+  .mat-table {
+    border-top: 1px solid #e0e0e0;
+  }
+
   .bg-primary {
     background-color: var(--blue3-color) !important;
   }
@@ -195,10 +219,10 @@ $primary-light: map-get($light-theme, primary);
     color: var(--red2-color);
   }
 
-  th.mat-header-cell {
-    border-bottom: 2px var(--white-color) !important;
-    color: var(--white-color) !important;
-  }
+  // th.mat-header-cell {
+  //   border-bottom: 2px var(--white-color) !important;
+  //   color: var(--white-color) !important;
+  // }
 
   .positive {
     color: var(--white-color);
@@ -355,6 +379,10 @@ $primary-light: map-get($light-theme, primary);
   --header-cell-color: var(--mat-footer-row-color);
   --nth-child-even-color: rgb(220, 235, 247);
   --nth-child-odd-color: rgba(200, 223, 242, 0.4);
+
+  .mat-table-sticky {
+    border-top: 1px solid #e0e0e0;
+  }
 
   .bg-primary {
     background-color: mat-color($primary-light) !important;
@@ -543,8 +571,6 @@ th.mat-header-cell {
   font-size: 1em !important;
   font-weight: bold !important;
   border-style: solid !important;
-  // border-bottom: 2px black !important;
-  // color: rgb(30, 31, 32) !important;
 }
 
 td.mat-cell {
@@ -553,7 +579,7 @@ td.mat-cell {
 
 tr.mat-row {
   cursor: pointer;
-  height: 2em !important;
+  height: 35px !important;
 }
 
 tr:nth-child(even) {
