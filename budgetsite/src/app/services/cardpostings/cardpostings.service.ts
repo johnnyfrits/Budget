@@ -16,6 +16,8 @@ export class CardPostingsService {
 
   create(cardPosting: CardsPostings): Observable<CardsPostings> {
 
+    cardPosting.others = cardPosting.peopleId ? true : false;
+
     return this.http.post<CardsPostings>(`${ApiUrls.cardspostings}${cardPosting.generateParcels ? '/allparcels' : ''}`, cardPosting).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
@@ -47,6 +49,8 @@ export class CardPostingsService {
   }
 
   update(cardPosting: CardsPostings): Observable<CardsPostings> {
+
+    cardPosting.others = cardPosting.peopleId ? true : false;
 
     return this.http.put<CardsPostings>(`${ApiUrls.cardspostings}${cardPosting.generateParcels ? '/allparcels' : ''}/${cardPosting.id}`, cardPosting).pipe(
       map(obj => obj),
