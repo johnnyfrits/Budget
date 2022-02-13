@@ -140,7 +140,6 @@ export class CardPostingsComponent implements OnInit {
       );
 
       this.getCardsPostingsPeople();
-
       this.getExpensesByCategories();
     }
   }
@@ -261,9 +260,7 @@ export class CardPostingsComponent implements OnInit {
               this.categoriesList = result.categoriesList;
 
               this.getTotalAmount();
-
               this.getCardsPostingsPeople();
-
               this.getExpensesByCategories();
 
               this.hideProgress = true;
@@ -328,7 +325,6 @@ export class CardPostingsComponent implements OnInit {
                 this.getTotalAmount();
 
                 this.getCardsPostingsPeople();
-
                 this.getExpensesByCategories();
 
                 this.hideProgress = true;
@@ -359,6 +355,7 @@ export class CardPostingsComponent implements OnInit {
                 });
 
                 this.getTotalAmount();
+                this.getExpensesByCategories();
 
                 this.categoriesList = result.categoriesList;
 

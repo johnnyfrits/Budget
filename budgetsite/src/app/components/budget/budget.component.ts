@@ -402,7 +402,6 @@ export class BudgetComponent implements OnInit, AfterViewInit {
               this.categoriesList = result.categoriesList;
 
               this.getExpensesTotals();
-
               this.getExpensesByCategories();
             },
             error: () => this.hideExpensesProgress = true
@@ -461,7 +460,6 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                 this.expenses = this.expenses.filter(t => t.id! != result.id!);
 
                 this.getExpensesTotals();
-
                 this.getExpensesByCategories();
               },
               error: () => this.hideExpensesProgress = true
@@ -495,6 +493,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                 this.categoriesList = result.categoriesList;
 
                 this.getExpensesTotals();
+                this.getExpensesByCategories();
 
                 if (localStorage.getItem('lastElementIdBudget') !== null) {
                   {
