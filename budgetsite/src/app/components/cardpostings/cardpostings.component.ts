@@ -264,6 +264,8 @@ export class CardPostingsComponent implements OnInit {
 
               this.getCardsPostingsPeople();
 
+              this.getExpensesByCategories();
+
               this.hideProgress = true;
             },
             error: () => this.hideProgress = true
@@ -326,6 +328,8 @@ export class CardPostingsComponent implements OnInit {
                 this.getTotalAmount();
 
                 this.getCardsPostingsPeople();
+
+                this.getExpensesByCategories();
 
                 this.hideProgress = true;
               },
