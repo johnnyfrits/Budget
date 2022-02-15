@@ -397,6 +397,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
       if (result) {
 
         this.hideExpensesProgress = false;
+        this.hideCategoriesProgress = false;
 
         result.position = this.expenses.length + 1;
 
@@ -415,7 +416,11 @@ export class BudgetComponent implements OnInit, AfterViewInit {
               this.getExpensesTotals();
               this.getExpensesByCategories();
             },
-            error: () => this.hideExpensesProgress = true
+            error: () => {
+
+              this.hideExpensesProgress = true;
+              this.hideCategoriesProgress = true;
+            }
           }
         );
       }
@@ -461,6 +466,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
       if (result) {
 
         this.hideExpensesProgress = false;
+        this.hideCategoriesProgress = false;
 
         if (result.deleting) {
 
@@ -473,7 +479,11 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                 this.getExpensesTotals();
                 this.getExpensesByCategories();
               },
-              error: () => this.hideExpensesProgress = true
+              error: () => {
+
+                this.hideExpensesProgress = true;
+                this.hideCategoriesProgress = true;
+              }
             }
           );
         } else {
@@ -506,7 +516,11 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                 this.getExpensesTotals();
                 this.getExpensesByCategories();
               },
-              error: () => this.hideExpensesProgress = true
+              error: () => {
+
+                this.hideExpensesProgress = true;
+                this.hideCategoriesProgress = true;
+              }
             }
           );
         }
@@ -881,11 +895,17 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     //   row.expanded = false;
     // })
 
+    row.expanding = true;
+
     if (row.expanded) {
 
       row.expanded = false;
 
+      row.expanding = false;
+
     } else {
+
+      row.expanded = true;
 
       if (row.expenses == null && row.cardsPostings == null) {
 
@@ -896,17 +916,15 @@ export class BudgetComponent implements OnInit, AfterViewInit {
               row.expenses = expensesByCategories.expenses;
               row.cardsPostings = expensesByCategories.cardsPostings;
 
-              row.expanded = true;
-
-              this.hideCategoriesProgress = true;
+              row.expanding = false;
             },
-            error: () => this.hideCategoriesProgress = true
+            error: () => row.expanding = false
           }
         );
       }
       else {
 
-        row.expanded = true;
+        row.expanding = false;
       }
     }
   }

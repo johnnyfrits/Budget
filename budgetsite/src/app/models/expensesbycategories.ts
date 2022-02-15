@@ -11,4 +11,5 @@ export interface ExpensesByCategories {
 	expenses?: Expenses[];
 	cardsPostings?: CardsPostings[];
 	expanded?: boolean;
+	expanding?: boolean;
 }
