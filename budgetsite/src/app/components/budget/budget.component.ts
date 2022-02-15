@@ -1,8 +1,9 @@
-import { BudgetTotals } from './../../models/budgettotals';
+import { CardsPostings } from 'src/app/models/cardspostings.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { AfterViewInit, ChangeDetectorRef, Component, Inject, Input, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ClipboardService } from 'ngx-clipboard';
 import { Messenger } from 'src/app/common/messenger';
 import { Accounts } from 'src/app/models/accounts.model';
@@ -18,7 +19,7 @@ import { ExpenseService } from 'src/app/services/expense/expense.service';
 import { IncomeService } from 'src/app/services/income/income.service';
 import { AccountsPostings } from 'src/app/models/accountspostings.model';
 import { AccountPostingsService } from 'src/app/services/accountpostings/accountpostings.service';
-import { Scroll } from './../../common/scroll';
+import { BudgetTotals } from './../../models/budgettotals';
 
 import { default as _rollupMoment } from 'moment';
 import * as _moment from 'moment';
@@ -31,7 +32,14 @@ import { ExpensesByCategories } from 'src/app/models/expensesbycategories';
 @Component({
   selector: 'app-budget',
   templateUrl: './budget.component.html',
-  styleUrls: ['./budget.component.scss']
+  styleUrls: ['./budget.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ]
 })
 export class BudgetComponent implements OnInit, AfterViewInit {
 
@@ -43,10 +51,14 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   expensesByCategories!: ExpensesByCategories[];
   budgetTotals!: BudgetTotals;
   cardpostingspeople!: CardsPostingsDTO[];
+
+  expended: boolean = false;
+
   displayedExpensesColumns = ['description', 'toPay', 'paid', 'remaining', 'actions'];
   displayedIncomesColumns = ['description', 'toReceive', 'received', 'remaining', 'actions'];
   displayedPeopleColumns = ['person', 'toReceive', 'received', 'remaining', 'actions'];
   displayedCategoriesColumns = ['category', 'amount', 'perc'];
+
   toPayTotal: number = 0;
   paidTotal: number = 0;
   expensesRemainingTotal?: number = 0;
@@ -104,7 +116,6 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     private clipboardService: ClipboardService,
     private accountPostingsService: AccountPostingsService,
     private budget: BudgetService,
-    private scroll: Scroll
   ) { }
 
   ngOnInit(): void {
@@ -357,11 +368,11 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
     this.amountTotalCategory =
       this.expensesByCategories ?
-        this.expensesByCategories.map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0;
+        this.expensesByCategories.map(t => t.amount!).reduce((acc, value) => acc + value, 0) : 0;
 
     this.percTotalCategory =
       this.expensesByCategories ?
-        this.expensesByCategories.map(t => t.perc).reduce((acc, value) => acc + value, 0) : 0;
+        this.expensesByCategories.map(t => t.perc!).reduce((acc, value) => acc + value, 0) : 0;
   }
 
   addExpense(): void {
@@ -494,12 +505,6 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
                 this.getExpensesTotals();
                 this.getExpensesByCategories();
-
-                if (localStorage.getItem('lastElementIdBudget') !== null) {
-                  {
-                    this.scroll.scrollTo(localStorage.getItem('lastElementIdBudget'));
-                  }
-                }
               },
               error: () => this.hideExpensesProgress = true
             }
@@ -868,6 +873,42 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
       this.incomeService.update(expense).subscribe();
     });
+  }
+
+  toggleRow(row: ExpensesByCategories) {
+    // Uncommnet to open only single row at once
+    // ELEMENT_DATA.forEach(row => {
+    //   row.expanded = false;
+    // })
+
+    if (row.expanded) {
+
+      row.expanded = false;
+
+    } else {
+
+      if (row.expenses == null && row.cardsPostings == null) {
+
+        this.expenseService.readByCategory(row).subscribe(
+          {
+            next: expensesByCategories => {
+
+              row.expenses = expensesByCategories.expenses;
+              row.cardsPostings = expensesByCategories.cardsPostings;
+
+              row.expanded = true;
+
+              this.hideCategoriesProgress = true;
+            },
+            error: () => this.hideCategoriesProgress = true
+          }
+        );
+      }
+      else {
+
+        row.expanded = true;
+      }
+    }
   }
 }
 

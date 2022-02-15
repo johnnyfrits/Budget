@@ -332,7 +332,7 @@
 
       <div class="row center">
         <div class="table-container mat-elevation-z8 mytable2">
-          <table mat-table [dataSource]="expensesByCategories">
+          <table mat-table [dataSource]="expensesByCategories" multiTemplateDataRows>
             <!-- Categoria Column -->
             <ng-container matColumnDef="category">
               <th mat-header-cell *matHeaderCellDef>Categoria</th>
@@ -355,8 +355,96 @@
               <td mat-footer-cell *matFooterCellDef>{{percTotalCategory | currency : '':''}}%</td>
             </ng-container>
 
+            <ng-container matColumnDef="expandedDetail">
+              <td mat-cell *matCellDef="let row" [attr.colspan]="displayedCategoriesColumns.length"
+                [ngClass]="{'td-expanded-detail': row.expanded}">
+
+                <!-- EXPENSES -->
+                <div *ngIf="row.expenses?.length > 0"
+                  [ngClass]="{'expanded-detail': true, 'div-expanded-detail1': row.expanded}"
+                  [@detailExpand]="row.expanded ? 'expanded' : 'collapsed'">
+                  <div
+                    [ngClass]="{'table-container mat-elevation-z8': true, 'div-expanded-detail2 table-detail': row.expanded}">
+                    <p class="header-title-detail">Despesas</p>
+                    <table mat-table [dataSource]="row.expenses">
+                      <!-- Descrição Column -->
+                      <ng-container matColumnDef="description-detail">
+                        <th mat-header-cell *matHeaderCellDef>Descrição</th>
+                        <td mat-cell *matCellDef="let row" class="warn">{{row.description}}</td>
+                        <td mat-footer-cell *matFooterCellDef> </td>
+                      </ng-container>
+
+                      <!-- Valor Column -->
+                      <ng-container matColumnDef="amount-detail">
+                        <th mat-header-cell *matHeaderCellDef>Valor</th>
+                        <td mat-cell *matCellDef="let row" class="warn">{{row.toPay | currency : '':''}}</td>
+                        <td mat-footer-cell *matFooterCellDef class="warn">{{0 | currency : '':''}}</td>
+                      </ng-container>
+
+                      <!-- <tr mat-header-row *matHeaderRowDef="['expenses-header-detail'] sticky: true"></tr> -->
+                      <tr mat-header-row *matHeaderRowDef="['description-detail', 'amount-detail']; sticky: true"></tr>
+                      <tr mat-row *matRowDef="let row; columns: ['description-detail', 'amount-detail']"></tr>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- CARDS-POSTINGS -->
+                <div *ngIf="row.cardsPostings?.length > 0"
+                  [ngClass]="{'expanded-detail': true, 'div-expanded-detail1': row.expanded}"
+                  [@detailExpand]="row.expanded ? 'expanded' : 'collapsed'">
+                  <div
+                    [ngClass]="{'table-container mat-elevation-z8': true, 'div-expanded-detail2 table-detail': row.expanded}">
+                    <p class="header-title-detail">Cartões</p>
+                    <table mat-table [dataSource]="row.cardsPostings">
+                      <!-- Cartão Column -->
+                      <ng-container matColumnDef="card-detail">
+                        <th mat-header-cell *matHeaderCellDef>Cartão</th>
+                        <td mat-cell *matCellDef="let row">
+                          <span class="card-detail"
+                            [ngStyle]="{backgroundColor: row.card.background, color: row.card.color}">
+                            {{row.card.name}}
+                          </span>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef> </td>
+                      </ng-container>
+
+                      <!-- Data Column -->
+                      <ng-container matColumnDef="date-detail">
+                        <th mat-header-cell *matHeaderCellDef>Data</th>
+                        <td mat-cell *matCellDef="let row" class="warn">{{row.date | date: 'dd/MM'}}</td>
+                        <td mat-footer-cell *matFooterCellDef> </td>
+                      </ng-container>
+
+                      <!-- Descrição Column -->
+                      <ng-container matColumnDef="description-detail">
+                        <th mat-header-cell *matHeaderCellDef>Descrição</th>
+                        <td mat-cell *matCellDef="let row" class="warn">{{row.description}}</td>
+                        <td mat-footer-cell *matFooterCellDef> </td>
+                      </ng-container>
+
+                      <!-- Valor Column -->
+                      <ng-container matColumnDef="amount-detail">
+                        <th mat-header-cell *matHeaderCellDef>Valor</th>
+                        <td mat-cell *matCellDef="let row" class="warn">{{row.amount | currency : '':''}}</td>
+                        <td mat-footer-cell *matFooterCellDef>{{0 | currency : '':''}}</td>
+                      </ng-container>
+
+                      <tr mat-header-row
+                        *matHeaderRowDef="['card-detail', 'date-detail', 'description-detail', 'amount-detail']; sticky: true">
+                      </tr>
+                      <tr mat-row
+                        *matRowDef="let row; columns: ['card-detail', 'date-detail', 'description-detail', 'amount-detail']">
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
             <tr mat-header-row *matHeaderRowDef="displayedCategoriesColumns; sticky: true"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedCategoriesColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedCategoriesColumns" (click)="toggleRow(row)">
+            </tr>
+            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="height-detail-row"></tr>
             <tr mat-footer-row *matFooterRowDef="displayedCategoriesColumns; sticky: true"></tr>
           </table>
         </div>

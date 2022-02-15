@@ -38,6 +38,14 @@ export class ExpenseService {
     );
   }
 
+  readByCategory(ec: ExpensesByCategories): Observable<ExpensesByCategories> {
+
+    return this.http.get<ExpensesByCategories>(`${ApiUrls.expenses}/CategoriesById?Id=${ec.id}&Reference=${ec.reference}&CardId=${ec.cardId}`).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
   update(expense: Expenses): Observable<Expenses> {
 
     return this.http.put<Expenses>(`${ApiUrls.expenses}${expense.generateParcels || expense.repeatParcels ? '/allparcels' : ''}/${expense.id}${expense.generateParcels || expense.repeatParcels ? `?repeat=${expense.repeatParcels ?? false}&qtyMonths=${expense.monthsToRepeat ?? 0}` : ''}`, expense).pipe(

@@ -219,10 +219,10 @@ $primary-light: map-get($light-theme, primary);
     color: var(--red2-color);
   }
 
-  // th.mat-header-cell {
-  //   border-bottom: 2px var(--white-color) !important;
-  //   color: var(--white-color) !important;
-  // }
+  th.mat-header-cell {
+    // border-bottom: 2px var(--white-color) !important;
+    color: var(--white-color) !important;
+  }
 
   .positive {
     color: var(--white-color);
@@ -361,6 +361,14 @@ $primary-light: map-get($light-theme, primary);
 
   .without-category {
     color: var(--yellow) !important;
+  }
+
+  .div-expanded-detail1 {
+    background: #ffff0000 !important;
+  }
+
+  .div-expanded-detail2 {
+    background: #00000030 !important;
   }
 }
 
@@ -569,7 +577,7 @@ body {
 th.mat-header-cell {
   height: 4em !important;
   font-size: 1em !important;
-  font-weight: bold !important;
+  font-weight: 500 !important;
   border-style: solid !important;
 }
 

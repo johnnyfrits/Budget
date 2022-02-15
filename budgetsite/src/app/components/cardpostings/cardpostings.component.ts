@@ -218,11 +218,11 @@ export class CardPostingsComponent implements OnInit {
 
     this.amountTotalCategory =
       this.expensesByCategories ?
-        this.expensesByCategories.map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0;
+        this.expensesByCategories.map(t => t.amount!).reduce((acc, value) => acc + value, 0) : 0;
 
     this.percTotalCategory =
       this.expensesByCategories ?
-        this.expensesByCategories.map(t => t.perc).reduce((acc, value) => acc + value, 0) : 0;
+        this.expensesByCategories.map(t => t.perc!).reduce((acc, value) => acc + value, 0) : 0;
   }
 
   add() {
