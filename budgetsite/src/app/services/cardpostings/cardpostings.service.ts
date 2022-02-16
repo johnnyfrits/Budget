@@ -48,6 +48,14 @@ export class CardPostingsService {
     );
   }
 
+  readByPeopleId(peopleId?: string, reference?: string, cardId?: number,): Observable<CardsPostings[]> {
+
+    return this.http.get<CardsPostings[]>(`${ApiUrls.cardspostings}/PeopleById?peopleId=${peopleId}&reference=${reference}&cardId=${cardId}`).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
   update(cardPosting: CardsPostings): Observable<CardsPostings> {
 
     cardPosting.others = cardPosting.peopleId ? true : false;

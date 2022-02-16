@@ -40,6 +40,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSortModule } from '@angular/material/sort';
 
 import { ClipboardModule } from 'ngx-clipboard';
 
@@ -123,7 +124,7 @@ registerLocaleData(localePt);
     MatRadioModule,
     MatCheckboxModule,
     MatMenuModule,
-
+    MatSortModule,
     ClipboardModule,
   ],
   providers: [

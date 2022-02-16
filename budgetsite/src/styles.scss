@@ -68,6 +68,14 @@
     width: 30px;
     height: 30px;
   }
+
+  .card-detail {
+    display: inline-block;
+    min-width: 50px;
+    border-radius: 4px;
+    padding: 5px;
+    text-align: center;
+  }
 }
 
 // Define a light theme
@@ -369,6 +377,23 @@ $primary-light: map-get($light-theme, primary);
 
   .div-expanded-detail2 {
     background: #00000030 !important;
+  }
+
+  th.mat-header-cell:first-of-type.mat-sort-header-container {
+    justify-content: flex-end !important;
+  }
+
+  // .mat-sort-header-container:first-of-type {
+  //   display: flex;
+  //   cursor: pointer;
+  //   align-items: center;
+  //   letter-spacing: normal;
+  //   outline: 0;
+  //   justify-content: flex-start;
+  // }
+
+  .mat-sort-header-arrow {
+    color: var(--yellow);
   }
 }
 

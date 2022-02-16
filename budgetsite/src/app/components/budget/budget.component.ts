@@ -1,6 +1,5 @@
-import { CardsPostings } from 'src/app/models/cardspostings.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { animate, state, style, transition, trigger } from '@angular/animations';
@@ -20,24 +19,27 @@ import { IncomeService } from 'src/app/services/income/income.service';
 import { AccountsPostings } from 'src/app/models/accountspostings.model';
 import { AccountPostingsService } from 'src/app/services/accountpostings/accountpostings.service';
 import { BudgetTotals } from './../../models/budgettotals';
-
-import { default as _rollupMoment } from 'moment';
-import * as _moment from 'moment';
 import { BudgetService } from 'src/app/services/budget/budget.service';
 import { Categories } from 'src/app/models/categories.model';
 import { CategoryService } from 'src/app/services/category/category.service';
 import { CategoryComponent } from '../category/category.component';
 import { ExpensesByCategories } from 'src/app/models/expensesbycategories';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-budget',
   templateUrl: './budget.component.html',
   styleUrls: ['./budget.component.scss'],
   animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    trigger('detailExpand', [state('collapsed', style({ height: '0px', minHeight: '0' })),
+    state('expanded', style({ height: '*' })),
+    transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+    trigger('peopleDetailExpand', [state('collapsed', style({ height: '0px', minHeight: '0' })),
+    state('expanded', style({ height: '*' })),
+    transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ]
 })
@@ -51,6 +53,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   expensesByCategories!: ExpensesByCategories[];
   budgetTotals!: BudgetTotals;
   cardpostingspeople!: CardsPostingsDTO[];
+  dataSource = new MatTableDataSource(this.expensesByCategories);
 
   expended: boolean = false;
 
@@ -116,7 +119,10 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     private clipboardService: ClipboardService,
     private accountPostingsService: AccountPostingsService,
     private budget: BudgetService,
+    private _liveAnnouncer: LiveAnnouncer,
   ) { }
+
+  @ViewChild(MatSort) sort!: MatSort;
 
   ngOnInit(): void {
 
@@ -125,6 +131,20 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
 
     this.cd.detectChanges();
+  }
+
+  /** Announce the change in sort state for assistive technology. */
+  announceSortChange(sortState: any) {
+    // This example uses English messages. If your application supports
+    // multiple language, you would internationalize these strings.
+    // Furthermore, you can customize the message to add additional
+    // details about the values being sorted.
+
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
   }
 
   referenceChanges(reference: string) {
@@ -295,6 +315,10 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         next: expensesByCategories => {
 
           this.expensesByCategories = expensesByCategories;
+
+          this.dataSource = new MatTableDataSource(this.expensesByCategories)
+
+          this.dataSource.sort = this.sort;
 
           this.getTotalByCategories();
 
@@ -915,6 +939,51 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
               row.expenses = expensesByCategories.expenses;
               row.cardsPostings = expensesByCategories.cardsPostings;
+
+              row.expanding = false;
+            },
+            error: () => row.expanding = false
+          }
+        );
+      }
+      else {
+
+        row.expanding = false;
+      }
+    }
+  }
+
+  peopleToggleRow(row: CardsPostingsDTO, event: any) {
+
+    if (event.target.textContent! == "more_vert") {
+
+      return;
+    }
+
+    // Uncommnet to open only single row at once
+    // ELEMENT_DATA.forEach(row => {
+    //   row.expanded = false;
+    // })
+
+    row.expanding = true;
+
+    if (row.expanded) {
+
+      row.expanded = false;
+
+      row.expanding = false;
+
+    } else {
+
+      row.expanded = true;
+
+      if (row.cardsPostings == null) {
+
+        this.cardPostingsService.readByPeopleId(row.person, row.reference, row.cardId).subscribe(
+          {
+            next: cardPostings => {
+
+              row.cardsPostings = cardPostings;
 
               row.expanding = false;
             },

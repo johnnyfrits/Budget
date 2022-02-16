@@ -107,10 +107,11 @@ tr.height-detail-row {
   margin-top: 10px;
 }
 
-.card-detail {
-  display: inline-block;
-  min-width: 50px;
-  border-radius: 4px;
-  padding: 5px;
-  text-align: center;
+.mat-sort-header-container {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  letter-spacing: normal;
+  outline: 0;
+  justify-content: flex-end !important;
 }
