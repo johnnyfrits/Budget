@@ -53,7 +53,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   expensesByCategories!: ExpensesByCategories[];
   budgetTotals!: BudgetTotals;
   cardpostingspeople!: CardsPostingsDTO[];
-  dataSource = new MatTableDataSource(this.expensesByCategories);
+  dataSourcePeople = new MatTableDataSource(this.cardpostingspeople);
+  dataSourceCategories = new MatTableDataSource(this.expensesByCategories);
 
   expended: boolean = false;
 
@@ -297,7 +298,12 @@ export class BudgetComponent implements OnInit, AfterViewInit {
       {
         next: cardpostingspeople => {
 
-          this.cardpostingspeople = cardpostingspeople.sort((a, b) => a.person.localeCompare(b.person)).filter(t => t.person !== '');
+          // this.cardpostingspeople = cardpostingspeople.sort((a, b) => a.person.localeCompare(b.person)).filter(t => t.person !== '');
+          this.cardpostingspeople = cardpostingspeople.filter(t => t.person !== '');
+
+          this.dataSourcePeople = new MatTableDataSource(this.cardpostingspeople)
+
+          this.dataSourcePeople.sort = this.sort;
 
           this.getTotalPeople();
 
@@ -316,9 +322,9 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
           this.expensesByCategories = expensesByCategories;
 
-          this.dataSource = new MatTableDataSource(this.expensesByCategories)
+          this.dataSourceCategories = new MatTableDataSource(this.expensesByCategories)
 
-          this.dataSource.sort = this.sort;
+          this.dataSourceCategories.sort = this.sort;
 
           this.getTotalByCategories();
 

@@ -108,10 +108,10 @@
                 {{total | currency : '':''}}</td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: false"></tr>
             <tr mat-row (click)="editOrDelete(row, $event)" *matRowDef="let row; columns: displayedColumns" cdkDrag
               [cdkDragData]=row [ngClass]="{'card-yield-checked': row.isSelected}"></tr>
-            <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: false"></tr>
           </table>
         </div>
       </div>
@@ -178,9 +178,9 @@
               <td mat-footer-cell *matFooterCellDef></td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedPeopleColumns; sticky: true"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedPeopleColumns; sticky: false"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedPeopleColumns"></tr>
-            <tr mat-footer-row *matFooterRowDef="displayedPeopleColumns; sticky: true"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedPeopleColumns; sticky: false"></tr>
           </table>
         </div>
       </div>
@@ -223,9 +223,9 @@
               <td mat-footer-cell *matFooterCellDef>{{percTotalCategory | currency : '':''}}%</td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedCategoriesColumns; sticky: true"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedCategoriesColumns; sticky: false"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedCategoriesColumns"></tr>
-            <tr mat-footer-row *matFooterRowDef="displayedCategoriesColumns; sticky: true"></tr>
+            <tr mat-footer-row *matFooterRowDef="displayedCategoriesColumns; sticky: false"></tr>
           </table>
         </div>
       </div>
