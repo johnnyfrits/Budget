@@ -79,7 +79,7 @@
     </mat-expansion-panel>
   </mat-accordion>
 
-  <!-- EXPENSES TABLE -->
+  <!-- EXPENSES -->
   <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false"
     *ngIf="hideExpensesProgress || hideIncomesProgress || hidePeopleProgress || hideCategoriesProgress">
     <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false" [(expanded)]="expensesPanelExpanded"
@@ -171,7 +171,7 @@
     </mat-expansion-panel>
   </mat-accordion>
 
-  <!-- INCOMES TABLE -->
+  <!-- INCOMES -->
   <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false"
     *ngIf="hideExpensesProgress || hideIncomesProgress || hidePeopleProgress || hideCategoriesProgress">
     <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false" [(expanded)]="incomesPanelExpanded"
@@ -266,8 +266,8 @@
 
       <div class="row center">
         <div class="table-container mat-elevation-z8 mytable2">
-          <table mat-table [dataSource]="dataSourcePeople" multiTemplateDataRows matSort matSortActive="person"
-            matSortDirection="asc" (matSortChange)="announceSortChange($event)">
+          <table mat-table #sortPeople="matSort" [dataSource]="dataSourcePeople" multiTemplateDataRows matSort
+            matSortActive="person" matSortDirection="asc" (matSortChange)="announceSortChange($event)">
             <!-- Descrição Column -->
             <ng-container matColumnDef="person">
               <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="after" start="asc"
@@ -404,8 +404,8 @@
 
       <div class="row center">
         <div class="table-container mat-elevation-z8 mytable2">
-          <table mat-table multiTemplateDataRows [dataSource]="dataSourceCategories" matSort matSortActive="amount"
-            matSortDirection="desc" (matSortChange)="announceSortChange($event)">
+          <table mat-table #sortCategories="matSort" multiTemplateDataRows [dataSource]="dataSourceCategories" matSort
+            matSortActive="amount" matSortDirection="desc" (matSortChange)="announceSortChange($event)">
             <!-- Categoria Column -->
             <ng-container matColumnDef="category">
               <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="after" start="asc"

@@ -123,7 +123,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     private _liveAnnouncer: LiveAnnouncer,
   ) { }
 
-  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('sortPeople') sortPeople!: MatSort;
+  @ViewChild('sortCategories') sortCategories!: MatSort;
 
   ngOnInit(): void {
 
@@ -303,7 +304,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
           this.dataSourcePeople = new MatTableDataSource(this.cardpostingspeople)
 
-          this.dataSourcePeople.sort = this.sort;
+          this.dataSourcePeople.sort = this.sortPeople;
 
           this.getTotalPeople();
 
@@ -324,7 +325,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
           this.dataSourceCategories = new MatTableDataSource(this.expensesByCategories)
 
-          this.dataSourceCategories.sort = this.sort;
+          this.dataSourceCategories.sort = this.sortCategories;
 
           this.getTotalByCategories();
 
