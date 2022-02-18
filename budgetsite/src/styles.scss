@@ -395,6 +395,14 @@ $primary-light: map-get($light-theme, primary);
   .mat-sort-header-arrow {
     color: var(--yellow);
   }
+
+  .card-yield-checked {
+    background-color: yellow !important;
+
+    td.mat-cell {
+      color: #393939 !important;
+    }
+  }
 }
 
 .light-theme {
@@ -586,6 +594,10 @@ $primary-light: map-get($light-theme, primary);
   .warn {
     color: #f44336;
   }
+
+  .card-yield-checked {
+    background-color: yellow !important;
+  }
 }
 
 
@@ -733,10 +745,6 @@ input[type="number"] {
 
 .mat-menu-panel {
   max-width: none !important;
-}
-
-.card-yield-checked {
-  background-color: yellow !important;
 }
 
 .mat-dialog-title {
