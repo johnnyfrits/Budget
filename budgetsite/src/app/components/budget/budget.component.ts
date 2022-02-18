@@ -926,8 +926,6 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     //   row.expanded = false;
     // })
 
-    debugger
-
     row.expanding = true;
 
     if (row.expanded) {
