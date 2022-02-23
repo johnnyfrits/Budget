@@ -107,6 +107,12 @@
       </div>
 
       <p>
+        <mat-checkbox [(ngModel)]="expenses.scheduled" formControlName="scheduledFormControl">
+          Pagamento agendado
+        </mat-checkbox>
+      </p>
+
+      <p>
         <mat-checkbox [(ngModel)]="expenses.generateParcels" formControlName="generateParcelsFormControl"
           [disabled]="disableGenerateParcelsCheck" (change)="onGenerateParcelsChanged($event)">
           Gerar as demais parcelas

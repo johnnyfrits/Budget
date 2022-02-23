@@ -115,3 +115,9 @@ tr.height-detail-row {
   outline: 0;
   justify-content: flex-end !important;
 }
+
+.scheduled {
+  color: var(--red-color);
+  font-size: 20px;
+  padding-left: 15px;
+}

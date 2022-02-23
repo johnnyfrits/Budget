@@ -17,6 +17,7 @@ export interface Expenses {
 	parcelNumber?: number;
 	parcels?: number;
 	categoryId?: number;
+	scheduled?: boolean;
 	editing?: boolean;
 	deleting?: boolean;
 	generateParcels?: boolean;

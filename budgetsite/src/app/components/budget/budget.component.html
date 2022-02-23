@@ -104,7 +104,10 @@
               <th mat-header-cell *matHeaderCellDef>Descrição</th>
               <td mat-cell *matCellDef="let row"
                 [ngClass]="{'without-category': row.cardId == null && row.categoryId == null}">
-                {{row.description}}<span *ngIf="row.parcels > 1">&nbsp;({{row.parcelNumber}}/{{row.parcels}}) </span>
+                <div style="display: flex;">
+                  {{row.description}}<span *ngIf="row.parcels > 1">&nbsp;({{row.parcelNumber}}/{{row.parcels}}) </span>
+                  <span *ngIf="row.scheduled" class="material-icons scheduled">schedule</span>
+                </div>
                 <div class="small-text" *ngIf="row.dueDate !== null">
                   <span><i>Venc.:&nbsp;{{row.dueDate | date: 'dd/MM'}}</i></span>
                 </div>
@@ -358,7 +361,11 @@
                       <!-- Descrição Column -->
                       <ng-container matColumnDef="description-detail">
                         <th mat-header-cell *matHeaderCellDef>Descrição</th>
-                        <td mat-cell *matCellDef="let row" class="warn">{{row.description}}</td>
+                        <td mat-cell *matCellDef="let row" class="warn">{{row.description}}
+                          <div class="small-text" *ngIf="row.peopleId !== null || row.parcels > 1">
+                            <span *ngIf="row.parcels > 1">({{row.parcelNumber}}/{{row.parcels}}) </span>
+                          </div>
+                        </td>
                         <td mat-footer-cell *matFooterCellDef> </td>
                       </ng-container>
 
@@ -458,7 +465,17 @@
                       <!-- Descrição Column -->
                       <ng-container matColumnDef="description-detail">
                         <th mat-header-cell *matHeaderCellDef>Descrição</th>
-                        <td mat-cell *matCellDef="let row" class="warn">{{row.description}}</td>
+                        <!-- <td mat-cell *matCellDef="let row" class="warn">{{row.description}}</td> -->
+                        <td mat-cell *matCellDef="let row" class="warn">
+                          <div style="display: flex;">
+                            {{row.description}}<span
+                              *ngIf="row.parcels > 1">&nbsp;({{row.parcelNumber}}/{{row.parcels}}) </span>
+                            <span *ngIf="row.scheduled" class="material-icons scheduled">schedule</span>
+                          </div>
+                          <div class="small-text" *ngIf="row.dueDate !== null">
+                            <span><i>Venc.:&nbsp;{{row.dueDate | date: 'dd/MM'}}</i></span>
+                          </div>
+                        </td>
                         <td mat-footer-cell *matFooterCellDef> </td>
                       </ng-container>
 

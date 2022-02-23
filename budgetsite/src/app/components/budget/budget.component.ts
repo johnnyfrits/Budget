@@ -485,6 +485,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         dueDate: expense.dueDate,
         parcelNumber: expense.parcelNumber,
         parcels: expense.parcels,
+        scheduled: expense.scheduled,
         editing: this.editing,
         deleting: false,
         cardsList: this.cardsList,
@@ -540,6 +541,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                   t.dueDate = result.dueDate;
                   t.parcelNumber = result.parcelNumber;
                   t.parcels = result.parcels;
+                  t.scheduled = result.scheduled;
                 });
 
                 this.categoriesList = result.categoriesList;
@@ -764,6 +766,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
             expense.paid = +(expense.paid + Math.abs(result.amount)).toFixed(2);
             expense.remaining = +(expense.toPay - expense.paid).toFixed(2);
+            expense.scheduled = false;
 
             this.getExpensesTotals();
 
@@ -1034,6 +1037,7 @@ export class ExpensesDialog implements OnInit {
     generateParcelsFormControl: new FormControl(''),
     repeatParcelsFormControl: new FormControl(''),
     monthsToRepeatFormControl: new FormControl(''),
+    scheduledFormControl: new FormControl(''),
   });
 
   constructor(
