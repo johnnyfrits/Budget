@@ -27,6 +27,7 @@ export class AccountPostingsComponent implements OnInit {
   hideProgress: boolean = true;
   editing: boolean = false;
   maxBalance: number = 0;
+  minBalance: number = 0;
 
   constructor(
     private accountPostingsService: AccountPostingsService,
@@ -79,9 +80,16 @@ export class AccountPostingsComponent implements OnInit {
 
           let runningValue = this.previousBalance ?? 0;
 
+          this.minBalance = runningValue;
+          this.maxBalance = 0;
+
           this.accountpostings.forEach(accountposting => {
 
             accountposting.runningAmount = runningValue += accountposting.amount;
+
+            this.minBalance = accountposting.runningAmount < this.minBalance ?
+              accountposting.runningAmount :
+              this.minBalance;
 
             this.maxBalance = accountposting.runningAmount > this.maxBalance ?
               accountposting.runningAmount :

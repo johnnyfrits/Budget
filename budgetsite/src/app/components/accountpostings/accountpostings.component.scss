@@ -34,3 +34,16 @@ table {
 tr.mat-footer-row {
   font-weight: bold;
 }
+
+.min-balance,
+.max-balance {
+  display: inline-block;
+  text-align: right;
+  width: 80px;
+}
+
+.min-balance-label,
+.max-balance-label {
+  display: inline-block;
+  width: 85px;
+}

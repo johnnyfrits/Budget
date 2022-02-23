@@ -98,6 +98,13 @@
   <div class="row" *ngIf="hideProgress">
     <p></p>
     <p></p>
-    <span>Maior saldo:&nbsp;<b>{{maxBalance | currency : '':''}}</b></span>
+    <div>
+      <span class="min-balance-label">Menor saldo:</span><span
+        class="min-balance"><b>{{minBalance | currency : '':''}}</b></span>
+    </div>
+    <div>
+      <span class="min-balance-label">Maior saldo:</span><span
+        class="max-balance"><b>{{maxBalance | currency : '':''}}</b></span>
+    </div>
     <p></p>
   </div>
