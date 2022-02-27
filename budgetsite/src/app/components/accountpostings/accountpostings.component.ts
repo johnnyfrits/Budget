@@ -210,6 +210,8 @@ export class AccountPostingsComponent implements OnInit {
                   t.type = result.type;
                 });
 
+                this.accountpostings = [...this.accountpostings.filter(ap => ap.reference === this.reference)];
+
                 this.getTotalAmount();
                 this.getAccountTotals();
               },

@@ -12,6 +12,12 @@
     <div mat-dialog-content>
 
       <div class="row">
+        <div class="col">
+          <app-datepickerreference [(reference)]="incomes.reference"></app-datepickerreference>
+        </div>
+      </div>
+
+      <div class="row">
         <mat-form-field appearance="fill">
           <mat-label>Descrição</mat-label>
           <input type="text" id="descriptionFormControl" required matInput formControlName="descriptionFormControl"

@@ -472,7 +472,9 @@ $primary-light: map-get($light-theme, primary);
   }
 
   .previous-month,
-  .next-month {
+  .previous-month-reference,
+  .next-month,
+  .next-month-reference {
     color: var(--previous-next-month-color);
   }
 

@@ -1,0 +1,21 @@
+<br>
+<div class="row common-datepicker" style="margin-top: -20px !important;">
+  <div class="col">
+    <mat-form-field appearance="fill" class="calendar">
+      <mat-label>Referência</mat-label>
+      <input matInput [matDatepicker]="dp" [formControl]="date">
+      <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+      <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
+        (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
+      </mat-datepicker>
+    </mat-form-field>
+    <button mat-icon-button (click)=setPreviousMonth() class="previous-month-reference" aria-label="Mês anterior"
+      matTooltip="Mês anterior">
+      <mat-icon>arrow_back_ios</mat-icon>
+    </button>
+    <button mat-icon-button (click)=setNextMonth() class="next-month-reference" aria-label="Próximo mês"
+      matTooltip="Próximo mês">
+      <mat-icon>arrow_forward_ios</mat-icon>
+    </button>
+  </div>
+</div>

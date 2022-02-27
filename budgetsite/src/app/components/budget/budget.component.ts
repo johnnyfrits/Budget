@@ -544,6 +544,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                   t.scheduled = result.scheduled;
                 });
 
+                this.expenses = [...this.expenses.filter(e => e.reference === this.reference)];
+
                 this.categoriesList = result.categoriesList;
 
                 this.getExpensesTotals();
@@ -676,6 +678,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                   t.accountId = result.accountId;
                   t.type = result.type;
                 });
+
+                this.incomes = [...this.incomes.filter(i => i.reference === this.reference)];
 
                 this.getIncomesTotals();
               },

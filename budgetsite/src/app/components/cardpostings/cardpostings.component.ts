@@ -354,6 +354,8 @@ export class CardPostingsComponent implements OnInit {
                   t.categoryId = result.categoryId;
                 });
 
+                this.cardpostings = [...this.cardpostings.filter(cp => cp.reference === this.reference)];
+
                 this.getTotalAmount();
                 this.getExpensesByCategories();
 

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { default as _rollupMoment, Moment } from 'moment';
 import * as _moment from 'moment';
 
@@ -52,10 +53,25 @@ let moment = _rollupMoment || _moment;
   moment.locale('pt-BR');
 }
 
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'DD MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'DD MMMM YYYY',
+  },
+};
+
 @Component({
   selector: 'app-datepickerinput',
   templateUrl: './datepickerinput.component.html',
-  styleUrls: ['./datepickerinput.component.scss']
+  styleUrls: ['./datepickerinput.component.scss'],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  ]
 })
 export class DatepickerinputComponent implements OnInit {
 

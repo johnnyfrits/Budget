@@ -59,6 +59,7 @@ import { DatepickerinputComponent } from './shared/datepickerinput/datepickerinp
 import { SummaryComponent } from './components/summary/summary.component';
 import { SummaryViewComponent } from './views/summary-view/summary-view.component';
 import { CategoryComponent } from './components/category/category.component';
+import { DatepickerreferenceComponent } from './shared/datepickerreference/datepickerreference.component';
 
 registerLocaleData(localePt);
 
@@ -85,7 +86,8 @@ registerLocaleData(localePt);
     DatepickerinputComponent,
     SummaryComponent,
     SummaryViewComponent,
-    CategoryComponent
+    CategoryComponent,
+    DatepickerreferenceComponent
   ],
   imports: [
     BrowserModule,
