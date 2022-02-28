@@ -51,9 +51,3 @@ tr:nth-child(even) {
     @include color($theme);
   }
 }
-
-.previous-month-reference,
-.next-month-reference {
-  // width: 20px;
-  // height: 20px;
-}

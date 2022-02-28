@@ -60,6 +60,7 @@ import { SummaryComponent } from './components/summary/summary.component';
 import { SummaryViewComponent } from './views/summary-view/summary-view.component';
 import { CategoryComponent } from './components/category/category.component';
 import { DatepickerreferenceComponent } from './shared/datepickerreference/datepickerreference.component';
+import { PeopleComponent } from './components/people/people.component';
 
 registerLocaleData(localePt);
 
@@ -87,7 +88,8 @@ registerLocaleData(localePt);
     SummaryComponent,
     SummaryViewComponent,
     CategoryComponent,
-    DatepickerreferenceComponent
+    DatepickerreferenceComponent,
+    PeopleComponent
   ],
   imports: [
     BrowserModule,

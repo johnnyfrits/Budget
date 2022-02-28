@@ -16,6 +16,7 @@ import { Categories } from 'src/app/models/categories.model';
 import { CategoryService } from 'src/app/services/category/category.service';
 import { ExpenseService } from 'src/app/services/expense/expense.service';
 import { ExpensesByCategories } from 'src/app/models/expensesbycategories';
+import { PeopleComponent } from '../people/people.component';
 
 @Component({
   selector: 'app-cardpostings',
@@ -486,7 +487,9 @@ export class CardPostingsDialog implements OnInit {
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<CardPostingsDialog>,
     @Inject(MAT_DIALOG_DATA) public cardPosting: CardsPostings,
-    private categoryService: CategoryService) { }
+    private categoryService: CategoryService,
+    private peopleService: PeopleService
+  ) { }
 
   ngOnInit(): void {
 
@@ -553,6 +556,34 @@ export class CardPostingsDialog implements OnInit {
   setTitle() {
 
     return 'Compra - ' + (this.cardPosting.editing ? 'Editar' : 'Incluir');
+  }
+
+  addPeople() {
+
+    this.editing = false;
+
+    const dialogRef = this.dialog.open(PeopleComponent, {
+      width: '400px',
+      data: {
+        editing: this.editing
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result) {
+
+        this.peopleService.create(result).subscribe(
+          {
+            next: people => {
+
+              this.cardPosting.peopleList = [...this.cardPosting.peopleList!, people].sort((a, b) => a.id.localeCompare(b.id));
+              this.cardPosting.peopleId = people.id;
+            }
+          }
+        );
+      }
+    });
   }
 
   addCategory() {
