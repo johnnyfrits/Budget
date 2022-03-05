@@ -15,9 +15,30 @@ export class AccountService {
 
   constructor(private http: HttpClient, private messenger: Messenger) { }
 
+  create(account: Accounts): Observable<Accounts> {
+    return this.http.post<Accounts>(ApiUrls.accounts, account).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
   read(): Observable<Accounts[]> {
 
     return this.http.get<Accounts[]>(ApiUrls.accounts).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
+  update(account: Accounts): Observable<Accounts> {
+    return this.http.put<Accounts>(`${ApiUrls.accounts}/${account.id}`, account).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
+  delete(id: number): Observable<Accounts> {
+    return this.http.delete<Accounts>(`${ApiUrls.accounts}/${id}`).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );

@@ -46,7 +46,15 @@
     font-size: 40px;
     cursor: pointer;
     padding-bottom: 15px;
-    // margin-left: -20px;
+  }
+
+  .add-account {
+    font-size: 40px;
+    cursor: pointer;
+    text-align: center;
+    width: 50px;
+    vertical-align: middle;
+    margin-top: -2px;
   }
 
   th.mat-header-cell:first-of-type,

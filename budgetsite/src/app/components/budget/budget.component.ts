@@ -444,6 +444,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
               this.categoriesList = result.categoriesList;
 
+              this.getBudgetTotals();
               this.getExpensesTotals();
               this.getExpensesByCategories();
             },
@@ -508,6 +509,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
                 this.expenses = this.expenses.filter(t => t.id! != result.id!);
 
+                this.getBudgetTotals();
                 this.getExpensesTotals();
                 this.getExpensesByCategories();
               },
@@ -548,6 +550,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
                 this.categoriesList = result.categoriesList;
 
+                this.getBudgetTotals();
                 this.getExpensesTotals();
                 this.getExpensesByCategories();
               },
@@ -597,6 +600,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
               this.incomes = [...this.incomes, incomes]; // somente funcionou assim
 
+              this.getBudgetTotals();
               this.getIncomesTotals();
             },
             error: () => this.hideIncomesProgress = true
@@ -652,6 +656,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
                 this.incomes = this.incomes.filter(t => t.id! != result.id!);
 
+                this.getBudgetTotals();
                 this.getIncomesTotals();
               },
               error: () => this.hideIncomesProgress = true
@@ -681,6 +686,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
                 this.incomes = [...this.incomes.filter(i => i.reference === this.reference)];
 
+                this.getBudgetTotals();
                 this.getIncomesTotals();
               },
               error: () => this.hideIncomesProgress = true

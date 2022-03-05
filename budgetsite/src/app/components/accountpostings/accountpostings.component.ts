@@ -5,7 +5,6 @@ import { AccountPostingsService } from '../../services/accountpostings/accountpo
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Scroll } from './../../common/scroll';
 
 @Component({
   selector: 'app-accountpostings',
@@ -32,8 +31,7 @@ export class AccountPostingsComponent implements OnInit {
   constructor(
     private accountPostingsService: AccountPostingsService,
     private accountService: AccountService,
-    public dialog: MatDialog,
-    private Scroll: Scroll
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {

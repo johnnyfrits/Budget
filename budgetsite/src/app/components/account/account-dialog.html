@@ -1,0 +1,87 @@
+<form [formGroup]="accountFormGroup">
+
+  <div class="cancel">
+    <button class="default-button" mat-mini-fab matTooltip="Cancelar" color="accent" aria-label="Cancelar"
+      (click)="cancel()">
+      <mat-icon class="default-icon">close</mat-icon>
+    </button>
+  </div>
+
+  <div class="">
+    <button class="account-button" [ngClass]="{'line': buttonName === account.name}" mat-button
+      *ngFor="let account of accounts" [ngStyle]="{backgroundColor: account.background, color: account.color}"
+      (click)="setAccount(account)">{{account.name}}
+    </button>
+    <span class="material-icons add-account" matTooltip="Incluir Conta" matTooltipPosition="above"
+      (click)="addAccount()">
+      add_circle_outline
+    </span>
+  </div>
+
+  <hr>
+
+  <div mat-dialog-content>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Nome</mat-label>
+        <input type="text" id="nameFormControl" required matInput formControlName="nameFormControl" cdkFocusInitial
+          (ngModelChange)="onNameChange($event)">
+        <mat-error *ngIf="accountFormGroup.get('nameFormControl')?.hasError('required')">
+          Campo <strong>obrigatório</strong>.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill" style="width: 180px;">
+        <mat-label>Cor de fundo</mat-label>
+        <input matInput [ngxMatColorPicker]="picker1" id="backgroundFormControl"
+          formControlName="backgroundFormControl">
+        <ngx-mat-color-toggle matSuffix [for]="picker1"></ngx-mat-color-toggle>
+        <ngx-mat-color-picker #picker1></ngx-mat-color-picker>
+        <mat-error *ngIf="accountFormGroup.get('backgroundFormControl')?.hasError('required')">
+          Campo <strong>obrigatório</strong>.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill" style="width: 180px;">
+        <mat-label>Cor do texto</mat-label>
+        <input matInput [ngxMatColorPicker]="picker2" id="colorFormControl" formControlName="colorFormControl">
+        <ngx-mat-color-toggle matSuffix [for]="picker2"></ngx-mat-color-toggle>
+        <ngx-mat-color-picker #picker2></ngx-mat-color-picker>
+        <mat-error *ngIf="accountFormGroup.get('colorFormControl')?.hasError('required')">
+          Campo <strong>obrigatório</strong>.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-checkbox formControlName="disabledFormControl">
+        Desativar Conta
+      </mat-checkbox>
+    </div>
+
+    <div class="center">
+      <button class="account-button" mat-button
+        [ngStyle]="{backgroundColor: accountFormGroup.get('backgroundFormControl')?.value, color: accountFormGroup.get('colorFormControl')?.value}">{{buttonText}}
+      </button>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div mat-dialog-actions>
+        <button [disabled]="!accountFormGroup.valid" class="default-button" mat-mini-fab matTooltip="Salvar"
+          matTooltipPosition="right" class="bg-primary" aria-label="Salvar" [mat-dialog-close]="accounts"
+          (click)="save()">
+          <mat-icon class="default-icon">save</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</form>

@@ -47,7 +47,7 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { HeaderComponent } from './components/template/header/header.component';
 import { NavComponent } from './components/template/nav/nav.component';
 import { AccountViewComponent } from './views/account-view/account-view.component';
-import { AccountComponent } from './components/account/account.component';
+import { AccountComponent, AccountDialog } from './components/account/account.component';
 import { AccountPostingsComponent, AccountPostingsDialog } from './components/accountpostings/accountpostings.component';
 import { CardViewComponent } from './views/card-view/card-view.component';
 import { CardComponent } from './components/card/card.component';
@@ -62,6 +62,8 @@ import { CategoryComponent } from './components/category/category.component';
 import { DatepickerreferenceComponent } from './shared/datepickerreference/datepickerreference.component';
 import { PeopleComponent } from './components/people/people.component';
 
+import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
+
 registerLocaleData(localePt);
 
 @NgModule({
@@ -70,6 +72,7 @@ registerLocaleData(localePt);
     HeaderComponent,
     NavComponent,
     AccountComponent,
+    AccountDialog,
     AccountPostingsComponent,
     CardComponent,
     AccountViewComponent,
@@ -130,6 +133,8 @@ registerLocaleData(localePt);
     MatMenuModule,
     MatSortModule,
     ClipboardModule,
+
+    NgxMatColorPickerModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' },
@@ -139,7 +144,8 @@ registerLocaleData(localePt);
         dragStartDelay: 1000,
         listOrientation: 'vertical'
       }
-    }
+    },
+    { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }
   ],
   bootstrap: [AppComponent]
 })

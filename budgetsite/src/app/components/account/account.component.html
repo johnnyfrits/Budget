@@ -12,8 +12,15 @@
       <div class="">
         <mat-progress-bar mode="query" color="accent" *ngIf="!hideProgress"></mat-progress-bar>
         <button class="account-button" [ngClass]="{'line': buttonName === account.name}" mat-button
-          *ngFor="let account of accounts" [ngStyle]="{backgroundColor: account.background, color: account.color}"
-          (click)=setAccount(account)>{{account.name}}</button>
+          *ngFor="let account of getAccountsNotDisabled(accounts)"
+          [ngStyle]="{backgroundColor: account.background, color: account.color}"
+          (click)="setAccount(account)">{{account.name}}
+        </button>
+        <span class="material-icons add-account" matTooltip="Incluir/Editar Contas" matTooltipPosition="above"
+          (click)="accountDialog()">
+          <!-- add_circle_outline -->
+          format_list_bulleted
+        </span>
       </div>
     </mat-expansion-panel>
   </mat-accordion>

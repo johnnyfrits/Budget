@@ -169,8 +169,9 @@
                   <mat-icon class="people-actions">more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item id="menu-incomes" (click)="receive(row)">
-                    <mat-icon id="menu-icon-incomes">price_check</mat-icon>
+                  <button mat-menu-item [id]="row.remaining > 0 ? 'menu-incomes' : ''" (click)="receive(row)"
+                    [disabled]="row.remaining <= 0">
+                    <mat-icon [id]="row.remaining > 0 ? 'menu-icon-incomes': ''">price_check</mat-icon>
                     <span>Receber</span>
                   </button>
                 </mat-menu>
