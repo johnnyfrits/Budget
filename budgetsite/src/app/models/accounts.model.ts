@@ -9,4 +9,6 @@ export interface Accounts {
 	totalBalance?: number | undefined;
 	previousBalance?: number | undefined;
 	totalYields?: number | undefined;
+	editing?: boolean;
+	deleting?: boolean;
 }

@@ -82,6 +82,14 @@
         </button>
       </div>
     </div>
+    <div class="col" *ngIf="id">
+      <div mat-dialog-actions>
+        <button class="default-button" mat-mini-fab matTooltip="Excluir" matTooltipPosition="left" color="warn"
+          aria-label="Excluir" (click)="delete()">
+          <mat-icon class="default-icon">delete</mat-icon>
+        </button>
+      </div>
+    </div>
   </div>
 
 </form>

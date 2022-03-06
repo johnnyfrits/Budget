@@ -77,7 +77,7 @@ export class AccountComponent implements OnInit {
     this.hideProgress = true;
   }
 
-  getAccountsNotDisabled(accounts?: Accounts[]) {
+  getAccountsNotDisabled(accounts: Accounts[]) {
 
     return accounts?.filter(account => account.disabled == null || account.disabled == false);
   }
@@ -112,6 +112,48 @@ export class AccountComponent implements OnInit {
             }
           );
         }
+        else if (result.editing) {
+
+          this.accountService.update(result).subscribe(
+            {
+              next: () => {
+
+                this.accounts!.filter(t => t.id! === result.id!).map(t => {
+                  t.id = result.id;
+                  t.userId = result.userId;
+                  t.name = result.name;
+                  t.color = result.color;
+                  t.background = result.background;
+                  t.disabled = result.disabled;
+                });
+
+                if (result.disabled && this.accounts!.length > 0) {
+
+                  this.setAccount(this.accounts![0]);
+                }
+                else {
+
+                  this.setAccount(result);
+                }
+              },
+              error: () => this.hideProgress = true
+            }
+          );
+        }
+        else {
+
+          this.accountService.create(result).subscribe(
+            {
+              next: account => {
+
+                this.accounts!.push(account);
+
+                this.setAccount(account);
+              },
+              error: () => this.hideProgress = true
+            }
+          );
+        }
       }
     });
   }
@@ -130,6 +172,9 @@ export class AccountDialog implements OnInit, AfterViewInit {
   id?: number;
   buttonName: string = "";
   buttonText: string = "Nome da Conta";
+
+  editing: boolean = false;
+  deleting: boolean = false;
 
   accountFormGroup = new FormGroup({
 
@@ -167,14 +212,25 @@ export class AccountDialog implements OnInit, AfterViewInit {
       id: this.id,
       userId: 1,
       name: this.accountFormGroup.get('nameFormControl')?.value,
-      background: this.accountFormGroup.get('backgroundFormControl')?.value,
-      color: this.accountFormGroup.get('colorFormControl')?.value
+      background: '#' + this.picker1._pickerInput.value!.hex,
+      color: '#' + this.picker2._pickerInput.value!.hex,
+      disabled: this.accountFormGroup.get('disabledFormControl')?.value,
+      editing: this.id != undefined,
+      deleting: false
     };
 
     this.dialogRef.close(account);
   }
 
-  delete(account: Accounts): void {
+  delete(): void {
+
+    let account: Accounts = {
+      id: this.id,
+      userId: 1,
+      name: this.accountFormGroup.get('nameFormControl')?.value,
+      editing: false,
+      deleting: true
+    };
 
     this.dialogRef.close(account);
   }
