@@ -1,3 +1,5 @@
+import { Accounts } from "./accounts.model";
+
 export interface AccountsPostings {
 	id?: number;
 	accountId: number;
@@ -12,6 +14,7 @@ export interface AccountsPostings {
 	cardIdReceipt?: number;
 	expenseId?: number;
 	incomeId?: number;
+	accountsList?: Accounts[];
 	editing?: boolean;
 	deleting?: boolean;
 }

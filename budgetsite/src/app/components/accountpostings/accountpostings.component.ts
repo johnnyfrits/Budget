@@ -5,6 +5,7 @@ import { AccountPostingsService } from '../../services/accountpostings/accountpo
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Accounts } from 'src/app/models/accounts.model';
 
 @Component({
   selector: 'app-accountpostings',
@@ -28,6 +29,8 @@ export class AccountPostingsComponent implements OnInit {
   maxBalance: number = 0;
   minBalance: number = 0;
 
+  accountsList?: Accounts[];
+
   constructor(
     private accountPostingsService: AccountPostingsService,
     private accountService: AccountService,
@@ -36,6 +39,8 @@ export class AccountPostingsComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.getLists();
+
     this.getTotalAmount();
   }
 
@@ -43,6 +48,21 @@ export class AccountPostingsComponent implements OnInit {
     // if (changes['accountId']?.currentValue || changes['reference']?.currentValue) {
 
     this.refresh();
+  }
+
+  getLists() {
+
+    this.accountService.read().subscribe(
+      {
+        next: accounts => {
+
+          this.accountsList = accounts.sort((a, b) => a.name.localeCompare(b.name));
+
+          this.hideProgress = true;
+        },
+        error: () => this.hideProgress = true
+      }
+    );
   }
 
   refresh() {
@@ -119,7 +139,8 @@ export class AccountPostingsComponent implements OnInit {
         reference: this.reference,
         accountId: this.accountId,
         editing: this.editing,
-        type: "R"
+        type: "R",
+        accountsList: this.accountsList
       }
     });
 
@@ -127,7 +148,7 @@ export class AccountPostingsComponent implements OnInit {
 
       if (result) {
 
-        this.hideProgress = false;
+        // this.hideProgress = false;
 
         result.amount = result.amount * (result.type === 'P' ? -1 : 1);
 
@@ -137,12 +158,15 @@ export class AccountPostingsComponent implements OnInit {
           {
             next: accountpostings => {
 
-              this.accountpostings.push(accountpostings);
+              if (accountpostings.reference === this.reference && accountpostings.accountId === this.accountId) {
+
+                this.accountpostings.push(accountpostings);
+              }
 
               this.getTotalAmount();
               this.getAccountTotals();
             },
-            error: () => this.hideProgress = true
+            // error: () => this.hideProgress = true
           }
         );
       }
@@ -165,6 +189,7 @@ export class AccountPostingsComponent implements OnInit {
         amount: accountPosting.amount,
         note: accountPosting.note,
         editing: this.editing,
+        accountsList: this.accountsList,
         deleting: false,
         type: accountPosting.type
       }
@@ -174,7 +199,7 @@ export class AccountPostingsComponent implements OnInit {
 
       if (result) {
 
-        this.hideProgress = false;
+        //this.hideProgress = false;
 
         if (result.deleting) {
 
@@ -187,7 +212,7 @@ export class AccountPostingsComponent implements OnInit {
                 this.getTotalAmount();
                 this.getAccountTotals();
               },
-              error: () => this.hideProgress = true
+              // error: () => this.hideProgress = true
             }
           );
         } else {
@@ -208,12 +233,12 @@ export class AccountPostingsComponent implements OnInit {
                   t.type = result.type;
                 });
 
-                this.accountpostings = [...this.accountpostings.filter(ap => ap.reference === this.reference)];
+                this.accountpostings = [...this.accountpostings.filter(ap => ap.reference === this.reference && ap.accountId === this.accountId)];
 
                 this.getTotalAmount();
                 this.getAccountTotals();
               },
-              error: () => this.hideProgress = true
+              // error: () => this.hideProgress = true
             }
           );
         }
@@ -247,6 +272,7 @@ export class AccountPostingsDialog implements OnInit {
 
   accountPostingFormGroup = new FormGroup({
 
+    accountIdFormControl: new FormControl('', Validators.required),
     descriptionFormControl: new FormControl('', Validators.required),
     amountFormControl: new FormControl('', Validators.required),
     noteFormControl: new FormControl(''),

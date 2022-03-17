@@ -4,4 +4,5 @@ export interface Cards {
 	name: string;
 	color?: string;
 	background?: string;
+	disabled?: boolean;
 }

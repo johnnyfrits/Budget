@@ -75,4 +75,8 @@ export class CardComponent implements OnInit, AfterViewInit {
 
     this.hideProgress = true;
   }
+
+  cardDialog() {
+
+  }
 }

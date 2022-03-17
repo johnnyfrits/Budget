@@ -17,6 +17,8 @@ import { CategoryService } from 'src/app/services/category/category.service';
 import { ExpenseService } from 'src/app/services/expense/expense.service';
 import { ExpensesByCategories } from 'src/app/models/expensesbycategories';
 import { PeopleComponent } from '../people/people.component';
+import { CardService } from 'src/app/services/card/card.service';
+import { Cards } from 'src/app/models/cards.model';
 
 @Component({
   selector: 'app-cardpostings',
@@ -49,6 +51,7 @@ export class CardPostingsComponent implements OnInit {
   editing: boolean = false;
   peopleList?: People[];
   categoriesList?: Categories[];
+  cardsList?: Cards[];
   accountsList?: Accounts[];
   cardPostingsPanelExpanded: boolean = false;
   peoplePanelExpanded: boolean = false;
@@ -62,6 +65,7 @@ export class CardPostingsComponent implements OnInit {
     private accountService: AccountService,
     private expenseService: ExpenseService,
     private categoryService: CategoryService,
+    private cardService: CardService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -98,6 +102,18 @@ export class CardPostingsComponent implements OnInit {
         next: categories => {
 
           this.categoriesList = categories.sort((a, b) => a.name.localeCompare(b.name));
+
+          this.hideProgress = true;
+        },
+        error: () => this.hideProgress = true
+      }
+    );
+
+    this.cardService.read().subscribe(
+      {
+        next: cards => {
+
+          this.cardsList = cards.sort((a, b) => a.name.localeCompare(b.name));
 
           this.hideProgress = true;
         },
@@ -240,6 +256,7 @@ export class CardPostingsComponent implements OnInit {
         parcelNumber: 1,
         peopleList: this.peopleList,
         categoriesList: this.categoriesList,
+        cardsList: this.cardsList,
         editing: this.editing
       }
     });
@@ -248,7 +265,7 @@ export class CardPostingsComponent implements OnInit {
 
       if (result) {
 
-        this.hideProgress = false;
+        //this.hideProgress = false;
 
         result.position = this.cardpostings.length + 1;
 
@@ -256,7 +273,10 @@ export class CardPostingsComponent implements OnInit {
           {
             next: cardpostings => {
 
-              this.cardpostings = [...this.cardpostings, cardpostings];
+              if (cardpostings.reference === this.reference && cardpostings.cardId === this.cardId) {
+
+                this.cardpostings = [...this.cardpostings, cardpostings];
+              }
 
               this.categoriesList = result.categoriesList;
 
@@ -264,9 +284,9 @@ export class CardPostingsComponent implements OnInit {
               this.getCardsPostingsPeople();
               this.getExpensesByCategories();
 
-              this.hideProgress = true;
+              //this.hideProgress = true;
             },
-            error: () => this.hideProgress = true
+            //error: () => this.hideProgress = true
           }
         );
       }
@@ -304,6 +324,7 @@ export class CardPostingsComponent implements OnInit {
         categoryId: cardPosting.categoryId,
         peopleList: this.peopleList,
         categoriesList: this.categoriesList,
+        cardsList: this.cardsList,
         editing: this.editing,
         deleting: false
       }
@@ -313,7 +334,7 @@ export class CardPostingsComponent implements OnInit {
 
       if (result) {
 
-        this.hideProgress = false;
+        //this.hideProgress = false;
 
         if (result.deleting) {
 
@@ -328,9 +349,9 @@ export class CardPostingsComponent implements OnInit {
                 this.getCardsPostingsPeople();
                 this.getExpensesByCategories();
 
-                this.hideProgress = true;
+                //this.hideProgress = true;
               },
-              error: () => this.hideProgress = true
+              //error: () => this.hideProgress = true
             }
           );
         } else {
@@ -342,6 +363,7 @@ export class CardPostingsComponent implements OnInit {
                 this.cardpostings.filter(t => t.id === result.id).map(t => {
                   t.date = result.date;
                   t.reference = result.reference;
+                  t.cardId = result.cardId;
                   t.position = result.position;
                   t.description = result.description;
                   t.peopleId = result.peopleId;
@@ -355,16 +377,16 @@ export class CardPostingsComponent implements OnInit {
                   t.categoryId = result.categoryId;
                 });
 
-                this.cardpostings = [...this.cardpostings.filter(cp => cp.reference === this.reference)];
+                this.cardpostings = [...this.cardpostings.filter(cp => cp.reference === this.reference && cp.cardId === this.cardId)];
 
                 this.getTotalAmount();
                 this.getExpensesByCategories();
 
                 this.categoriesList = result.categoriesList;
 
-                this.hideProgress = true;
+                //this.hideProgress = true;
               },
-              error: () => this.hideProgress = true
+              //error: () => this.hideProgress = true
             }
           );
         }
@@ -472,6 +494,7 @@ export class CardPostingsDialog implements OnInit {
 
   cardPostingFormGroup = new FormGroup(
     {
+      cardIdFormControl: new FormControl('', Validators.required),
       descriptionFormControl: new FormControl('', Validators.required),
       totalAmountFormControl: new FormControl('', Validators.required),
       amountFormControl: new FormControl('', Validators.required),

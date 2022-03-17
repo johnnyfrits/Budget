@@ -33,6 +33,19 @@
       </div>
 
       <div class="row">
+        <div class="col-10">
+          <mat-form-field appearance="fill" floatLabel="always" style="width: 100%;">
+            <mat-label>Conta</mat-label>
+            <mat-select mat-input [(ngModel)]="accountPosting.accountId" formControlName="accountIdFormControl">
+              <mat-option *ngFor="let c of accountPosting.accountsList" [value]="c.id">{{ c.name }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col-2"></div>
+      </div>
+
+
+      <div class="row">
         <div class="col">
           <app-datepickerinput [currentDate]="accountPosting.date" (currentDateChanged)="currentDateChanged($event)">
           </app-datepickerinput>

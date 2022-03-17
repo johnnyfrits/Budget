@@ -21,6 +21,7 @@ export interface CardsPostings {
 	categoryId?: number;
 	peopleList?: People[];
 	categoriesList?: Categories[];
+	cardsList?: Cards[];
 	editing?: boolean;
 	deleting?: boolean;
 	isSelected?: boolean;
