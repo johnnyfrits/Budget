@@ -147,7 +147,7 @@ export class CardPostingsComponent implements OnInit {
         {
           next: cardpostings => {
 
-            this.cardpostings = cardpostings;
+            this.cardpostings = cardpostings.sort((a, b) => (b.position! - a.position!));
 
             this.cardPostingsLength = this.cardpostings.length;
 
