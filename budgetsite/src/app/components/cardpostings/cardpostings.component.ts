@@ -58,6 +58,7 @@ export class CardPostingsComponent implements OnInit {
   categoryPanelExpanded: boolean = false;
   checkCard: boolean = false;
   darkTheme?: boolean;
+  cardPostingsLength: number = 0;
 
   constructor(private cardPostingsService: CardPostingsService,
     private cardReceiptsService: CardReceiptsService,
@@ -147,6 +148,8 @@ export class CardPostingsComponent implements OnInit {
           next: cardpostings => {
 
             this.cardpostings = cardpostings;
+
+            this.cardPostingsLength = this.cardpostings.length;
 
             this.getTotalAmount();
 
@@ -275,7 +278,9 @@ export class CardPostingsComponent implements OnInit {
 
               if (cardpostings.reference === this.reference && cardpostings.cardId === this.cardId) {
 
-                this.cardpostings = [...this.cardpostings, cardpostings];
+                this.cardpostings = [...this.cardpostings, cardpostings].sort((a, b) => (b.position! - a.position!));
+
+                this.cardPostingsLength = this.cardpostings.length;
               }
 
               this.categoriesList = result.categoriesList;

@@ -28,6 +28,7 @@ export class AccountPostingsComponent implements OnInit {
   editing: boolean = false;
   maxBalance: number = 0;
   minBalance: number = 0;
+  accountPostingsLength: number = 0;
 
   accountsList?: Accounts[];
 
@@ -75,7 +76,9 @@ export class AccountPostingsComponent implements OnInit {
         {
           next: accountpostings => {
 
-            this.accountpostings = accountpostings;
+            this.accountpostings = accountpostings.sort((a, b) => (b.position! - a.position!));
+
+            this.accountPostingsLength = this.accountpostings.length;
 
             this.getTotalAmount();
             this.getAccountTotals();
@@ -160,7 +163,9 @@ export class AccountPostingsComponent implements OnInit {
 
               if (accountpostings.reference === this.reference && accountpostings.accountId === this.accountId) {
 
-                this.accountpostings.push(accountpostings);
+                this.accountpostings = [...this.accountpostings, accountpostings].sort((a, b) => (b.position! - a.position!));
+
+                this.accountPostingsLength = this.accountpostings.length;
               }
 
               this.getTotalAmount();

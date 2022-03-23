@@ -68,7 +68,7 @@
               <td mat-cell *matCellDef="let row; let i = index"
                 [ngClass]="{'bold': row.people || row.parcels > 1, 'negative': row.amount < 0, 'positive': row.amount >= 0, 'without-category': row.others == 0 && row.categoryId == null}"
                 [ngStyle]="{color: row.people && !darkTheme ? row.people.color : ''}">
-                {{i + 1}}</td>
+                {{cardPostingsLength - i}}</td>
               <td mat-footer-cell *matFooterCellDef [ngClass]="total < 0 ? 'negative' : 'positive'"> Total </td>
             </ng-container>
 

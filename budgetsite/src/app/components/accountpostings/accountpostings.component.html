@@ -45,7 +45,7 @@
             <th mat-header-cell *matHeaderCellDef>#</th>
             <td mat-cell *matCellDef="let row; let i = index"
               [ngClass]="row.type == 'Y' ? 'yield' : (row.amount < 0 ? 'negative' : 'positive')">
-              {{i + 1}}</td>
+              {{accountPostingsLength - i}}</td>
             <td mat-footer-cell *matFooterCellDef [ngStyle]="{color: total < 0 ? 'negative' : 'positive'}"> Total </td>
           </ng-container>
 
