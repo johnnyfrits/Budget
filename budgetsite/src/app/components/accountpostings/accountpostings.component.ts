@@ -41,8 +41,6 @@ export class AccountPostingsComponent implements OnInit {
   ngOnInit(): void {
 
     this.getLists();
-
-    this.getTotalAmount();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -76,7 +74,7 @@ export class AccountPostingsComponent implements OnInit {
         {
           next: accountpostings => {
 
-            this.accountpostings = accountpostings.sort((a, b) => (b.position! - a.position!));
+            this.accountpostings = accountpostings;
 
             this.accountPostingsLength = this.accountpostings.length;
 
@@ -116,6 +114,8 @@ export class AccountPostingsComponent implements OnInit {
               accountposting.runningAmount :
               this.maxBalance;
           });
+
+          this.accountpostings = this.accountpostings.sort((a, b) => (b.position! - a.position!));
 
           this.hideProgress = true;
         },
@@ -163,7 +163,7 @@ export class AccountPostingsComponent implements OnInit {
 
               if (accountpostings.reference === this.reference && accountpostings.accountId === this.accountId) {
 
-                this.accountpostings = [...this.accountpostings, accountpostings].sort((a, b) => (b.position! - a.position!));
+                this.accountpostings = [...this.accountpostings, accountpostings];
 
                 this.accountPostingsLength = this.accountpostings.length;
               }
