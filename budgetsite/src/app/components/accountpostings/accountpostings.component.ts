@@ -115,7 +115,7 @@ export class AccountPostingsComponent implements OnInit {
               this.maxBalance;
           });
 
-          this.accountpostings = this.accountpostings.sort((a, b) => (b.position! - a.position!));
+          this.accountpostings = [...this.accountpostings.sort((a, b) => (b.position! - a.position!))];
 
           this.hideProgress = true;
         },
