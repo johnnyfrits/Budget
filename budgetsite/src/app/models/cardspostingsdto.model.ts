@@ -1,4 +1,5 @@
 import { CardsPostings } from "./cardspostings.model";
+import { Incomes } from "./incomes.model";
 
 export interface CardsPostingsDTO {
 	reference: string;
@@ -8,6 +9,7 @@ export interface CardsPostingsDTO {
 	received: number;
 	remaining: number;
 	cardsPostings: CardsPostings[];
+	incomes: Incomes[];
 	expanded?: boolean;
 	expanding?: boolean;
 }

@@ -27,6 +27,8 @@ import { ExpensesByCategories } from 'src/app/models/expensesbycategories';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { People } from 'src/app/models/people.model';
+import { PeopleService } from 'src/app/services/people/people.service';
 
 @Component({
   selector: 'app-budget',
@@ -89,6 +91,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   cardsList?: Cards[];
   categoriesList?: Categories[];
   accountsList?: Accounts[];
+  peopleList?: People[];
   typesList = [
     {
       id: 'R',
@@ -114,6 +117,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     private cd: ChangeDetectorRef,
     public dialog: MatDialog,
     private cardService: CardService,
+    private peopleService: PeopleService,
     private categoryService: CategoryService,
     private accountService: AccountService,
     private messenger: Messenger,
@@ -185,6 +189,21 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         next: categories => {
 
           this.categoriesList = categories.sort((a, b) => a.name.localeCompare(b.name));
+        },
+        error: () => {
+          this.hideExpensesProgress = false;
+          this.hideIncomesProgress = false;
+          this.hidePeopleProgress = false;
+          this.hideCategoriesProgress = false;
+        }
+      }
+    );
+
+    this.peopleService.read().subscribe(
+      {
+        next: people => {
+
+          this.peopleList = people;
         },
         error: () => {
           this.hideExpensesProgress = false;
@@ -418,6 +437,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         editing: this.editing,
         cardsList: this.cardsList,
         categoriesList: this.categoriesList,
+        peopleList: this.peopleList,
         parcels: 1,
         parcelNumber: 1
       }
@@ -483,6 +503,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         paid: expense.paid,
         remaining: expense.remaining,
         note: expense.note,
+        peopleId: expense.peopleId,
         dueDate: expense.dueDate,
         parcelNumber: expense.parcelNumber,
         parcels: expense.parcels,
@@ -490,7 +511,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         editing: this.editing,
         deleting: false,
         cardsList: this.cardsList,
-        categoriesList: this.categoriesList
+        categoriesList: this.categoriesList,
+        peopleList: this.peopleList
       }
     });
 
@@ -544,6 +566,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                   t.parcelNumber = result.parcelNumber;
                   t.parcels = result.parcels;
                   t.scheduled = result.scheduled;
+                  t.peopleId = result.peopleId;
                 });
 
                 this.expenses = [...this.expenses.filter(e => e.reference === this.reference)];
@@ -578,6 +601,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         editing: this.editing,
         cardsList: this.cardsList,
         accountsList: this.accountsList,
+        peopleList: this.peopleList,
         typesList: this.typesList
       }
     });
@@ -634,11 +658,13 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         remaining: income.remaining,
         note: income.note,
         type: income.type,
+        peopleId: income.peopleId,
         editing: this.editing,
         deleting: false,
         cardsList: this.cardsList,
         accountsList: this.accountsList,
-        typesList: this.typesList
+        typesList: this.typesList,
+        peopleList: this.peopleList
       }
     });
 
@@ -682,6 +708,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                   t.cardId = result.cardId;
                   t.accountId = result.accountId;
                   t.type = result.type;
+                  t.peopleId = result.peopleId;
                 });
 
                 this.incomes = [...this.incomes.filter(i => i.reference === this.reference)];
@@ -1001,9 +1028,10 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
         this.cardPostingsService.readByPeopleId(row.person, row.reference, row.cardId).subscribe(
           {
-            next: cardPostings => {
+            next: people => {
 
-              row.cardsPostings = cardPostings;
+              row.cardsPostings = people.cardsPostings;
+              row.incomes = people.incomes;
 
               row.expanding = false;
             },
@@ -1048,6 +1076,7 @@ export class ExpensesDialog implements OnInit {
     repeatParcelsFormControl: new FormControl(''),
     monthsToRepeatFormControl: new FormControl(''),
     scheduledFormControl: new FormControl(''),
+    peopleFormControl: new FormControl(''),
   });
 
   constructor(
@@ -1210,6 +1239,7 @@ export class IncomesDialog implements OnInit {
     typeFormControl: new FormControl(''),
     repeatIncomeFormControl: new FormControl(''),
     monthsToRepeatFormControl: new FormControl(''),
+    peopleFormControl: new FormControl(''),
   });
 
   constructor(

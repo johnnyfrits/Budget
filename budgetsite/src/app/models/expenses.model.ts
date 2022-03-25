@@ -1,5 +1,6 @@
 import { Categories } from './categories.model';
 import { Cards } from "./cards.model";
+import { People } from './people.model';
 
 export interface Expenses {
 	id?: number;
@@ -18,6 +19,7 @@ export interface Expenses {
 	parcels?: number;
 	categoryId?: number;
 	scheduled?: boolean;
+	peopleId?: string;
 	editing?: boolean;
 	deleting?: boolean;
 	generateParcels?: boolean;
@@ -26,4 +28,5 @@ export interface Expenses {
 	card?: Cards;
 	cardsList?: Cards[];
 	categoriesList?: Categories[];
+	peopleList?: People[];
 }

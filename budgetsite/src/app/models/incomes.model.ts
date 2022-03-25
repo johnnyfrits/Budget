@@ -1,5 +1,6 @@
 import { Accounts } from "./accounts.model";
 import { Cards } from "./cards.model";
+import { People } from "./people.model";
 
 export interface Incomes {
 	id?: number;
@@ -15,10 +16,12 @@ export interface Incomes {
 	cardId?: number;
 	accountId?: number;
 	type?: string;
+	peopleId?: string;
 	editing?: boolean;
 	deleting?: boolean;
 	cardsList?: Cards[];
 	accountsList?: Accounts[];
+	peopleList?: People[];
 	typesList?: [];
 	repeatIncome?: boolean;
 	monthsToRepeat?: number;

@@ -276,7 +276,7 @@
             <!-- Descrição Column -->
             <ng-container matColumnDef="person">
               <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="after" start="asc"
-                sortActionDescription="Ordernar por Pessoa">Pessoa</th>
+                sortActionDescription="Ordernar por Pessoa" style="width: 150px">Pessoa</th>
               <td mat-cell *matCellDef="let row">{{row.person}}</td>
               <td mat-footer-cell *matFooterCellDef> </td>
             </ng-container>
@@ -284,7 +284,7 @@
             <!-- A Receber Column -->
             <ng-container matColumnDef="toReceive">
               <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" start="desc"
-                sortActionDescription="Ordernar por A Receber">A Receber</th>
+                sortActionDescription="Ordernar por A Receber" style="width: 100px">A Receber</th>
               <td mat-cell *matCellDef="let row">{{row.toReceive | currency : '':''}}</td>
               <td mat-footer-cell *matFooterCellDef>{{toReceiveTotalPeople | currency : '':''}}</td>
             </ng-container>
@@ -292,7 +292,7 @@
             <!-- Recebido Column -->
             <ng-container matColumnDef="received">
               <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" start="desc"
-                sortActionDescription="Ordernar por Recebido">Recebido</th>
+                sortActionDescription="Ordernar por Recebido" style="width: 100px">Recebido</th>
               <td mat-cell *matCellDef="let row">{{row.received | currency : '':''}}</td>
               <td mat-footer-cell *matFooterCellDef>{{receivedTotalPeople | currency : '':''}}</td>
             </ng-container>
@@ -300,7 +300,7 @@
             <!-- Restante Column -->
             <ng-container matColumnDef="remaining">
               <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" start="desc"
-                sortActionDescription="Ordernar por Restante">Restante</th>
+                sortActionDescription="Ordernar por Restante" style="width: 100px">Restante</th>
               <td mat-cell *matCellDef="let row">{{row.remaining | currency : '':''}}</td>
               <td mat-footer-cell *matFooterCellDef>{{remainingTotalPeople | currency : '':''}}</td>
             </ng-container>
@@ -384,6 +384,40 @@
                       <tr mat-row
                         *matRowDef="let row; columns: ['card-detail', 'date-detail', 'description-detail', 'amount-detail']">
                       </tr>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- INCOMES -->
+                <div *ngIf="row.incomes?.length > 0"
+                  [ngClass]="{'expanded-detail': true, 'div-expanded-detail1': row.expanded}"
+                  [@detailExpand]="row.expanded ? 'expanded' : 'collapsed'">
+                  <div
+                    [ngClass]="{'table-container mat-elevation-z8': true, 'div-expanded-detail2 table-detail': row.expanded}">
+                    <p class="header-title-detail">Receitas</p>
+                    <table mat-table [dataSource]="row.incomes">
+                      <!-- Descrição Column -->
+                      <ng-container matColumnDef="description-detail">
+                        <th mat-header-cell *matHeaderCellDef>Descrição</th>
+                        <!-- <td mat-cell *matCellDef="let row" class="warn">{{row.description}}</td> -->
+                        <td mat-cell *matCellDef="let row" class="warn">
+                          <div style="display: flex;">
+                            {{row.description}}
+                          </div>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef> </td>
+                      </ng-container>
+
+                      <!-- Valor Column -->
+                      <ng-container matColumnDef="amount-detail">
+                        <th mat-header-cell *matHeaderCellDef>Valor</th>
+                        <td mat-cell *matCellDef="let row" class="warn">{{row.toReceive | currency : '':''}}</td>
+                        <td mat-footer-cell *matFooterCellDef class="warn">{{0 | currency : '':''}}</td>
+                      </ng-container>
+
+                      <!-- <tr mat-header-row *matHeaderRowDef="['incomes-header-detail'] sticky: true"></tr> -->
+                      <tr mat-header-row *matHeaderRowDef="['description-detail', 'amount-detail']; sticky: true"></tr>
+                      <tr mat-row *matRowDef="let row; columns: ['description-detail', 'amount-detail']"></tr>
                     </table>
                   </div>
                 </div>

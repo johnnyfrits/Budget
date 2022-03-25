@@ -73,6 +73,23 @@
       </p>
 
       <div class="row">
+        <div class="col-10">
+          <mat-form-field appearance="fill" floatLabel="always" style="width: 100%;">
+            <mat-label>Pessoa</mat-label>
+            <mat-select mat-input [(ngModel)]="incomes.peopleId" formControlName="peopleFormControl">
+              <mat-option>-- Nenhuma --</mat-option>
+              <mat-option *ngFor="let p of incomes.peopleList" [value]="p.id">{{ p.id }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <!-- <div class="col-2 center">
+          <span class="material-icons add-list-item" matTooltip="Adicionar Pessoa" (click)="addPeople()">
+            playlist_add
+          </span>
+        </div> -->
+      </div>
+
+      <div class="row">
         <mat-form-field appearance="fill" floatLabel="always">
           <mat-label>Tipo</mat-label>
           <mat-select mat-input [(ngModel)]="incomes.type" formControlName="typeFormControl">
