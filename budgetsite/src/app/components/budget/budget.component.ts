@@ -885,24 +885,31 @@ export class BudgetComponent implements OnInit, AfterViewInit {
       message = "Boa noite!";
     }
 
-    this.cardPostingsService.readCardsPostingsByPeople(cpp.person, this.reference!).subscribe(
+    this.cardPostingsService.readByPeopleId(cpp.person, this.reference!, 0).subscribe(
       {
-        next: cardpostings => {
+        next: cardPostingsPeople => {
 
           message += "\nSeguem os valores deste mês:";
           let month = Number(this.reference?.substring(4, 6));
           message += "\n\n*Vencimento 01/" + (month + 1).toString().padStart(2, '0') + "*\n\n";
           message += "```";
 
-          cardpostings.forEach(cp => {
+          debugger;
 
-            //x.toLocaleString('pt-br', {style:'currency', currency:'BRL'}).replace('R$ ', '')
+          cardPostingsPeople.cardsPostings.forEach(cp => {
 
             let strAmount = cp.amount.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }).replace('R$ ', '').padStart(8, ' ');
 
             let strParcels = cp.parcels! > 1 ? " (" + cp.parcelNumber! + "/" + cp.parcels! + ")" : "";
 
             message += strAmount + " " + cp.description + strParcels + "\n";
+          });
+
+          cardPostingsPeople.incomes.forEach(i => {
+
+            let strAmount = i.toReceive.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }).replace('R$ ', '').padStart(8, ' ');
+
+            message += strAmount + " " + i.description + "\n";
           });
 
           let tax = 3;
@@ -919,6 +926,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
           message += "----------------------------```\n";
           message += "*Total: " + total + "*";
+
+          console.log(message);
 
           this.clipboardService.copy(message);
 
