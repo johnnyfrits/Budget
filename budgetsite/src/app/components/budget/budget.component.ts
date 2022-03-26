@@ -894,8 +894,6 @@ export class BudgetComponent implements OnInit, AfterViewInit {
           message += "\n\n*Vencimento 01/" + (month + 1).toString().padStart(2, '0') + "*\n\n";
           message += "```";
 
-          debugger;
-
           cardPostingsPeople.cardsPostings.forEach(cp => {
 
             let strAmount = cp.amount.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }).replace('R$ ', '').padStart(8, ' ');
