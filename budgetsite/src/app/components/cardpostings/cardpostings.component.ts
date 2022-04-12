@@ -479,9 +479,11 @@ export class CardPostingsComponent implements OnInit {
 
     this.cardpostings = this.cardpostings.slice();
 
+    let length = this.cardpostings.length;
+
     this.cardpostings.forEach((cardposting, index) => {
 
-      cardposting.position = index + 1;
+      cardposting.position = length - (index + 1);
     });
 
     this.cardPostingsService.updatePositions(this.cardpostings).subscribe();

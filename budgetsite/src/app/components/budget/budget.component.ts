@@ -624,6 +624,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
               this.incomes = [...this.incomes, incomes]; // somente funcionou assim
 
+              this.getCardsPostingsPeople();
               this.getBudgetTotals();
               this.getIncomesTotals();
             },
@@ -682,6 +683,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
                 this.incomes = this.incomes.filter(t => t.id! != result.id!);
 
+                this.getCardsPostingsPeople();
                 this.getBudgetTotals();
                 this.getIncomesTotals();
               },
@@ -713,6 +715,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
                 this.incomes = [...this.incomes.filter(i => i.reference === this.reference)];
 
+                this.getCardsPostingsPeople();
                 this.getBudgetTotals();
                 this.getIncomesTotals();
               },

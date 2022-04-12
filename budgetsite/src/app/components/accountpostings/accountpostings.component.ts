@@ -259,9 +259,11 @@ export class AccountPostingsComponent implements OnInit {
 
     this.accountpostings = this.accountpostings.slice();
 
+    let length = this.accountpostings.length;
+
     this.accountpostings.forEach((accountposting, index) => {
 
-      accountposting.position = index + 1;
+      accountposting.position = length - (index + 1);
 
     });
 
