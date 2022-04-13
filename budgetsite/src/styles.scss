@@ -270,9 +270,19 @@ $primary-light: map-get($light-theme, primary);
     color: var(--red-color);
   }
 
+  #menu-expenses2,
+  #menu-icon-expenses2 {
+    color: var(--blue-color);
+  }
+
   #menu-incomes,
   #menu-icon-incomes {
     color: var(--green-color);
+  }
+
+  #menu-incomes2,
+  #menu-icon-incomes2 {
+    color: var(--blue-color);
   }
 
   #menu-people,

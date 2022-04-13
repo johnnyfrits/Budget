@@ -37,6 +37,14 @@ export class IncomeService {
     );
   }
 
+  updateValue(id: number, value: number): Observable<Incomes> {
+
+    return this.http.put<Incomes>(`${ApiUrls.incomes}/AddValue/${id}?value=${value}`, null).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
   delete(id: number): Observable<Incomes> {
 
     return this.http.delete<Incomes>(`${ApiUrls.incomes}/${id}`).pipe(

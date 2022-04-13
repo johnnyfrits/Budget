@@ -54,6 +54,14 @@ export class ExpenseService {
     );
   }
 
+  updateValue(id: number, value: number): Observable<Expenses> {
+
+    return this.http.put<Expenses>(`${ApiUrls.expenses}/AddValue/${id}?value=${value}`, null).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
   delete(id: number): Observable<Expenses> {
 
     return this.http.delete<Expenses>(`${ApiUrls.expenses}/${id}`).pipe(

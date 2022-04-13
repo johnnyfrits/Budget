@@ -102,7 +102,7 @@ export class AccountPostingsComponent implements OnInit {
           this.minBalance = runningValue;
           this.maxBalance = 0;
 
-          this.accountpostings.forEach(accountposting => {
+          this.accountpostings.sort((a, b) => (a.position! - b.position!)).forEach(accountposting => {
 
             accountposting.runningAmount = runningValue += accountposting.amount;
 

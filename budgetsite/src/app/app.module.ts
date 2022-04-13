@@ -63,6 +63,7 @@ import { DatepickerreferenceComponent } from './shared/datepickerreference/datep
 import { PeopleComponent } from './components/people/people.component';
 
 import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
+import { AddvalueComponent } from './shared/addvalue/addvalue.component';
 
 registerLocaleData(localePt);
 
@@ -92,7 +93,8 @@ registerLocaleData(localePt);
     SummaryViewComponent,
     CategoryComponent,
     DatepickerreferenceComponent,
-    PeopleComponent
+    PeopleComponent,
+    AddvalueComponent
   ],
   imports: [
     BrowserModule,

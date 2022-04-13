@@ -1,0 +1,39 @@
+<form [formGroup]="addValueFormGroup">
+
+  <div class="cancel">
+    <button class="default-button" mat-mini-fab matTooltip="Cancelar" color="accent" aria-label="Cancelar"
+      (click)="cancel()">
+      <mat-icon class="default-icon">close</mat-icon>
+    </button>
+  </div>
+
+  <h2 mat-dialog-title>Adicionar valor a<p>{{setTitle()}}</h2>
+
+  <div mat-dialog-content>
+
+    <div class="row">
+      <div class="col">
+        <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
+          <mat-label>Valor</mat-label>
+          <input matInput type="number" inputmode="numeric" formControlName="amountFormControl"
+            [(ngModel)]="data.amount" placeholder="0" cdkFocusInitial>
+          <mat-error *ngIf="addValueFormGroup.get('amountFormControl')?.hasError('required')">
+            Campo <strong>obrigatório</strong>.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div mat-dialog-actions>
+        <button [disabled]="!addValueFormGroup.valid" class="default-button" mat-mini-fab matTooltip="Salvar"
+          matTooltipPosition="right" class="bg-primary" aria-label="Salvar" [mat-dialog-close]="data" (click)="save()">
+          <mat-icon class="default-icon">save</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

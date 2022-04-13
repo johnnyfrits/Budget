@@ -29,6 +29,7 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { People } from 'src/app/models/people.model';
 import { PeopleService } from 'src/app/services/people/people.service';
+import { AddvalueComponent } from 'src/app/shared/addvalue/addvalue.component';
 
 @Component({
   selector: 'app-budget',
@@ -865,6 +866,52 @@ export class BudgetComponent implements OnInit, AfterViewInit {
           },
           error: () => this.hideExpensesProgress = true
         });
+      }
+    });
+  }
+
+  addValue(row: any, type: string) {
+
+    const dialogRef = this.dialog.open(AddvalueComponent, {
+      width: '400px',
+      data: {
+        id: row.id,
+        description: row.description,
+        type: type,
+        amount: 0
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result) {
+
+        if (result.type === 'P') {
+
+          this.expenseService.updateValue(result.id, result.amount).subscribe({
+
+            next: () => {
+
+              row.toPay = +(row.toPay + result.amount).toFixed(2);
+              row.remaining = +(row.toPay - (row.paid ?? 0)).toFixed(2);
+
+              this.getExpensesTotals();
+            }
+          });
+        }
+        else if (result.type === 'R') {
+
+          this.incomeService.updateValue(result.id, result.amount).subscribe({
+
+            next: () => {
+
+              row.toReceive = +(row.toReceive + result.amount).toFixed(2);
+              row.remaining = +(row.toReceive - (row.received ?? 0)).toFixed(2);
+
+              this.getIncomesTotals();
+            }
+          });
+        }
       }
     });
   }

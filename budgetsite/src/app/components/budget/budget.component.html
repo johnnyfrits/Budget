@@ -158,6 +158,10 @@
                     <mat-icon [id]="row.remaining > 0 ? 'menu-icon-expenses': ''">price_check</mat-icon>
                     <span>Pagar</span>
                   </button>
+                  <button mat-menu-item id="menu-expenses2" (click)="addValue(row, 'P')">
+                    <mat-icon id="menu-icon-expenses2">add</mat-icon>
+                    <span>Adicionar valor</span>
+                  </button>
                 </mat-menu>
               </td>
               <td mat-footer-cell *matFooterCellDef></td>
@@ -242,6 +246,10 @@
                     [disabled]="row.remaining <= 0">
                     <mat-icon [id]="row.remaining > 0 ? 'menu-icon-incomes' : ''">price_check</mat-icon>
                     <span>Receber</span>
+                  </button>
+                  <button mat-menu-item id="menu-incomes2" (click)="addValue(row, 'R')">
+                    <mat-icon id="menu-icon-incomes2">add</mat-icon>
+                    <span>Adicionar valor</span>
                   </button>
                 </mat-menu>
               </td>
