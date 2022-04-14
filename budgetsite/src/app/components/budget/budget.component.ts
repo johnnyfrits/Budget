@@ -877,8 +877,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
       data: {
         id: row.id,
         description: row.description,
-        type: type,
-        amount: 0
+        type: type
       }
     });
 
