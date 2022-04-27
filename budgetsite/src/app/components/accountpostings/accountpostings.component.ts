@@ -197,7 +197,7 @@ export class AccountPostingsComponent implements OnInit {
         accountsList: this.accountsList,
         deleting: false,
         type: accountPosting.type,
-        cardReceipt: accountPosting.cardReceiptId,
+        cardReceiptId: accountPosting.cardReceiptId,
         expenseId: accountPosting.expenseId,
         incomeId: accountPosting.incomeId
       }
