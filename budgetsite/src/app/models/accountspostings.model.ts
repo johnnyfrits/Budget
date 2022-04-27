@@ -11,7 +11,7 @@ export interface AccountsPostings {
 	runningAmount: number;
 	note?: string;
 	type?: string;
-	cardIdReceipt?: number;
+	cardReceiptId?: number;
 	expenseId?: number;
 	incomeId?: number;
 	accountsList?: Accounts[];

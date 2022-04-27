@@ -196,7 +196,10 @@ export class AccountPostingsComponent implements OnInit {
         editing: this.editing,
         accountsList: this.accountsList,
         deleting: false,
-        type: accountPosting.type
+        type: accountPosting.type,
+        cardReceipt: accountPosting.cardReceiptId,
+        expenseId: accountPosting.expenseId,
+        incomeId: accountPosting.incomeId
       }
     });
 
@@ -266,6 +269,16 @@ export class AccountPostingsComponent implements OnInit {
       accountposting.position = length - (index + 1);
 
     });
+
+    let runningValue = this.previousBalance ?? 0;
+
+    this.accountpostings.sort((a, b) => (a.position! - b.position!)).forEach(accountposting => {
+
+      accountposting.runningAmount = runningValue += accountposting.amount;
+
+    });
+
+    this.accountpostings = [...this.accountpostings.sort((a, b) => (b.position! - a.position!))];
 
     this.accountPostingsService.updatePositions(this.accountpostings).subscribe();
   }
