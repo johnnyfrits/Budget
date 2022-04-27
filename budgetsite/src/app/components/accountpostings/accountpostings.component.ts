@@ -48,7 +48,6 @@ export class AccountPostingsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.getLists();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -97,6 +96,8 @@ export class AccountPostingsComponent implements OnInit {
   }
 
   refresh() {
+
+    this.getLists();
 
     if (this.accountId) {
 
