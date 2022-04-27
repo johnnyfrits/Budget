@@ -270,6 +270,9 @@ export class AccountPostingsComponent implements OnInit {
                 this.accountpostings.filter(t => t.id === result.id).map(t => {
                   t.date = result.date;
                   t.accountId = result.accountId;
+                  t.incomeId = result.incomeId;
+                  t.expenseId = result.expenseId;
+                  t.cardReceiptId = result.cardReceiptId;
                   t.reference = result.reference;
                   t.description = result.description;
                   t.amount = result.amount;
