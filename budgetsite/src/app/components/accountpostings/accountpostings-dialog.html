@@ -77,6 +77,27 @@
       </div>
 
       <div class="row">
+        <mat-form-field appearance="fill" floatLabel="always">
+          <mat-label>Receita</mat-label>
+          <mat-select mat-input [(ngModel)]="accountPosting.incomeId" formControlName="incomeIdFormControl">
+            <mat-option>-- Nenhuma --</mat-option>
+            <mat-option *ngFor="let i of accountPosting.incomesList" [value]="i.id">{{ i.description }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field appearance="fill" floatLabel="always">
+          <mat-label>Despesa</mat-label>
+          <mat-select mat-input [(ngModel)]="accountPosting.expenseId" formControlName="expenseIdFormControl">
+            <mat-option>-- Nenhuma --</mat-option>
+            <mat-option *ngFor="let i of accountPosting.expensesList" [value]="i.id">{{ i.description }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+
+      <div class="row">
         <mat-form-field appearance="fill">
           <mat-label>Comentário</mat-label>
           <textarea matInput [(ngModel)]="accountPosting.note" formControlName="noteFormControl"></textarea>

@@ -1,4 +1,6 @@
 import { Accounts } from "./accounts.model";
+import { Expenses } from "./expenses.model";
+import { Incomes } from "./incomes.model";
 
 export interface AccountsPostings {
 	id?: number;
@@ -15,6 +17,8 @@ export interface AccountsPostings {
 	expenseId?: number;
 	incomeId?: number;
 	accountsList?: Accounts[];
+	incomesList?: Incomes[];
+	expensesList?: Expenses[];
 	editing?: boolean;
 	deleting?: boolean;
 }

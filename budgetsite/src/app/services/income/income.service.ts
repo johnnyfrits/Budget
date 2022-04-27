@@ -29,6 +29,14 @@ export class IncomeService {
     );
   }
 
+  readComboList(reference: string): Observable<Incomes[]> {
+
+    return this.http.get<Incomes[]>(`${ApiUrls.incomes}/combolist/${reference}`).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
   update(income: Incomes): Observable<Incomes> {
 
     return this.http.put<Incomes>(`${ApiUrls.incomes}${income.repeatIncome ? "/repeat" : ""}/${income.id}${income.repeatIncome ? `?qtyMonths=${income.monthsToRepeat}` : ""}`, income).pipe(

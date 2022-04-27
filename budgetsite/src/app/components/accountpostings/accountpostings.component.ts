@@ -6,6 +6,10 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Accounts } from 'src/app/models/accounts.model';
+import { Incomes } from 'src/app/models/incomes.model';
+import { Expenses } from 'src/app/models/expenses.model';
+import { IncomeService } from 'src/app/services/income/income.service';
+import { ExpenseService } from 'src/app/services/expense/expense.service';
 
 @Component({
   selector: 'app-accountpostings',
@@ -18,6 +22,8 @@ export class AccountPostingsComponent implements OnInit {
   @Input() reference?: string;
 
   accountpostings!: AccountsPostings[];
+  incomes!: Incomes[];
+  expenses!: Expenses[];
   displayedColumns = ['index', 'date', 'description', 'amount', 'runningAmount'];
   total: number = 0;
   grandTotalBalance?: number = 0;
@@ -35,6 +41,8 @@ export class AccountPostingsComponent implements OnInit {
   constructor(
     private accountPostingsService: AccountPostingsService,
     private accountService: AccountService,
+    private incomeService: IncomeService,
+    private expenseService: ExpenseService,
     public dialog: MatDialog
   ) { }
 
@@ -56,6 +64,30 @@ export class AccountPostingsComponent implements OnInit {
         next: accounts => {
 
           this.accountsList = accounts.sort((a, b) => a.name.localeCompare(b.name));
+
+          this.hideProgress = true;
+        },
+        error: () => this.hideProgress = true
+      }
+    );
+
+    this.incomeService.readComboList(this.reference!).subscribe(
+      {
+        next: incomes => {
+
+          this.incomes = incomes;
+
+          this.hideProgress = true;
+        },
+        error: () => this.hideProgress = true
+      }
+    );
+
+    this.expenseService.readComboList(this.reference!).subscribe(
+      {
+        next: expenses => {
+
+          this.expenses = expenses;
 
           this.hideProgress = true;
         },
@@ -143,7 +175,9 @@ export class AccountPostingsComponent implements OnInit {
         accountId: this.accountId,
         editing: this.editing,
         type: "R",
-        accountsList: this.accountsList
+        accountsList: this.accountsList,
+        incomesList: this.incomes,
+        expensesList: this.expenses
       }
     });
 
@@ -199,7 +233,9 @@ export class AccountPostingsComponent implements OnInit {
         type: accountPosting.type,
         cardReceiptId: accountPosting.cardReceiptId,
         expenseId: accountPosting.expenseId,
-        incomeId: accountPosting.incomeId
+        incomeId: accountPosting.incomeId,
+        incomesList: this.incomes,
+        expensesList: this.expenses
       }
     });
 
@@ -297,6 +333,8 @@ export class AccountPostingsDialog implements OnInit {
     amountFormControl: new FormControl('', Validators.required),
     noteFormControl: new FormControl(''),
     typeFormControl: new FormControl(''),
+    incomeIdFormControl: new FormControl(''),
+    expenseIdFormControl: new FormControl(''),
   });
 
   constructor(

@@ -30,6 +30,14 @@ export class ExpenseService {
     );
   }
 
+  readComboList(reference: string): Observable<Expenses[]> {
+
+    return this.http.get<Expenses[]>(`${ApiUrls.expenses}/combolist/${reference}`).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
   readByCategories(reference: string, cardId: number): Observable<ExpensesByCategories[]> {
 
     return this.http.get<ExpensesByCategories[]>(`${ApiUrls.expenses}/categories?reference=${reference}&cardId=${cardId}`).pipe(
