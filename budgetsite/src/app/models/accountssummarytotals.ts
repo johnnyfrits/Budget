@@ -3,4 +3,6 @@ export interface AccountsSummaryTotals {
 	availableBalance: number,
 	forecastSpared: number,
 	availableSpared: number
+	drawnBalance: number
+	withoutDrawnBalance: number
 }

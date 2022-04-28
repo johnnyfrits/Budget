@@ -137,6 +137,25 @@
         </div>
       </div>
 
+      <div class="row center">
+        <div class="row center saldos" style="text-align:center">
+          <span><b>Sacado</b></span>
+        </div>
+      </div>
+
+      <div class="row center saldos3">
+        <div class="col-4 center">
+          <span
+            [ngClass]="totalsAccountsSummary && totalsAccountsSummary.drawnBalance >= 0 ? 'positive' : 'negative'"><b>
+              {{totalsAccountsSummary?.drawnBalance | currency : '':''}}</b></span>
+        </div>
+        <div class="col-4 center">
+          <span
+            [ngClass]="totalsAccountsSummary && totalsAccountsSummary.withoutDrawnBalance >= 0 ? 'positive' : 'negative'"><b>
+              {{totalsAccountsSummary?.withoutDrawnBalance | currency : '':''}}</b></span>
+        </div>
+      </div>
+
     </div>
 
   </div>
