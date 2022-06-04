@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges, Inject } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, Inject, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { AccountsPostings } from '../../models/accountspostings.model'
 import { AccountService } from 'src/app/services/account/account.service';
 import { AccountPostingsService } from '../../services/accountpostings/accountpostings.service';
@@ -10,6 +10,7 @@ import { Incomes } from 'src/app/models/incomes.model';
 import { Expenses } from 'src/app/models/expenses.model';
 import { IncomeService } from 'src/app/services/income/income.service';
 import { ExpenseService } from 'src/app/services/expense/expense.service';
+import { DatepickerinputComponent } from 'src/app/shared/datepickerinput/datepickerinput.component';
 
 @Component({
   selector: 'app-accountpostings',
@@ -171,7 +172,6 @@ export class AccountPostingsComponent implements OnInit {
     const dialogRef = this.dialog.open(AccountPostingsDialog, {
       width: '400px',
       data: {
-        date: new Date(),
         reference: this.reference,
         accountId: this.accountId,
         editing: this.editing,
@@ -328,7 +328,9 @@ export class AccountPostingsComponent implements OnInit {
   selector: 'accountpostings-dialog',
   templateUrl: 'accountpostings-dialog.html',
 })
-export class AccountPostingsDialog implements OnInit {
+export class AccountPostingsDialog implements OnInit, AfterViewInit {
+
+  @ViewChild('datepickerinput') datepickerinput!: DatepickerinputComponent;
 
   accountPostingFormGroup = new FormGroup({
 
@@ -343,11 +345,16 @@ export class AccountPostingsDialog implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<AccountPostingsDialog>,
-    @Inject(MAT_DIALOG_DATA) public accountPosting: AccountsPostings) {
-  }
+    @Inject(MAT_DIALOG_DATA) public accountPosting: AccountsPostings,
+    private cd: ChangeDetectorRef
+  ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { }
 
+  ngAfterViewInit(): void {
+
+    this.accountPosting.date = this.datepickerinput.date.value._d;
+    this.cd.detectChanges();
   }
 
   cancel(): void {

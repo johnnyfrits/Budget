@@ -13,7 +13,8 @@
 
       <div class="row">
         <div class="col">
-          <app-datepickerinput [currentDate]="accountPosting.date" (currentDateChanged)="currentDateChanged($event)">
+          <app-datepickerinput #datepickerinput [currentDate]="accountPosting.date"
+            (currentDateChanged)="currentDateChanged($event)">
           </app-datepickerinput>
         </div>
       </div>

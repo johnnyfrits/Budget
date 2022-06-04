@@ -1,5 +1,5 @@
 import { CategoryComponent } from './../category/category.component';
-import { Component, OnInit, Input, SimpleChanges, Inject } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, Inject, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { CardsPostings } from '../../models/cardspostings.model'
 import { CardPostingsService } from '../../services/cardpostings/cardpostings.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -19,6 +19,7 @@ import { ExpensesByCategories } from 'src/app/models/expensesbycategories';
 import { PeopleComponent } from '../people/people.component';
 import { CardService } from 'src/app/services/card/card.service';
 import { Cards } from 'src/app/models/cards.model';
+import { DatepickerinputComponent } from 'src/app/shared/datepickerinput/datepickerinput.component';
 
 @Component({
   selector: 'app-cardpostings',
@@ -252,7 +253,6 @@ export class CardPostingsComponent implements OnInit {
     const dialogRef = this.dialog.open(CardPostingsDialog, {
       width: '400px',
       data: {
-        date: new Date(),
         reference: this.reference,
         cardId: this.cardId,
         parcels: 1,
@@ -434,7 +434,6 @@ export class CardPostingsComponent implements OnInit {
     const dialogRef = this.dialog.open(CardReceiptsDialog, {
       width: '400px',
       data: {
-        date: new Date(),
         reference: this.reference,
         cardId: this.cardId,
         peopleId: cardspostingsdto.person,
@@ -494,7 +493,9 @@ export class CardPostingsComponent implements OnInit {
   selector: 'cardpostings-dialog',
   templateUrl: 'cardpostings-dialog.html',
 })
-export class CardPostingsDialog implements OnInit {
+export class CardPostingsDialog implements OnInit, AfterViewInit {
+
+  @ViewChild('datepickerinput') datepickerinput!: DatepickerinputComponent;
 
   disableCheck: boolean = true;
   editing: boolean = false;
@@ -518,8 +519,20 @@ export class CardPostingsDialog implements OnInit {
     public dialogRef: MatDialogRef<CardPostingsDialog>,
     @Inject(MAT_DIALOG_DATA) public cardPosting: CardsPostings,
     private categoryService: CategoryService,
-    private peopleService: PeopleService
+    private peopleService: PeopleService,
+    private cd: ChangeDetectorRef
   ) { }
+
+  ngAfterViewInit(): void {
+
+
+    if (!this.cardPosting.id) {
+
+      this.cardPosting.date = this.datepickerinput.date.value._d;
+    }
+
+    this.cd.detectChanges();
+  }
 
   ngOnInit(): void {
 
@@ -649,7 +662,9 @@ export class CardPostingsDialog implements OnInit {
   selector: 'cardreceipts-dialog',
   templateUrl: 'cardreceipts-dialog.html',
 })
-export class CardReceiptsDialog implements OnInit {
+export class CardReceiptsDialog implements OnInit, AfterViewInit {
+
+  @ViewChild('datepickerinput') datepickerinput!: DatepickerinputComponent;
 
   accounts?: Accounts[];
 
@@ -666,8 +681,11 @@ export class CardReceiptsDialog implements OnInit {
     noteFormControl: new FormControl(''),
   });
 
-  constructor(public dialogRef: MatDialogRef<CardReceiptsDialog>,
-    @Inject(MAT_DIALOG_DATA) public cardReceipts: CardsReceipts) { }
+  constructor(
+    public dialogRef: MatDialogRef<CardReceiptsDialog>,
+    @Inject(MAT_DIALOG_DATA) public cardReceipts: CardsReceipts,
+    private cd: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
 
@@ -677,6 +695,12 @@ export class CardReceiptsDialog implements OnInit {
     this.cardReceiptsFormGroup.get('receivedFormControl')!.disable();
     this.cardReceiptsFormGroup.get('remainingFormControl')!.disable();
     this.cardReceiptsFormGroup.get('changeFormControl')!.disable();
+  }
+
+  ngAfterViewInit(): void {
+
+    this.cardReceipts.date = this.datepickerinput.date.value._d;
+    this.cd.detectChanges();
   }
 
   cancel(): void {

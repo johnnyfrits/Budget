@@ -30,6 +30,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { People } from 'src/app/models/people.model';
 import { PeopleService } from 'src/app/services/people/people.service';
 import { AddvalueComponent } from 'src/app/shared/addvalue/addvalue.component';
+import { DatepickerinputComponent } from 'src/app/shared/datepickerinput/datepickerinput.component';
 
 @Component({
   selector: 'app-budget',
@@ -783,7 +784,6 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(PaymentReceiveDialog, {
       width: '400px',
       data: {
-        date: new Date(),
         reference: expense.reference,
         description: 'Pag. ' + expense.description,
         amount: expense.remaining,
@@ -833,7 +833,6 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(PaymentReceiveDialog, {
       width: '400px',
       data: {
-        date: new Date(),
         reference: income.reference,
         description: 'Rec. ' + income.description,
         amount: income.remaining,
@@ -1350,7 +1349,9 @@ export class IncomesDialog implements OnInit {
   selector: 'payment-receive-dialog',
   templateUrl: 'payment-receive-dialog.html',
 })
-export class PaymentReceiveDialog implements OnInit {
+export class PaymentReceiveDialog implements OnInit, AfterViewInit {
+
+  @ViewChild('datepickerinput') datepickerinput!: DatepickerinputComponent;
 
   accountsList?: Accounts[];
 
@@ -1366,8 +1367,9 @@ export class PaymentReceiveDialog implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<PaymentReceiveDialog>,
     @Inject(MAT_DIALOG_DATA) public accountPosting: AccountsPostings,
-    private accountService: AccountService) {
-  }
+    private accountService: AccountService,
+    private cd: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
 
@@ -1388,6 +1390,13 @@ export class PaymentReceiveDialog implements OnInit {
         }
       }
     );
+  }
+
+  ngAfterViewInit(): void {
+
+    debugger;
+    this.accountPosting.date = this.datepickerinput.date.value._d;
+    this.cd.detectChanges();
   }
 
   cancel(): void {
