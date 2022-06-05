@@ -31,6 +31,7 @@ import { People } from 'src/app/models/people.model';
 import { PeopleService } from 'src/app/services/people/people.service';
 import { AddvalueComponent } from 'src/app/shared/addvalue/addvalue.component';
 import { DatepickerinputComponent } from 'src/app/shared/datepickerinput/datepickerinput.component';
+import moment from 'moment';
 
 @Component({
   selector: 'app-budget',
@@ -850,6 +851,10 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
         result.amount = result.amount * (result.type === 'P' ? -1 : 1);
 
+        Date.prototype.toJSON = function () {
+          return moment(this).format("YYYY-MM-DDThh:mm:00.000Z");;
+        };
+
         this.accountPostingsService.create(result).subscribe({
 
           next: () => {
@@ -1394,7 +1399,6 @@ export class PaymentReceiveDialog implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
 
-    debugger;
     this.accountPosting.date = this.datepickerinput.date.value._d;
     this.cd.detectChanges();
   }

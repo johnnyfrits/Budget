@@ -11,6 +11,7 @@ import { Expenses } from 'src/app/models/expenses.model';
 import { IncomeService } from 'src/app/services/income/income.service';
 import { ExpenseService } from 'src/app/services/expense/expense.service';
 import { DatepickerinputComponent } from 'src/app/shared/datepickerinput/datepickerinput.component';
+import moment from 'moment';
 
 @Component({
   selector: 'app-accountpostings',
@@ -191,6 +192,10 @@ export class AccountPostingsComponent implements OnInit {
         result.amount = result.amount * (result.type === 'P' ? -1 : 1);
 
         result.position = this.accountpostings.length + 1;
+
+        Date.prototype.toJSON = function () {
+          return moment(this).format("YYYY-MM-DDThh:mm:00.000Z");;
+        };
 
         this.accountPostingsService.create(result).subscribe(
           {

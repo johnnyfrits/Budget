@@ -20,6 +20,7 @@ import { PeopleComponent } from '../people/people.component';
 import { CardService } from 'src/app/services/card/card.service';
 import { Cards } from 'src/app/models/cards.model';
 import { DatepickerinputComponent } from 'src/app/shared/datepickerinput/datepickerinput.component';
+import moment from 'moment';
 
 @Component({
   selector: 'app-cardpostings',
@@ -270,7 +271,9 @@ export class CardPostingsComponent implements OnInit {
 
         //this.hideProgress = false;
 
-        result.position = this.cardpostings.length + 1;
+        Date.prototype.toJSON = function () {
+          return moment(this).format("YYYY-MM-DDThh:mm:00.000Z");;
+        };
 
         this.cardPostingsService.create(result).subscribe(
           {
@@ -452,6 +455,10 @@ export class CardPostingsComponent implements OnInit {
 
         this.hideProgress = false;
 
+        Date.prototype.toJSON = function () {
+          return moment(this).format("YYYY-MM-DDThh:mm:00.000Z");;
+        };
+
         this.cardReceiptsService.create(result).subscribe(
           {
             next: () => {
@@ -524,7 +531,6 @@ export class CardPostingsDialog implements OnInit, AfterViewInit {
   ) { }
 
   ngAfterViewInit(): void {
-
 
     if (!this.cardPosting.id) {
 
