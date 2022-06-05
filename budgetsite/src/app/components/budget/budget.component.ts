@@ -896,6 +896,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
             next: () => {
 
               row.toPay = +(row.toPay + result.amount).toFixed(2);
+              row.totalToPay = +(row.totalToPay + result.amount).toFixed(2);
               row.remaining = +(row.toPay - (row.paid ?? 0)).toFixed(2);
 
               this.getExpensesTotals();
