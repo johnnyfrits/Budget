@@ -29,16 +29,33 @@
     </div>
   </div>
   <!-- Add button -->
-  <div class="row center" *ngIf="hideProgress">
-    <button class="default-button" mat-mini-fab matTooltip="Adicionar compra no cartão" matTooltipPosition="right"
-      color="accent" aria-label="Adicionar compra no cartão" (click)="add()">
-      <mat-icon class="default-icon">post_add</mat-icon>
-    </button>
+  <div class="center">
+    <div class="col center"> </div>
+    <div class="col center" *ngIf="hideProgress">
+      <button class="default-button" mat-mini-fab matTooltip="Adicionar compra no cartão" matTooltipPosition="right"
+        color="accent" aria-label="Adicionar compra no cartão" (click)="add()">
+        <mat-icon class="default-icon">post_add</mat-icon>
+      </button>
+    </div>
+    <div class="col right">
+      <span class="default-button center" mat-mini-fab matTooltip="Filtrar" matTooltipPosition="right" color="accent"
+        aria-label="Filtrar" (click)="openFilter()">
+        <mat-icon class="default-icon">search</mat-icon>
+      </span>
+    </div>
   </div>
+  <!--Filter-->
+  <div class="row" *ngIf="filterOpend">
+    <mat-form-field appearance="standard">
+      <mat-label>Filtrar</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
+    </mat-form-field>
+  </div>
+  <!-- Table -->
   <div class="row center">
     <div class="mytable" *ngIf="hideProgress">
       <div class="table-container mat-elevation-z8">
-        <table mat-table [dataSource]="accountpostings" cdkDropList [cdkDropListData]="accountpostings"
+        <table mat-table [dataSource]="dataSource" cdkDropList [cdkDropListData]="accountpostings"
           (cdkDropListDropped)="drop($event)">
           <!-- # Column -->
           <ng-container matColumnDef="index">

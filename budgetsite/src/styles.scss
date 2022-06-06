@@ -694,6 +694,12 @@ input.right-align {
   align-items: center !important;
 }
 
+.right {
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+}
+
 .mytable {
   --bs-gutter-y: 0;
   display: flex;

@@ -12,6 +12,7 @@ import { IncomeService } from 'src/app/services/income/income.service';
 import { ExpenseService } from 'src/app/services/expense/expense.service';
 import { DatepickerinputComponent } from 'src/app/shared/datepickerinput/datepickerinput.component';
 import moment from 'moment';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-accountpostings',
@@ -39,6 +40,10 @@ export class AccountPostingsComponent implements OnInit {
   accountPostingsLength: number = 0;
 
   accountsList?: Accounts[];
+
+  filterOpend: boolean = false;
+  dataSource = new MatTableDataSource(this.accountpostings);
+
 
   constructor(
     private accountPostingsService: AccountPostingsService,
@@ -113,6 +118,8 @@ export class AccountPostingsComponent implements OnInit {
 
             this.accountPostingsLength = this.accountpostings.length;
 
+            this.dataSource = new MatTableDataSource(this.accountpostings)
+
             this.getTotalAmount();
             this.getAccountTotals();
           },
@@ -151,6 +158,8 @@ export class AccountPostingsComponent implements OnInit {
           });
 
           this.accountpostings = [...this.accountpostings.sort((a, b) => (b.position! - a.position!))];
+
+          this.dataSource = new MatTableDataSource(this.accountpostings)
 
           this.hideProgress = true;
         },
@@ -204,6 +213,8 @@ export class AccountPostingsComponent implements OnInit {
               if (accountpostings.reference === this.reference && accountpostings.accountId === this.accountId) {
 
                 this.accountpostings = [...this.accountpostings, accountpostings];
+
+                this.dataSource = new MatTableDataSource(this.accountpostings)
 
                 this.accountPostingsLength = this.accountpostings.length;
               }
@@ -259,6 +270,8 @@ export class AccountPostingsComponent implements OnInit {
 
                 this.accountpostings = this.accountpostings.filter(t => t.id! != result.id!);
 
+                this.dataSource = new MatTableDataSource(this.accountpostings)
+
                 this.getTotalAmount();
                 this.getAccountTotals();
               },
@@ -288,6 +301,8 @@ export class AccountPostingsComponent implements OnInit {
 
                 this.accountpostings = [...this.accountpostings.filter(ap => ap.reference === this.reference && ap.accountId === this.accountId)];
 
+                this.dataSource = new MatTableDataSource(this.accountpostings)
+
                 this.getTotalAmount();
                 this.getAccountTotals();
               },
@@ -301,11 +316,15 @@ export class AccountPostingsComponent implements OnInit {
 
   drop(event: CdkDragDrop<any[]>) {
 
-    const previousIndex = this.accountpostings.findIndex(row => row === event.item.data);
+    // debugger;
 
-    moveItemInArray(this.accountpostings, previousIndex, event.currentIndex);
+    //const previousIndex = this.accountpostings.findIndex(row => row === event.item.data);
+
+    moveItemInArray(this.accountpostings, event.previousIndex, event.currentIndex);
 
     this.accountpostings = this.accountpostings.slice();
+
+    this.dataSource = new MatTableDataSource(this.accountpostings)
 
     let length = this.accountpostings.length;
 
@@ -325,7 +344,21 @@ export class AccountPostingsComponent implements OnInit {
 
     this.accountpostings = [...this.accountpostings.sort((a, b) => (b.position! - a.position!))];
 
+    this.dataSource = new MatTableDataSource(this.accountpostings)
+
     this.accountPostingsService.updatePositions(this.accountpostings).subscribe();
+  }
+
+  openFilter() {
+
+    this.filterOpend = !this.filterOpend;
+
+    return this.filterOpend;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 }
 
