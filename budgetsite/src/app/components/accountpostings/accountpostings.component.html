@@ -29,9 +29,9 @@
     </div>
   </div>
   <!-- Add button -->
-  <div class="center">
+  <div class="center" *ngIf="hideProgress">
     <div class="col center"> </div>
-    <div class="col center" *ngIf="hideProgress">
+    <div class="col center">
       <button class="default-button" mat-mini-fab matTooltip="Adicionar compra no cartão" matTooltipPosition="right"
         color="accent" aria-label="Adicionar compra no cartão" (click)="add()">
         <mat-icon class="default-icon">post_add</mat-icon>
@@ -45,7 +45,8 @@
     </div>
   </div>
   <!--Filter-->
-  <div class="row" *ngIf="filterOpend">
+  <div class="row" *ngIf="hideProgress && filterOpend">
+    <!-- <div class="row" *ngIf="hideProgress"> -->
     <mat-form-field appearance="standard">
       <mat-label>Filtrar</mat-label>
       <input matInput (keyup)="applyFilter($event)" placeholder="" #input>

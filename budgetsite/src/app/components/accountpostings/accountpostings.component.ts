@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges, Inject, AfterViewInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, Inject, AfterViewInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { AccountsPostings } from '../../models/accountspostings.model'
 import { AccountService } from 'src/app/services/account/account.service';
 import { AccountPostingsService } from '../../services/accountpostings/accountpostings.service';
@@ -13,16 +13,19 @@ import { ExpenseService } from 'src/app/services/expense/expense.service';
 import { DatepickerinputComponent } from 'src/app/shared/datepickerinput/datepickerinput.component';
 import moment from 'moment';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatInput } from '@angular/material/input';
 
 @Component({
   selector: 'app-accountpostings',
   templateUrl: './accountpostings.component.html',
   styleUrls: ['./accountpostings.component.scss']
 })
-export class AccountPostingsComponent implements OnInit {
+export class AccountPostingsComponent implements OnInit, AfterViewInit {
 
   @Input() accountId?: number;
   @Input() reference?: string;
+
+  @ViewChild('input') filterInput!: ElementRef;
 
   accountpostings!: AccountsPostings[];
   incomes!: Incomes[];
@@ -50,10 +53,15 @@ export class AccountPostingsComponent implements OnInit {
     private accountService: AccountService,
     private incomeService: IncomeService,
     private expenseService: ExpenseService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
+
+  }
+
+  ngAfterViewInit(): void {
 
   }
 
@@ -353,7 +361,12 @@ export class AccountPostingsComponent implements OnInit {
 
     this.filterOpend = !this.filterOpend;
 
-    return this.filterOpend;
+    this.cd.detectChanges();
+
+    if (this.filterOpend) {
+
+      this.filterInput.nativeElement.focus();
+    }
   }
 
   applyFilter(event: Event) {
