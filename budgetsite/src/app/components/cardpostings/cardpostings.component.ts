@@ -1,5 +1,5 @@
 import { CategoryComponent } from './../category/category.component';
-import { Component, OnInit, Input, SimpleChanges, Inject, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, Inject, ViewChild, AfterViewInit, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { CardsPostings } from '../../models/cardspostings.model'
 import { CardPostingsService } from '../../services/cardpostings/cardpostings.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -21,6 +21,7 @@ import { CardService } from 'src/app/services/card/card.service';
 import { Cards } from 'src/app/models/cards.model';
 import { DatepickerinputComponent } from 'src/app/shared/datepickerinput/datepickerinput.component';
 import moment from 'moment';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-cardpostings',
@@ -32,6 +33,8 @@ export class CardPostingsComponent implements OnInit {
 
   @Input() cardId?: number;
   @Input() reference?: string;
+
+  @ViewChild('input') filterInput!: ElementRef;
 
   cardpostings!: CardsPostings[];
   cardpostingspeople!: CardsPostingsDTO[];
@@ -62,6 +65,9 @@ export class CardPostingsComponent implements OnInit {
   darkTheme?: boolean;
   cardPostingsLength: number = 0;
 
+  filterOpend: boolean = false;
+  dataSource = new MatTableDataSource(this.cardpostings);
+
   constructor(private cardPostingsService: CardPostingsService,
     private cardReceiptsService: CardReceiptsService,
     private peopleService: PeopleService,
@@ -69,7 +75,9 @@ export class CardPostingsComponent implements OnInit {
     private expenseService: ExpenseService,
     private categoryService: CategoryService,
     private cardService: CardService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    private cd: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
 
@@ -153,6 +161,8 @@ export class CardPostingsComponent implements OnInit {
 
             this.cardPostingsLength = this.cardpostings.length;
 
+            this.dataSource = new MatTableDataSource(this.cardpostings);
+
             this.getTotalAmount();
 
             this.hideProgress = true;
@@ -221,6 +231,13 @@ export class CardPostingsComponent implements OnInit {
     this.percOthersTotal = (this.total ? this.othersTotal / this.total * 100 : 0).toFixed(2)?.toString() + '%';
   }
 
+  getFilteredTotalAmount() {
+
+    this.total =
+      this.dataSource.filteredData ?
+        Array(this.dataSource.filteredData)[0].map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0;
+  }
+
   getTotalPeople() {
 
     this.toReceiveTotalPeople =
@@ -284,6 +301,8 @@ export class CardPostingsComponent implements OnInit {
                 this.cardpostings = [...this.cardpostings, cardpostings].sort((a, b) => (b.position! - a.position!));
 
                 this.cardPostingsLength = this.cardpostings.length;
+
+                this.dataSource = new MatTableDataSource(this.cardpostings);
               }
 
               this.categoriesList = result.categoriesList;
@@ -352,6 +371,8 @@ export class CardPostingsComponent implements OnInit {
 
                 this.cardpostings = this.cardpostings.filter(t => t.id! != result.id!);
 
+                this.dataSource = new MatTableDataSource(this.cardpostings);
+
                 this.getTotalAmount();
 
                 this.getCardsPostingsPeople();
@@ -386,6 +407,8 @@ export class CardPostingsComponent implements OnInit {
                 });
 
                 this.cardpostings = [...this.cardpostings.filter(cp => cp.reference === this.reference && cp.cardId === this.cardId)];
+
+                this.dataSource = new MatTableDataSource(this.cardpostings);
 
                 this.getTotalAmount();
                 this.getExpensesByCategories();
@@ -492,7 +515,30 @@ export class CardPostingsComponent implements OnInit {
       cardposting.position = length - (index + 1);
     });
 
+    this.dataSource = new MatTableDataSource(this.cardpostings);
+
     this.cardPostingsService.updatePositions(this.cardpostings).subscribe();
+  }
+
+  openFilter() {
+
+    this.filterOpend = !this.filterOpend;
+
+    this.cd.detectChanges();
+
+    if (this.filterOpend) {
+
+      this.filterInput.nativeElement.focus();
+    }
+  }
+
+  applyFilter(event: Event) {
+
+    const filterValue = (event.target as HTMLInputElement).value;
+
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    this.getFilteredTotalAmount();
   }
 }
 

@@ -54,13 +54,27 @@
             <mat-icon class="default-icon">post_add</mat-icon>
           </button>
         </div>
-        <div class="col-2"></div>
+        <div class="col-2 right">
+          <span class="default-button center" mat-mini-fab matTooltip="Filtrar" matTooltipPosition="right"
+            color="accent" aria-label="Filtrar" (click)="openFilter()">
+            <mat-icon class="default-icon">search</mat-icon>
+          </span>
+        </div>
+      </div>
+
+      <!--Filter-->
+      <div class="row" *ngIf="hideProgress && filterOpend">
+        <!-- <div class="row" *ngIf="hideProgress"> -->
+        <mat-form-field appearance="standard">
+          <mat-label>Filtrar</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="" #input>
+        </mat-form-field>
       </div>
 
       <div class="mytable" *ngIf="hideProgress">
         <div class="table-container mat-elevation-z8">
           <!-- Table -->
-          <table mat-table [dataSource]="cardpostings" cdkDropList [cdkDropListData]="cardpostings"
+          <table mat-table [dataSource]="dataSource" cdkDropList [cdkDropListData]="cardpostings"
             (cdkDropListDropped)="drop($event)">
             <!-- # Column -->
             <ng-container matColumnDef="index">

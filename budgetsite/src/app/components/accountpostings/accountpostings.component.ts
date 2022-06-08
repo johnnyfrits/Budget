@@ -126,7 +126,7 @@ export class AccountPostingsComponent implements OnInit, AfterViewInit {
 
             this.accountPostingsLength = this.accountpostings.length;
 
-            this.dataSource = new MatTableDataSource(this.accountpostings)
+            this.dataSource = new MatTableDataSource(this.accountpostings);
 
             this.getTotalAmount();
             this.getAccountTotals();
@@ -181,6 +181,13 @@ export class AccountPostingsComponent implements OnInit, AfterViewInit {
       this.accountpostings ?
         this.accountpostings.map(t => t.amount).reduce((acc, value) => acc + value, 0) :
         0;
+  }
+
+  getFilteredTotalAmount() {
+
+    this.total =
+      this.dataSource.filteredData ?
+        Array(this.dataSource.filteredData)[0].map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0;
   }
 
   add() {
@@ -370,8 +377,12 @@ export class AccountPostingsComponent implements OnInit, AfterViewInit {
   }
 
   applyFilter(event: Event) {
+
     const filterValue = (event.target as HTMLInputElement).value;
+
     this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    this.getFilteredTotalAmount();
   }
 }
 
