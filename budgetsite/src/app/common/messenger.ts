@@ -24,11 +24,11 @@ export class Messenger {
 		return throwError(err);
 	}
 
-	message(message: string) {
+	message(message: string, duration: number = 10000): void {
 
 		this.snackBar.open(message, "Fechar",
 			{
-				duration: 10000,
+				duration: duration,
 				horizontalPosition: "center",
 				verticalPosition: "top"
 			});

@@ -18,4 +18,5 @@ export class ApiUrls {
     public static yield: string = ApiUrls.baseUrl + 'yields';
     public static budgetTotals: string = ApiUrls.baseUrl + 'budget/totals?';
     public static categories: string = ApiUrls.baseUrl + 'categories';
+    public static users: string = ApiUrls.baseUrl + 'users';
 }

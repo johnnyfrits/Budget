@@ -3,7 +3,7 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item (click)="closeSideNav()" routerLink="/"> <i
+      <a mat-list-item (click)="closeSideNav()" routerLink="/summary"> <i
           class="material-icons">account_balance_wallet</i>Saldos</a>
       <a mat-list-item (click)="closeSideNav()" routerLink="/budget"><i
           class="material-icons">view_quilt</i>Orçamento</a>
@@ -12,6 +12,8 @@
       <a mat-list-item (click)="closeSideNav()" routerLink="/cards"><i class="material-icons">credit_card</i>Cartões</a>
       <div class="row" class="theme-button">
         <mat-slide-toggle [(ngModel)]="themeToggle" (change)="changeTheme()">Tema escuro</mat-slide-toggle>
+        <p></p>
+        <a mat-list-item (click)="logout()"><i class="material-icons">logout</i>Sair</a>
       </div>
     </mat-nav-list>
   </mat-sidenav>
@@ -33,6 +35,9 @@
           {{title}}
         </a>
       </span>
+      <!-- <button mat-icon-button>
+        <mat-icon>logout</mat-icon>
+      </button> -->
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

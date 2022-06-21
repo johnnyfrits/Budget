@@ -1,5 +1,5 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 
@@ -64,6 +64,9 @@ import { PeopleComponent } from './components/people/people.component';
 
 import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
 import { AddvalueComponent } from './shared/addvalue/addvalue.component';
+import { LoginViewComponent } from './views/login-view/login-view.component';
+import { LoginComponent } from './components/login/login.component';
+import { TokenInterceptor } from './services/interceptors/token.interceptor';
 
 registerLocaleData(localePt);
 
@@ -94,7 +97,9 @@ registerLocaleData(localePt);
     CategoryComponent,
     DatepickerreferenceComponent,
     PeopleComponent,
-    AddvalueComponent
+    AddvalueComponent,
+    LoginViewComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -147,7 +152,8 @@ registerLocaleData(localePt);
         listOrientation: 'vertical'
       }
     },
-    { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }
+    { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

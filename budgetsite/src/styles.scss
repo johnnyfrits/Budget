@@ -199,6 +199,11 @@ $primary-light: map-get($light-theme, primary);
     background-color: mat-color($sidenav-dark);
   }
 
+  .login-container {
+    background-color: #303030;
+    color: #fff;
+  }
+  
   .mat-list-item-content {
     color: var(--toolbar-color);
   }

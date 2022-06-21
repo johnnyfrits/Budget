@@ -5,6 +5,7 @@ import { map, shareReplay } from 'rxjs/operators';
 import { NavService } from './nav.service';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-nav',
@@ -19,7 +20,11 @@ export class NavComponent implements OnInit {
 
   @ViewChild('drawer') drawer!: MatDrawer;
 
-  constructor(private breakpointObserver: BreakpointObserver, private navService: NavService) { }
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private navService: NavService,
+    private userService: UserService
+  ) { }
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -55,6 +60,11 @@ export class NavComponent implements OnInit {
 
       this.drawer.close();
     }
+  }
+
+  logout() {
+
+    this.userService.logout();
   }
 
   changeTheme() {
