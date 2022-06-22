@@ -26,6 +26,11 @@ export class UserService {
     );
   }
 
+  loginPage() {
+
+    this.router.navigate(['login']);
+  }
+
   login(userAuthenticateRequest: UsersAuthenticateRequest): Observable<UsersAuthenticateResponse> {
     return this.http.post<UsersAuthenticateResponse>(`${ApiUrls.users}/authenticate`, userAuthenticateRequest).pipe(
       tap(userAuthenticateResponse => {
