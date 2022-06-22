@@ -32,6 +32,7 @@ import { PeopleService } from 'src/app/services/people/people.service';
 import { AddvalueComponent } from 'src/app/shared/addvalue/addvalue.component';
 import { DatepickerinputComponent } from 'src/app/shared/datepickerinput/datepickerinput.component';
 import moment from 'moment';
+import { PeopleComponent } from '../people/people.component';
 
 @Component({
   selector: 'app-budget',
@@ -466,6 +467,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
               this.expenses = [...this.expenses, expenses]; // somente funcionou assim
 
               this.categoriesList = result.categoriesList;
+              this.peopleList = result.peopleList;
 
               this.getBudgetTotals();
               this.getExpensesTotals();
@@ -575,6 +577,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                 this.expenses = [...this.expenses.filter(e => e.reference === this.reference)];
 
                 this.categoriesList = result.categoriesList;
+                this.peopleList = result.peopleList;
 
                 this.getBudgetTotals();
                 this.getExpensesTotals();
@@ -626,6 +629,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
               incomes.remaining = incomes.toReceive - incomes.received;
 
               this.incomes = [...this.incomes, incomes]; // somente funcionou assim
+
+              this.peopleList = result.peopleList;
 
               this.getCardsPostingsPeople();
               this.getBudgetTotals();
@@ -717,6 +722,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                 });
 
                 this.incomes = [...this.incomes.filter(i => i.reference === this.reference)];
+
+                this.peopleList = result.peopleList;
 
                 this.getCardsPostingsPeople();
                 this.getBudgetTotals();
@@ -1144,7 +1151,9 @@ export class ExpensesDialog implements OnInit {
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<ExpensesDialog>,
     @Inject(MAT_DIALOG_DATA) public expenses: Expenses,
-    private categoryService: CategoryService) {
+    private categoryService: CategoryService,
+    private peopleService: PeopleService
+  ) {
   }
 
   ngOnInit(): void {
@@ -1276,6 +1285,34 @@ export class ExpensesDialog implements OnInit {
       }
     });
   }
+
+  addPeople() {
+
+    this.editing = false;
+
+    const dialogRef = this.dialog.open(PeopleComponent, {
+      width: '400px',
+      data: {
+        editing: this.editing
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result) {
+
+        this.peopleService.create(result).subscribe(
+          {
+            next: people => {
+
+              this.expenses.peopleList = [...this.expenses.peopleList!, people].sort((a, b) => a.id.localeCompare(b.id));
+              this.expenses.peopleId = people.id;
+            }
+          }
+        );
+      }
+    });
+  }
 }
 
 @Component({
@@ -1287,6 +1324,8 @@ export class IncomesDialog implements OnInit {
   cards?: Cards[];
   accounts?: Accounts[];
   types?: IncomesTypes[];
+
+  editing: boolean = false;
 
   incomesFormGroup = new FormGroup({
 
@@ -1304,9 +1343,11 @@ export class IncomesDialog implements OnInit {
   });
 
   constructor(
+    public dialog: MatDialog,
     public dialogRef: MatDialogRef<IncomesDialog>,
-    @Inject(MAT_DIALOG_DATA) public incomes: Incomes) {
-  }
+    @Inject(MAT_DIALOG_DATA) public incomes: Incomes,
+    private peopleService: PeopleService
+  ) { }
 
   ngOnInit(): void {
 
@@ -1348,6 +1389,34 @@ export class IncomesDialog implements OnInit {
   setTitle() {
 
     return 'Receita - ' + (this.incomes.editing ? 'Editar' : 'Incluir');
+  }
+
+  addPeople() {
+
+    this.editing = false;
+
+    const dialogRef = this.dialog.open(PeopleComponent, {
+      width: '400px',
+      data: {
+        editing: this.editing
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+      if (result) {
+
+        this.peopleService.create(result).subscribe(
+          {
+            next: people => {
+
+              this.incomes.peopleList = [...this.incomes.peopleList!, people].sort((a, b) => a.id.localeCompare(b.id));
+              this.incomes.peopleId = people.id;
+            }
+          }
+        );
+      }
+    });
   }
 }
 

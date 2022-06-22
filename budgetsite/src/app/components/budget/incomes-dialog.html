@@ -11,7 +11,7 @@
     <h2 mat-dialog-title>{{setTitle()}}</h2>
     <div mat-dialog-content>
 
-      <div class="row">
+      <div class="row" *ngIf="incomes.received == 0">
         <div class="col">
           <app-datepickerreference [(reference)]="incomes.reference"></app-datepickerreference>
         </div>
@@ -82,11 +82,11 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <!-- <div class="col-2 center">
+        <div class="col-2 center">
           <span class="material-icons add-list-item" matTooltip="Adicionar Pessoa" (click)="addPeople()">
             playlist_add
           </span>
-        </div> -->
+        </div>
       </div>
 
       <div class="row">
