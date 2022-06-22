@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   _login!: string;
   _password!: string;
   hide = true;
+  hideProgress: boolean = true;
 
   theme = localStorage.getItem('theme') ?? 'light-theme';
 
@@ -37,12 +38,27 @@ export class LoginComponent implements OnInit {
     if (this.loginFormGroup.invalid)
       return;
 
+    this.hideProgress = false;
+
     let userAuthenticateRequest: UsersAuthenticateRequest =
     {
       login: this._login,
       password: this._password
     };
 
-    this.usuarioService.login(userAuthenticateRequest).subscribe();
+    this.usuarioService.login(userAuthenticateRequest).subscribe(
+      {
+        next: () => {
+
+          this.hideProgress = true;
+        },
+        error: (error) => {
+
+          this.hideProgress = true;
+
+          this.messenger.message(error.error.message);
+        }
+      }
+    );
   }
 }

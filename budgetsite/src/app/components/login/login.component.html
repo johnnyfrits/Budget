@@ -35,12 +35,18 @@
         </div>
       </form>
     </mat-card-content>
-    <mat-card-actions align="end">
-      <button mat-fab color="warn" (click)="login()">
+    <!-- <mat-card-actions align="end">
+    </mat-card-actions> -->
+    <div class="row center">
+      <button mat-fab color="warn" (click)="login()" *ngIf="hideProgress">
         <mat-icon class="default-icon">login</mat-icon>
       </button>
-
-    </mat-card-actions>
+      <div class="row center">
+        <div class="row justify-content-center">
+          <mat-spinner color="accent" strokeWidth="7" diameter="50" *ngIf="!hideProgress"></mat-spinner>
+        </div>
+      </div>
+    </div>
     <!-- <mat-card-footer>
     Footer
   </mat-card-footer> -->
