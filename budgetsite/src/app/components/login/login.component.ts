@@ -1,8 +1,6 @@
-import { Users } from './../../models/users';
 import { UsersAuthenticateRequest } from './../../models/usersauthenticaterequest';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserService } from './../../services/user/user.service';
 import { Messenger } from 'src/app/common/messenger';
 

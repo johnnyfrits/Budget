@@ -1,4 +1,4 @@
-<div class="container login-container">
+<div class="row">
   <mat-card class="container">
     <mat-card-header>
       <mat-card-title>
@@ -42,42 +42,7 @@
 
     </mat-card-actions>
     <!-- <mat-card-footer>
-      Footer
-    </mat-card-footer> -->
+    Footer
+  </mat-card-footer> -->
   </mat-card>
 </div>
-
-
-
-
-
-
-<!-- <mat-card-content class="container">
-  <mat-card class="card-login">
-    <mat-card-title>Login</mat-card-title>
-    <form [formGroup]="formLogin" novalidate>
-      <mat-card-content class="conteudo-login">
-        <mat-form-field appearance="outline" class="form-field-full">
-          <mat-label>Usuário</mat-label>
-          <input type="text" matInput formControlName="login">
-          <mat-error *ngIf="formLogin.get('login')!.hasError('login') && formLogin.get('login')!.touched">
-            Por favor informe o Usuário
-          </mat-error>
-          <mat-error *ngIf="formLogin.get('login')!.hasError('required') && formLogin.get('login')!.touched">
-            Email é <strong>obrigatório</strong>
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="form-field-full">
-          <mat-label>Senha</mat-label>
-          <input type="password" matInput formControlName="password">
-          <mat-error *ngIf="formLogin.get('password')!.invalid && formLogin.get('password')!.touched">Senha é
-            <strong>obrigatória</strong>
-          </mat-error>
-        </mat-form-field>
-      </mat-card-content>
-    </form>
-    <mat-card-actions align="end">
-      <button mat-button color="primary" class="full" align="end" (click)="logar()">Entrar</button>
-    </mat-card-actions>
-  </mat-card>
-</mat-card-content> -->
