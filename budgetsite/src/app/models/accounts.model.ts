@@ -5,6 +5,7 @@ export interface Accounts {
 	color?: string;
 	background?: string;
 	disabled?: boolean;
+	calcInGeneral?: boolean;
 	grandTotalBalance?: number | undefined;
 	totalBalance?: number | undefined;
 	previousBalance?: number | undefined;

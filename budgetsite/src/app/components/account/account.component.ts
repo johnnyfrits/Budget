@@ -183,6 +183,7 @@ export class AccountDialog implements OnInit, AfterViewInit {
     backgroundFormControl: new FormControl('', Validators.required),
     colorFormControl: new FormControl('', Validators.required),
     disabledFormControl: new FormControl(''),
+    calcInGeneralFormControl: new FormControl(''),
   });
 
   constructor(
@@ -216,6 +217,7 @@ export class AccountDialog implements OnInit, AfterViewInit {
       background: '#' + this.picker1._pickerInput.value!.hex,
       color: '#' + this.picker2._pickerInput.value!.hex,
       disabled: this.accountFormGroup.get('disabledFormControl')?.value,
+      calcInGeneral: this.accountFormGroup.get('calcInGeneralFormControl')?.value,
       editing: this.id != undefined,
       deleting: false
     };
@@ -242,6 +244,7 @@ export class AccountDialog implements OnInit, AfterViewInit {
 
     this.accountFormGroup.get('nameFormControl')?.setValue('');
     this.accountFormGroup.get('disabledFormControl')?.setValue(false);
+    this.accountFormGroup.get('calcInGeneralFormControl')?.setValue(false);
 
     this.setBackgroundAndColor('#000000', '#ffffff');
   }
@@ -262,6 +265,7 @@ export class AccountDialog implements OnInit, AfterViewInit {
 
       this.accountFormGroup.get('nameFormControl')?.setValue(account.name);
       this.accountFormGroup.get('disabledFormControl')?.setValue(account.disabled);
+      this.accountFormGroup.get('calcInGeneralFormControl')?.setValue(account.calcInGeneral);
 
       this.setBackgroundAndColor(account.background!, account.color!);
     }

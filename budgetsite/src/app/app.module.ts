@@ -67,6 +67,17 @@ import { AddvalueComponent } from './shared/addvalue/addvalue.component';
 import { LoginViewComponent } from './views/login-view/login-view.component';
 import { LoginComponent } from './components/login/login.component';
 import { TokenInterceptor } from './services/interceptors/token.interceptor';
+import { CurrencyMaskConfig, CurrencyMaskModule, CURRENCY_MASK_CONFIG } from 'ng2-currency-mask';
+
+export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
+  align: "right",
+  allowNegative: true,
+  decimal: ",",
+  precision: 2,
+  prefix: "R$ ",
+  suffix: "",
+  thousands: "."
+};
 
 registerLocaleData(localePt);
 
@@ -140,8 +151,8 @@ registerLocaleData(localePt);
     MatMenuModule,
     MatSortModule,
     ClipboardModule,
-
-    NgxMatColorPickerModule
+    NgxMatColorPickerModule,
+    CurrencyMaskModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-BR' },
@@ -153,7 +164,8 @@ registerLocaleData(localePt);
       }
     },
     { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS },
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
   ],
   bootstrap: [AppComponent]
 })

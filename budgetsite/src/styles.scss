@@ -1,24 +1,3 @@
-// @import '~@angular/material/theming';
-// @include mat-core();
-
-// $light-app-theme: mat-light-theme((color: (primary: mat-palette($mat-indigo),
-//       accent: mat-palette($mat-pink, A200, A100, A400),
-//       warn: mat-palette($mat-red),
-//     )));
-
-// $dark-app-theme: mat-dark-theme((color: (primary: mat-palette($mat-blue-gray),
-//       // accent: mat-palette($mat-blue-gray, A200, A100, A400),
-//       accent: mat-palette($mat-deep-orange),
-//       warn: mat-palette($mat-amber),
-//     )));
-
-// @include angular-material-theme($light-app-theme);
-
-// .dark-theme {
-//   @include angular-material-color($dark-app-theme);
-// }
-
-
 @use '@angular/material'as mat;
 @use '../src/app/components/template/nav/nav.component-theme'as nav;
 @use '../src/app/shared/datepicker/datepicker.component'as datepicker;
@@ -106,25 +85,9 @@ $dark-theme: mat.define-dark-theme((color: (primary: $dark-primary,
       warn: $dark-warn,
     )));
 
-//$dark-colors: mat.get
-
-$custom-collection: (warning : #FFC116,
-  success : #0a630f,
-  danger: #c00000,
-  contrast: (warning : #000000,
-    success : #FFFFFF,
-    danger: #FFFFFF,
-  ));
-
-$dark-custom: mat-palette($custom-collection, custom);
-$dark-theme: map_merge($dark-theme, (custom: $dark-custom));
-
-$custom: map-get($dark-theme, custom);
 $sidenav-dark: map-get($dark-theme, primary);
 $sidenav-light: map-get($light-theme, primary);
 $primary-light: map-get($light-theme, primary);
-
-// $dark: map-get($dark-theme);
 
 // Apply the light theme by default
 @include mat.all-component-colors($light-theme);
@@ -135,7 +98,6 @@ $primary-light: map-get($light-theme, primary);
 .dark-theme {
 
   @include mat.all-component-colors($dark-theme);
-  // @include nav.theme($dark-theme);
   @include datepicker.theme($dark-theme);
 
   $accent: map-get($dark-theme, accent);
@@ -218,10 +180,6 @@ $primary-light: map-get($light-theme, primary);
 
   .mat-nav-list {
     color: var(--toolbar-color);
-  }
-
-  .mat-success {
-    background-color: mat-color($custom, success);
   }
 
   .incomes-add {

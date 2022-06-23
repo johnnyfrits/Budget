@@ -33,8 +33,8 @@
         <div class="col-6">
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>A receber</mat-label>
-            <input matInput type="number" inputmode="numeric" formControlName="toReceiveFormControl"
-              [(ngModel)]="incomes.toReceive" placeholder="0" (change)="calculateRemaining()" onfocus="this.select()">
+            <input matInput inputmode="numeric" currencyMask formControlName="toReceiveFormControl"
+              [(ngModel)]="incomes.toReceive" placeholder="0" (change)="calculateRemaining()">
             <mat-error *ngIf="incomesFormGroup.get('toReceiveFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
@@ -44,8 +44,8 @@
         <div class="col-6">
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Recebido</mat-label>
-            <input matInput type="number" inputmode="numeric" formControlName="receivedFormControl"
-              [(ngModel)]="incomes.received" placeholder="0" (change)="calculateRemaining()" onfocus="this.select()">
+            <input matInput inputmode="numeric" currencyMask formControlName="receivedFormControl"
+              [(ngModel)]="incomes.received" placeholder="0" (change)="calculateRemaining()">
             <mat-error *ngIf="incomesFormGroup.get('receivedFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
@@ -55,8 +55,8 @@
         <div class="col-6">
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Restante</mat-label>
-            <input matInput type="number" inputmode="numeric" formControlName="remainingFormControl" readonly
-              [(ngModel)]="incomes.remaining" placeholder="0" onfocus="this.select()">
+            <input matInput inputmode="numeric" currencyMask formControlName="remainingFormControl" readonly
+              [(ngModel)]="incomes.remaining" placeholder="0">
           </mat-form-field>
         </div>
       </div>
