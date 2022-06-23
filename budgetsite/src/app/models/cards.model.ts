@@ -5,4 +5,6 @@ export interface Cards {
 	color?: string;
 	background?: string;
 	disabled?: boolean;
+	editing?: boolean,
+	deleting?: boolean
 }

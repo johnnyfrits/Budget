@@ -1,0 +1,92 @@
+<form [formGroup]="cardFormGroup">
+
+  <div class="cancel">
+    <button class="default-button" mat-mini-fab matTooltip="Cancelar" color="accent" aria-label="Cancelar"
+      (click)="cancel()">
+      <mat-icon class="default-icon">close</mat-icon>
+    </button>
+  </div>
+
+  <div class="">
+    <button class="card-button" [ngClass]="{'line': buttonName === card.name}" mat-button *ngFor="let card of cards"
+      [ngStyle]="{backgroundColor: card.background, color: card.color}" (click)="setCard(card)">{{card.name}}
+    </button>
+    <span class="material-icons add-card" matTooltip="Incluir Conta" matTooltipPosition="above" (click)="addCard()">
+      add_circle_outline
+    </span>
+  </div>
+
+  <hr>
+
+  <div mat-dialog-content>
+
+    <div class="row">
+      <mat-form-field appearance="fill">
+        <mat-label>Nome</mat-label>
+        <input type="text" id="nameFormControl" required matInput formControlName="nameFormControl" cdkFocusInitial
+          (ngModelChange)="onNameChange($event)">
+        <mat-error *ngIf="cardFormGroup.get('nameFormControl')?.hasError('required')">
+          Campo <strong>obrigatório</strong>.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill" style="width: 180px;">
+        <mat-label>Cor de fundo</mat-label>
+        <input matInput [ngxMatColorPicker]="picker1" id="backgroundFormControl"
+          formControlName="backgroundFormControl">
+        <ngx-mat-color-toggle matSuffix [for]="picker1"></ngx-mat-color-toggle>
+        <ngx-mat-color-picker #picker1></ngx-mat-color-picker>
+        <mat-error *ngIf="cardFormGroup.get('backgroundFormControl')?.hasError('required')">
+          Campo <strong>obrigatório</strong>.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-form-field appearance="fill" style="width: 180px;">
+        <mat-label>Cor do texto</mat-label>
+        <input matInput [ngxMatColorPicker]="picker2" id="colorFormControl" formControlName="colorFormControl">
+        <ngx-mat-color-toggle matSuffix [for]="picker2"></ngx-mat-color-toggle>
+        <ngx-mat-color-picker #picker2></ngx-mat-color-picker>
+        <mat-error *ngIf="cardFormGroup.get('colorFormControl')?.hasError('required')">
+          Campo <strong>obrigatório</strong>.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="row">
+      <mat-checkbox formControlName="disabledFormControl">
+        Desativar conta
+      </mat-checkbox>
+    </div>
+
+    <div class="center">
+      <button class="card-button" mat-button
+        [ngStyle]="{backgroundColor: cardFormGroup.get('backgroundFormControl')?.value, color: cardFormGroup.get('colorFormControl')?.value}">{{buttonText}}
+      </button>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div mat-dialog-actions>
+        <button [disabled]="!cardFormGroup.valid" class="default-button" mat-mini-fab matTooltip="Salvar"
+          matTooltipPosition="right" class="bg-primary" aria-label="Salvar" [mat-dialog-close]="cards" (click)="save()">
+          <mat-icon class="default-icon">save</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="col" *ngIf="id">
+      <div mat-dialog-actions>
+        <button class="default-button" mat-mini-fab matTooltip="Excluir" matTooltipPosition="left" color="warn"
+          aria-label="Excluir" (click)="delete()">
+          <mat-icon class="default-icon">delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</form>

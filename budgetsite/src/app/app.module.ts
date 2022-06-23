@@ -50,7 +50,7 @@ import { AccountViewComponent } from './views/account-view/account-view.componen
 import { AccountComponent, AccountDialog } from './components/account/account.component';
 import { AccountPostingsComponent, AccountPostingsDialog } from './components/accountpostings/accountpostings.component';
 import { CardViewComponent } from './views/card-view/card-view.component';
-import { CardComponent } from './components/card/card.component';
+import { CardComponent, CardDialog } from './components/card/card.component';
 import { CardPostingsComponent, CardPostingsDialog, CardReceiptsDialog } from './components/cardpostings/cardpostings.component';
 import { BudgetComponent, ExpensesDialog, IncomesDialog, PaymentReceiveDialog } from './components/budget/budget.component';
 import { DatepickerComponent } from './shared/datepicker/datepicker.component';
@@ -90,6 +90,7 @@ registerLocaleData(localePt);
     AccountDialog,
     AccountPostingsComponent,
     CardComponent,
+    CardDialog,
     AccountViewComponent,
     CardViewComponent,
     CardPostingsComponent,
