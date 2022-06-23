@@ -170,6 +170,7 @@ export class AccountDialog implements OnInit, AfterViewInit {
   @ViewChild('picker2') picker2!: NgxMatColorPickerComponent;
 
   id?: number;
+  userId!: number;
   buttonName: string = "";
   buttonText: string = "Nome da Conta";
 
@@ -210,7 +211,7 @@ export class AccountDialog implements OnInit, AfterViewInit {
 
     let account: Accounts = {
       id: this.id,
-      userId: 1,
+      userId: this.userId,
       name: this.accountFormGroup.get('nameFormControl')?.value,
       background: '#' + this.picker1._pickerInput.value!.hex,
       color: '#' + this.picker2._pickerInput.value!.hex,
@@ -226,7 +227,7 @@ export class AccountDialog implements OnInit, AfterViewInit {
 
     let account: Accounts = {
       id: this.id,
-      userId: 1,
+      userId: this.userId,
       name: this.accountFormGroup.get('nameFormControl')?.value,
       editing: false,
       deleting: true
@@ -257,6 +258,7 @@ export class AccountDialog implements OnInit, AfterViewInit {
       this.buttonName = account.name;
 
       this.id = account.id;
+      this.userId = account.userId;
 
       this.accountFormGroup.get('nameFormControl')?.setValue(account.name);
       this.accountFormGroup.get('disabledFormControl')?.setValue(account.disabled);

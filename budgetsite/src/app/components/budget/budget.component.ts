@@ -436,7 +436,6 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(ExpensesDialog, {
       width: '400px',
       data: {
-        userId: 1,
         reference: this.reference,
         editing: this.editing,
         cardsList: this.cardsList,
@@ -602,7 +601,6 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(IncomesDialog, {
       width: '400px',
       data: {
-        userId: 1,
         reference: this.reference,
         editing: this.editing,
         cardsList: this.cardsList,
