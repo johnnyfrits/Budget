@@ -81,6 +81,11 @@ export class CardComponent implements OnInit, AfterViewInit {
     this.hideProgress = true;
   }
 
+  getCardsNotDisabled(cards: Cards[]) {
+
+    return cards?.filter(card => card.disabled == null || card.disabled == false);
+  }
+
   cardDialog() {
     const dialogRef = this.dialog.open(CardDialog, {
       width: '400px',

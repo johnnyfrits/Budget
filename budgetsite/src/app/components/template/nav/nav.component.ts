@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { NavService } from './nav.service';
 import { MatDrawer } from '@angular/material/sidenav';
-import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { UserService } from 'src/app/services/user/user.service';
+import { Users } from 'src/app/models/users';
 
 @Component({
   selector: 'app-nav',
@@ -17,6 +17,8 @@ export class NavComponent implements OnInit {
   theme = localStorage.getItem('theme') ?? 'light-theme';
   mobile: boolean = false;
   themeToggle = false;
+
+  user!: Users;
 
   @ViewChild('drawer') drawer!: MatDrawer;
 
@@ -37,6 +39,8 @@ export class NavComponent implements OnInit {
     this.themeToggle = this.theme == 'dark-theme';
 
     document.documentElement.className = this.theme;
+
+    this.user = JSON.parse(localStorage.getItem('user')!);
   }
 
   get icon(): string {

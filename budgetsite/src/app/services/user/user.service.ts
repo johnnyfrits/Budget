@@ -36,6 +36,7 @@ export class UserService {
       tap(userAuthenticateResponse => {
         if (userAuthenticateResponse.token) {
           localStorage.setItem('token', userAuthenticateResponse.token);
+          localStorage.setItem('user', JSON.stringify(userAuthenticateResponse));
           this.router.navigate(['']);
         }
       })
@@ -62,6 +63,7 @@ export class UserService {
   logout() {
 
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
 
     this.router.navigate(['login'])
   }

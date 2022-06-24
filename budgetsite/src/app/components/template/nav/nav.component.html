@@ -15,6 +15,7 @@
       <mat-slide-toggle [(ngModel)]="themeToggle" (change)="changeTheme()">Tema escuro</mat-slide-toggle>
       <p></p>
       <mat-nav-list>
+        <span class="user"><i class="material-icons">account_circle</i>{{user.name}}</span>
         <a mat-list-item (click)="logout()"><i class="material-icons">logout</i>Sair</a>
       </mat-nav-list>
     </div>

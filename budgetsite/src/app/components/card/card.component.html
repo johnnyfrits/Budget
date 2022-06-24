@@ -12,7 +12,8 @@
       </app-datepicker>
       <div class="">
         <mat-progress-bar mode="query" color="accent" *ngIf="!hideProgress"></mat-progress-bar>
-        <button class="card-button" [ngClass]="{'line': buttonName === card.name}" mat-button *ngFor="let card of cards"
+        <button class="card-button" [ngClass]="{'line': buttonName === card.name}" mat-button
+          *ngFor="let card of getCardsNotDisabled(cards!)"
           [ngStyle]="{backgroundColor: card.background, color: card.color}" (click)=setCard(card)>{{card.name}}
         </button>
         <span class="material-icons add-card" matTooltip="Incluir/Editar Contas" matTooltipPosition="above"
