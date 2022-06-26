@@ -6,6 +6,7 @@ import { NavService } from './nav.service';
 import { MatDrawer } from '@angular/material/sidenav';
 import { UserService } from 'src/app/services/user/user.service';
 import { Users } from 'src/app/models/users';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -25,7 +26,8 @@ export class NavComponent implements OnInit {
   constructor(
     private breakpointObserver: BreakpointObserver,
     private navService: NavService,
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) { }
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -78,5 +80,12 @@ export class NavComponent implements OnInit {
     document.documentElement.className = this.theme;
 
     localStorage.setItem('theme', this.theme);
+  }
+
+  viewUser() {
+
+    this.closeSideNav();
+
+    this.router.navigate(['/users'], { state: { user: this.user } });
   }
 }

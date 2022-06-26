@@ -34,7 +34,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Total da Despesa</mat-label>
             <input matInput inputmode="numeric" currencyMask formControlName="totalToPayFormControl"
-              [(ngModel)]="expenses.totalToPay" placeholder="0" (change)="calculateToPay()">
+              [(ngModel)]="expenses.totalToPay" placeholder="0" (change)="calculateToPay()" autocomplete="off">
             <mat-error *ngIf="expensesFormGroup.get('totalToPayFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
@@ -60,7 +60,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>A pagar</mat-label>
             <input matInput inputmode="numeric" currencyMask formControlName="toPayFormControl"
-              [(ngModel)]="expenses.toPay" placeholder="0" (change)="calculateRemaining()">
+              [(ngModel)]="expenses.toPay" placeholder="0" (change)="calculateRemaining()" autocomplete="off">
             <mat-error *ngIf="expensesFormGroup.get('toPayFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
@@ -87,7 +87,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Pago</mat-label>
             <input matInput inputmode="numeric" currencyMask formControlName="paidFormControl"
-              [(ngModel)]="expenses.paid" placeholder="0" (change)="calculateRemaining()">
+              [(ngModel)]="expenses.paid" placeholder="0" (change)="calculateRemaining()" autocomplete="off">
             <mat-error *ngIf="expensesFormGroup.get('paidFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
@@ -98,7 +98,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Restante</mat-label>
             <input matInput inputmode="numeric" currencyMask formControlName="remainingFormControl" readonly
-              [(ngModel)]="expenses.remaining" placeholder="0">
+              [(ngModel)]="expenses.remaining" placeholder="0" autocomplete="off">
           </mat-form-field>
         </div>
 

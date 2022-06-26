@@ -69,7 +69,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
             <mat-label>Valor</mat-label>
             <input matInput inputmode="numeric" currencyMask formControlName="amountFormControl"
-              [(ngModel)]="accountPosting.amount" placeholder="0">
+              [(ngModel)]="accountPosting.amount" placeholder="0" autocomplete="off">
             <mat-error *ngIf="accountPostingFormGroup.get('amountFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>

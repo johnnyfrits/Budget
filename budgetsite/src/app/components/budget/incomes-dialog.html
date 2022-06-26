@@ -34,7 +34,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>A receber</mat-label>
             <input matInput inputmode="numeric" currencyMask formControlName="toReceiveFormControl"
-              [(ngModel)]="incomes.toReceive" placeholder="0" (change)="calculateRemaining()">
+              [(ngModel)]="incomes.toReceive" placeholder="0" (change)="calculateRemaining()" autocomplete="off">
             <mat-error *ngIf="incomesFormGroup.get('toReceiveFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
@@ -45,7 +45,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Recebido</mat-label>
             <input matInput inputmode="numeric" currencyMask formControlName="receivedFormControl"
-              [(ngModel)]="incomes.received" placeholder="0" (change)="calculateRemaining()">
+              [(ngModel)]="incomes.received" placeholder="0" (change)="calculateRemaining()" autocomplete="off">
             <mat-error *ngIf="incomesFormGroup.get('receivedFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
@@ -56,7 +56,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Restante</mat-label>
             <input matInput inputmode="numeric" currencyMask formControlName="remainingFormControl" readonly
-              [(ngModel)]="incomes.remaining" placeholder="0">
+              [(ngModel)]="incomes.remaining" placeholder="0" autocomplete="off">
           </mat-form-field>
         </div>
       </div>

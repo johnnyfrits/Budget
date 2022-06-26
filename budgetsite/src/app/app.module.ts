@@ -68,6 +68,9 @@ import { LoginViewComponent } from './views/login-view/login-view.component';
 import { LoginComponent } from './components/login/login.component';
 import { TokenInterceptor } from './services/interceptors/token.interceptor';
 import { CurrencyMaskConfig, CurrencyMaskModule, CURRENCY_MASK_CONFIG } from 'ng2-currency-mask';
+import { UserRegisterComponent } from './components/userregister/userregister.component';
+import { UserComponent } from './components/user/user.component';
+import { UserRegisterViewComponent } from './views/userregister-view/userregister-view.component';
 
 export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
   align: "right",
@@ -112,6 +115,9 @@ registerLocaleData(localePt);
     AddvalueComponent,
     LoginViewComponent,
     LoginComponent,
+    UserRegisterComponent,
+    UserComponent,
+    UserRegisterViewComponent,
   ],
   imports: [
     BrowserModule,

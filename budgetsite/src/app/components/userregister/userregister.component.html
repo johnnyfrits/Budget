@@ -7,13 +7,23 @@
       </mat-card-title>
     </mat-card-header>
     <mat-card-content>
-      <form [formGroup]="loginFormGroup">
+      <form [formGroup]="userRegisterFormGroup">
+        <div class="row">
+          <mat-form-field appearance="fill">
+            <mat-label>Nome</mat-label>
+            <input type="text" id="nameFormControl" required matInput formControlName="nameFormControl"
+              [(ngModel)]="_name" cdkFocusInitial autocomplete="off">
+            <mat-error *ngIf="userRegisterFormGroup.get('nameFormControl')?.hasError('required')">
+              Campo <strong>obrigatório</strong>.
+            </mat-error>
+          </mat-form-field>
+        </div>
         <div class="row">
           <mat-form-field appearance="fill">
             <mat-label>Usuário</mat-label>
             <input type="text" id="loginFormControl" required matInput formControlName="loginFormControl"
-              [(ngModel)]="_login" cdkFocusInitial>
-            <mat-error *ngIf="loginFormGroup.get('loginFormControl')?.hasError('required')">
+              [(ngModel)]="_login" autocomplete="off">
+            <mat-error *ngIf="userRegisterFormGroup.get('loginFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
           </mat-form-field>
@@ -22,22 +32,21 @@
           <mat-form-field appearance="fill">
             <mat-label>Senha</mat-label>
             <input matInput [type]="hide ? 'password' : 'text'" id="passwordFormControl" required matInput
-              formControlName="passwordFormControl" [(ngModel)]="_password">
+              formControlName="passwordFormControl" [(ngModel)]="_password" autocomplete="new-password">
             <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
               [attr.aria-pressed]="hide">
               <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
-            <mat-error *ngIf="loginFormGroup.get('passwordFormControl')?.hasError('required')">
+            <mat-error *ngIf="userRegisterFormGroup.get('passwordFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
           </mat-form-field>
-          <a [routerLink]="['/usersregister']">Cadastrar-se</a>
         </div>
       </form>
     </mat-card-content>
     <div class="row center">
-      <button mat-fab color="warn" (click)="login()" *ngIf="hideProgress">
-        <mat-icon class="default-icon">login</mat-icon>
+      <button mat-fab color="warn" (click)="register()" *ngIf="hideProgress">
+        <mat-icon class="default-icon">save</mat-icon>
       </button>
       <div class="row center">
         <div class="row justify-content-center">

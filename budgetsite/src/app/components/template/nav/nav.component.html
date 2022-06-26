@@ -11,14 +11,16 @@
           class="material-icons">account_balance</i>Contas</a>
       <a mat-list-item (click)="closeSideNav()" routerLink="/cards"><i class="material-icons">credit_card</i>Cartões</a>
     </mat-nav-list>
-    <div class="theme-button">
-      <mat-slide-toggle [(ngModel)]="themeToggle" (change)="changeTheme()">Tema escuro</mat-slide-toggle>
-      <p></p>
-      <mat-nav-list>
-        <span class="user"><i class="material-icons">account_circle</i>{{user.name}}</span>
-        <a mat-list-item (click)="logout()"><i class="material-icons">logout</i>Sair</a>
-      </mat-nav-list>
-    </div>
+    <mat-nav-list class="theme-button">
+      <a mat-list-item (click)="viewUser()"><i class="material-icons">manage_accounts</i>{{user.name}}</a>
+      <a mat-list-item (click)="logout()" class="row">
+        <i class="material-icons">logout</i>Sair</a>
+      <div>
+        <mat-slide-toggle [(ngModel)]="themeToggle" (change)="changeTheme()">Tema escuro</mat-slide-toggle>
+        <p></p>
+      </div>
+
+    </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
     <mat-toolbar color="primary">
@@ -38,9 +40,6 @@
           {{title}}
         </a>
       </span>
-      <!-- <button mat-icon-button>
-        <mat-icon>logout</mat-icon>
-      </button> -->
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-sidenav-content>

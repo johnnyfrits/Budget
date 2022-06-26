@@ -44,7 +44,14 @@ export class UserService {
   }
 
   create(user: Users): Observable<Users> {
-    return this.http.post<Users>(ApiUrls.users, user).pipe(
+    return this.http.post<Users>(`${ApiUrls.users}/register`, user).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
+  update(user: Users): Observable<Users> {
+    return this.http.put<Users>(`${ApiUrls.users}/${user.id}`, user).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );

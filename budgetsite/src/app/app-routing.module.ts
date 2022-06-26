@@ -9,11 +9,18 @@ import { SummaryViewComponent } from './views/summary-view/summary-view.componen
 import { NavComponent } from './components/template/nav/nav.component';
 import { UnautheticatedUserGuard } from './services/guards/unautheticated-user.guard';
 import { AutheticatedUserGuard } from './services/guards/autheticated-user.guard';
+import { UserComponent } from './components/user/user.component';
+import { UserRegisterViewComponent } from './views/userregister-view/userregister-view.component';
 
 const routes: Routes = [
   {
     path: "login",
     component: LoginViewComponent,
+    canActivate: [UnautheticatedUserGuard]
+  },
+  {
+    path: "usersregister",
+    component: UserRegisterViewComponent,
     canActivate: [UnautheticatedUserGuard]
   },
   {
@@ -40,6 +47,10 @@ const routes: Routes = [
       {
         path: "cards",
         component: CardViewComponent
+      },
+      {
+        path: "users",
+        component: UserComponent
       }
     ]
   }
