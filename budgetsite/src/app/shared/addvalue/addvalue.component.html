@@ -15,8 +15,8 @@
       <div class="col">
         <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
           <mat-label>Valor</mat-label>
-          <input matInput type="number" inputmode="numeric" formControlName="amountFormControl"
-            [(ngModel)]="data.amount" placeholder="0" cdkFocusInitial>
+          <input matInput inputmode="numeric" currencyMask formControlName="amountFormControl" [(ngModel)]="data.amount"
+            placeholder="0" cdkFocusInitial autocomplete="off">
           <mat-error *ngIf="addValueFormGroup.get('amountFormControl')?.hasError('required')">
             Campo <strong>obrigatório</strong>.
           </mat-error>

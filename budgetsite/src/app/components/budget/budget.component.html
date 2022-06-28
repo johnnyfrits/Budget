@@ -170,7 +170,8 @@
             <tr class="expenses mat-header-cell-expenses" mat-header-row
               *matHeaderRowDef="displayedExpensesColumns; sticky: false"></tr>
             <tr class="expenses" (click)="editOrDeleteExpense(row, $event)" mat-row
-              *matRowDef="let row; columns: displayedExpensesColumns" cdkDrag [cdkDragData]=row>
+              *matRowDef="let row; columns: displayedExpensesColumns" cdkDrag [cdkDragData]=row
+              [ngClass]="{'card-yield-checked': row.overdue || row.duetoday}">
             </tr>
             <tr class="expenses" mat-footer-row *matFooterRowDef="displayedExpensesColumns; sticky: false"></tr>
           </table>

@@ -277,6 +277,34 @@ export class BudgetComponent implements OnInit, AfterViewInit {
           this.expenses = expenses;
 
           this.getExpensesTotals();
+
+          let overdue = false; // se houver algum lançamento atrasado
+          let duetoday = false; // se houver algum lançamento vencendo hoje
+
+          this.expenses.forEach(expense => {
+
+            if (expense.dueDate && expense.paid == 0) {
+
+              if (this.dueToday(expense)) {
+
+                duetoday = true;
+              }
+              else if (this.overDue(expense)) {
+
+                overdue = true;
+              }
+            }
+          });
+
+          if (duetoday && overdue) {
+            this.messenger.message('Há lançamentos vencidos e vencendo hoje!');
+          }
+          else if (duetoday) {
+            this.messenger.message('Há lançamentos vencendo hoje!');
+          }
+          else if (overdue) {
+            this.messenger.message('Há lançamentos vencidos!');
+          }
         },
         error: () => {
 
@@ -463,6 +491,9 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
               //this.expenses.push(expenses); não funcionou assim como nas outras funções, acredito que seja por causa do Expension Panel (mat-expansion-panel)
 
+              expenses.overdue = this.overDue(expenses);
+              expenses.duetoday = this.dueToday(expenses);
+
               this.expenses = [...this.expenses, expenses]; // somente funcionou assim
 
               this.categoriesList = result.categoriesList;
@@ -571,6 +602,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                   t.parcels = result.parcels;
                   t.scheduled = result.scheduled;
                   t.peopleId = result.peopleId;
+                  t.overdue = this.overDue(t);
+                  t.duetoday = this.dueToday(t);
                 });
 
                 this.expenses = [...this.expenses.filter(e => e.reference === this.reference)];
@@ -814,6 +847,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
             expense.paid = +(expense.paid + Math.abs(result.amount)).toFixed(2);
             expense.remaining = +(expense.toPay - expense.paid).toFixed(2);
             expense.scheduled = false;
+            expense.overdue = false;
+            expense.duetoday = false;
 
             this.getExpensesTotals();
 
@@ -988,7 +1023,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
           this.clipboardService.copy(message);
 
-          this.messenger.message("Mensagen copiada para área de transferência.");
+          this.messenger.message("Mensagem copiada para área de transferência.");
         }
       }
     );
@@ -1110,6 +1145,36 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         row.expanding = false;
       }
     }
+  }
+
+  dueToday(expense: Expenses) {
+
+    let today = new Date();
+
+    today.setHours(0, 0, 0, 0);
+
+    let dueDate = new Date(expense.dueDate!);
+
+    dueDate.setHours(0, 0, 0, 0);
+
+    expense.duetoday = today.getTime() == dueDate.getTime();
+
+    return expense.duetoday;
+  }
+
+  overDue(expense: Expenses) {
+
+    let today = new Date();
+
+    today.setHours(0, 0, 0, 0);
+
+    let dueDate = new Date(expense.dueDate!);
+
+    dueDate.setHours(0, 0, 0, 0);
+
+    expense.overdue = today.getTime() > dueDate.getTime();
+
+    return expense.overdue;
   }
 }
 

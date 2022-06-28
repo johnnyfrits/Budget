@@ -29,4 +29,6 @@ export interface Expenses {
 	cardsList?: Cards[];
 	categoriesList?: Categories[];
 	peopleList?: People[];
+	overdue?: boolean;
+	duetoday?: boolean;
 }
