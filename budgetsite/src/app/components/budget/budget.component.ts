@@ -584,7 +584,6 @@ export class BudgetComponent implements OnInit, AfterViewInit {
               next: () => {
 
                 this.expenses.filter(t => t.id === result.id).map(t => {
-
                   t.id = result.id;
                   t.userId = result.userId;
                   t.reference = result.reference;
@@ -1149,6 +1148,11 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
   dueToday(expense: Expenses) {
 
+    if (!expense.dueDate) {
+
+      return false;
+    }
+
     let today = new Date();
 
     today.setHours(0, 0, 0, 0);
@@ -1163,6 +1167,11 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   }
 
   overDue(expense: Expenses) {
+
+    if (!expense.dueDate) {
+
+      return false;
+    }
 
     let today = new Date();
 
