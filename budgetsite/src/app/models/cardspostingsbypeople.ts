@@ -1,5 +1,4 @@
 import { Cards } from './cards.model';
-import { Categories } from "./categories.model";
 import { People } from "./people.model";
 
 export interface CardsPostings {

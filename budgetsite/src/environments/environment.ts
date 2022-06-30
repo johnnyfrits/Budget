@@ -4,9 +4,10 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'https://localhost:44364/api/'
+  //baseUrl: 'https://localhost:7194/api/'
+  // baseUrl: 'https://localhost:44364/api/'
   //baseUrl: 'https://localhost:8002/api/'
-  //baseUrl: 'https://budgetapi2-apim.azure-api.net/api/'
+  baseUrl: 'https://budgetapi2-apim.azure-api.net/api/'
 };
 
 /*

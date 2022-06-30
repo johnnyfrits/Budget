@@ -1,4 +1,5 @@
 import { Accounts } from "./accounts.model";
+import { Cards } from "./cards.model";
 
 export interface CardsReceipts {
 	id?: number;
@@ -14,4 +15,5 @@ export interface CardsReceipts {
 	received?: number;
 	remaining?: number;
 	accountsList?: Accounts[];
+	card?: Cards;
 }

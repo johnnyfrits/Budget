@@ -1132,6 +1132,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
               row.cardsPostings = people.cardsPostings;
               row.incomes = people.incomes;
+              // row.cardsReceipts = people.cardsReceipts;
+              row.accountsPostings = people.accountsPostings;
 
               row.expanding = false;
             },
@@ -1145,6 +1147,26 @@ export class BudgetComponent implements OnInit, AfterViewInit {
       }
     }
   }
+
+  // getAccountName(row: AccountsPostings) {
+
+  //   return row.cardReceipt ? row.account!.name : row.income!.account!.name
+  // }
+
+  // getBackground(row: AccountsPostings) {
+
+  //   return row.cardReceipt ? row.cardReceipt.account!.background : row.income!.account!.background;
+  // }
+
+  // getColor(row: AccountsPostings) {
+
+  //   return row.cardReceipt ? row.cardReceipt.account!.color : row.income!.account!.color;
+  // }
+
+  // getDescription(row: AccountsPostings) {
+
+  //   return row.cardReceipt ? row.cardReceipt.account!.color : row.income!.account!.color;
+  // }
 
   dueToday(expense: Expenses) {
 
