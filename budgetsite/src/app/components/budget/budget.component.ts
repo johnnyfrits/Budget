@@ -457,6 +457,31 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         this.expensesByCategories.map(t => t.perc!).reduce((acc, value) => acc + value, 0) : 0;
   }
 
+  getPeopleCardsPostingsTotal(cardpostingspeople: CardsPostingsDTO) {
+
+    return cardpostingspeople.cardsPostings.map(t => t.amount).reduce((acc, value) => acc + value, 0);
+  }
+
+  getPeopleAccountsPostingsTotal(cardpostingspeople: CardsPostingsDTO) {
+
+    return cardpostingspeople.accountsPostings.map(t => t.amount).reduce((acc, value) => acc + value, 0);
+  }
+
+  getPeopleIncomesToReceiveTotal(cardpostingspeople: CardsPostingsDTO) {
+
+    return cardpostingspeople.incomes.map(t => t.toReceive).reduce((acc, value) => acc + value, 0);
+  }
+
+  getPeopleIncomesReceivedTotal(cardpostingspeople: CardsPostingsDTO) {
+
+    return cardpostingspeople.incomes.map(t => t.received).reduce((acc, value) => acc + value, 0);
+  }
+
+  getPeopleIncomesRemaingTotal(cardpostingspeople: CardsPostingsDTO) {
+
+    return cardpostingspeople.incomes.map(t => t.toReceive - t.received).reduce((acc, value) => acc + value, 0);
+  }
+
   addExpense(): void {
 
     this.editing = false;

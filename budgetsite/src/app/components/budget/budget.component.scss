@@ -25,19 +25,22 @@ table {
   padding-right: 5px;
 }
 
-.mat-column-toReceive {
+.mat-column-toReceive,
+.mat-column-toReceive-detail {
   width: 125px;
   text-align: right;
   padding-right: 5px;
 }
 
-.mat-column-received {
+.mat-column-received,
+.mat-column-received-detail {
   width: 125px;
   text-align: right;
   padding-right: 5px;
 }
 
-.mat-column-remaining {
+.mat-column-remaining,
+.mat-column-remaining-detail {
   width: 125px;
   text-align: right;
 }
@@ -59,6 +62,9 @@ tr.mat-footer-row {
 
 .mat-column-amount,
 .mat-column-amount-detail,
+.mat-column-toReceive-detail,
+.mat-column-received-detail,
+.mat-column-remaing-detail,
 .mat-column-perc {
   text-align: right;
 }
