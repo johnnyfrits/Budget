@@ -73,7 +73,7 @@ export class AccountPostingsComponent implements OnInit, AfterViewInit {
 
   getLists() {
 
-    this.accountService.read().subscribe(
+    this.accountService.readNotDisabled().subscribe(
       {
         next: accounts => {
 

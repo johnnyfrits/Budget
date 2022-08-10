@@ -132,7 +132,7 @@ export class CardPostingsComponent implements OnInit {
       }
     );
 
-    this.accountService.read().subscribe(
+    this.accountService.readNotDisabled().subscribe(
       {
         next: accounts => {
 

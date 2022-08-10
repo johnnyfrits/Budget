@@ -218,7 +218,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
       }
     );
 
-    this.accountService.read().subscribe(
+    this.accountService.readNotDisabled().subscribe(
       {
         next: accounts => {
 
@@ -1567,7 +1567,7 @@ export class PaymentReceiveDialog implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
-    this.accountService.read().subscribe(
+    this.accountService.readNotDisabled().subscribe(
       {
         next: accounts => {
 

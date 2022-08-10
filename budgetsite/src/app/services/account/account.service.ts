@@ -30,6 +30,14 @@ export class AccountService {
     );
   }
 
+  readNotDisabled(): Observable<Accounts[]> {
+
+    return this.http.get<Accounts[]>(ApiUrls.accounts).pipe(
+      map(obj => obj.filter(x => x.disabled === false)),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
   update(account: Accounts): Observable<Accounts> {
     return this.http.put<Accounts>(`${ApiUrls.accounts}/${account.id}`, account).pipe(
       map(obj => obj),
