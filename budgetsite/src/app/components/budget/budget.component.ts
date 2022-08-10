@@ -1566,7 +1566,7 @@ export class PaymentReceiveDialog implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
-
+    //Teste
     this.accountService.readNotDisabled().subscribe(
       {
         next: accounts => {
