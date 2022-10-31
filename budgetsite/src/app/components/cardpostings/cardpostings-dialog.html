@@ -19,7 +19,7 @@
       </div>
 
       <div class="row">
-        <div class="col-10">
+        <div class="col-8">
           <mat-form-field appearance="fill" floatLabel="always" style="width: 100%;">
             <mat-label>Cartão</mat-label>
             <mat-select mat-input [(ngModel)]="cardPosting.cardId" formControlName="cardIdFormControl">
@@ -27,11 +27,10 @@
             </mat-select>
           </mat-form-field>
         </div>
-        <div class="col-2"></div>
       </div>
 
       <div class="row">
-        <div class="col">
+        <div class="col-8">
           <app-datepickerinput #datepickerinput [currentDate]="cardPosting.date"
             (currentDateChanged)="currentDateChanged($event)">
           </app-datepickerinput>
@@ -50,8 +49,8 @@
       </div>
 
       <div class="row">
-        <div class="col">
-          <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
+        <div class="col-6">
+          <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Valor Total</mat-label>
             <input matInput inputmode="numeric" currencyMask formControlName="totalAmountFormControl"
               [(ngModel)]="cardPosting.totalAmount" placeholder="0" (change)="calculateAmount()" autocomplete="off">
@@ -60,8 +59,8 @@
             </mat-error>
           </mat-form-field>
         </div>
-        <div class="col">
-          <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
+        <div class="col-6">
+          <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Total de Parcelas</mat-label>
             <input matInput type="number" inputmode="numeric" formControlName="parcelsFormControl"
               [(ngModel)]="cardPosting.parcels" min=1 (change)="onParcelsChanged($event)" onfocus="this.select()">
@@ -77,8 +76,8 @@
       </div>
 
       <div class="row">
-        <div class="col">
-          <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
+        <div class="col-6">
+          <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Valor Parcela</mat-label>
             <input matInput inputmode="numeric" currencyMask formControlName="amountFormControl"
               [(ngModel)]="cardPosting.amount" placeholder="0" autocomplete="off">
@@ -87,8 +86,8 @@
             </mat-error>
           </mat-form-field>
         </div>
-        <div class="col">
-          <mat-form-field appearance="fill" floatLabel="always" style="width:120px !important">
+        <div class="col-6">
+          <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Nº. Parcela</mat-label>
             <input matInput type="number" inputmode="numeric" formControlName="parcelNumberFormControl"
               [(ngModel)]="cardPosting.parcelNumber" min=1 (change)="onParcelNumberChanged($event)"

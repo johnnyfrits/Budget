@@ -1,4 +1,4 @@
-<mat-form-field appearance="fill">
+<mat-form-field appearance="fill" style="width: 100%;">
   <mat-label>Data</mat-label>
   <input matInput [matDatepicker]="dp" [formControl]="date" (dateInput)="dateChanged($event.value)">
   <mat-error *ngIf="date.hasError('required')">
