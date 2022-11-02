@@ -33,6 +33,7 @@ export class AccountPostingsComponent implements OnInit, AfterViewInit {
   displayedColumns = ['index', 'date', 'description', 'amount', 'runningAmount'];
   total: number = 0;
   grandTotalBalance?: number = 0;
+  grandTotalYields?: number = 0;
   totalBalance?: number = 0;
   previousBalance?: number = 0;
   totalYields?: number = 0;
@@ -143,6 +144,7 @@ export class AccountPostingsComponent implements OnInit, AfterViewInit {
         next: account => {
 
           this.grandTotalBalance = account.grandTotalBalance;
+          this.grandTotalYields = account.grandTotalYields;
           this.totalBalance = account.totalBalance;
           this.previousBalance = account.previousBalance;
           this.totalYields = account.totalYields;

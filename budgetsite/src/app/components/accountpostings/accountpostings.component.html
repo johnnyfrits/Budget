@@ -2,19 +2,22 @@
     <mat-spinner color="accent" *ngIf="!hideProgress"></mat-spinner>
   </div>
   <div class="row center">
-    <div class="col"></div>
-    <div class="col" *ngIf="hideProgress">
-      <span class="center">Saldo Geral:</span>
-      <span class="center"><b>{{grandTotalBalance | currency : '':''}}</b></span>
-    </div>
-    <div class="col refresh" *ngIf="hideProgress">
-      <button class="default-button" mat-mini-fab matTooltip="atualizar" matTooltipPosition="left" color="warn"
+    <div class="col d-flex justify-content-center" *ngIf="hideProgress">
+      <button class="default-button" mat-mini-fab matTooltip="atualizar" matTooltipPosition="right" color="warn"
         aria-label="Atualizar" (click)="refresh()">
         <mat-icon class="default-icon">autorenew</mat-icon>
       </button>
     </div>
+    <div class="col d-flex flex-column justify-content-center" *ngIf="hideProgress">
+      <span class="center">Saldo Geral:</span>
+      <span class="center"><b>{{grandTotalBalance | currency : '':''}}</b></span>
+    </div>
+    <div class="col d-flex flex-column justify-content-center" *ngIf="hideProgress">
+      <span class="center">Rend. Geral:</span>
+      <span class="center"><b>{{grandTotalYields | currency : '':''}}</b></span>
+    </div>
   </div>
-  <div class="center" *ngIf="hideProgress">
+  <div class="row center" *ngIf="hideProgress">
     <div class="col text-center">
       <span>Saldo Anterior:</span><br>
       <span><b>{{previousBalance | currency : '':''}}</b></span>
@@ -29,7 +32,7 @@
     </div>
   </div>
   <!-- Add button -->
-  <div class="center" *ngIf="hideProgress">
+  <div class="row center" *ngIf="hideProgress">
     <div class="col center"> </div>
     <div class="col center">
       <button class="default-button" mat-mini-fab matTooltip="Adicionar compra no cartão" matTooltipPosition="right"

@@ -181,7 +181,7 @@ $primary-light: map-get($light-theme, primary);
     background-color: #303030;
     color: #fff;
   }
-  
+
   .mat-list-item-content {
     color: var(--toolbar-color);
   }
@@ -725,7 +725,7 @@ input[type="number"] {
 .refresh {
   display: flex;
   align-content: center;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 .cdk-drag-preview {
