@@ -51,28 +51,28 @@
       <div class="center">
         <div class="row center">
           <span class="center">Minhas Despesas:</span>
-          <span class="center"><b>{{budgetTotals.myExpenses | currency : '':''}}&nbsp;
-            </b>({{budgetTotals.myExpensesPerc}}%)</span>
+          <span class="center"><b>{{budgetTotals?.myExpenses | currency : '':''}}&nbsp;
+            </b>({{budgetTotals?.myExpensesPerc}}%)</span>
         </div>
 
         <div class="row center">
           <span class="center">Despesas Terceiros:</span>
-          <span class="center"><b>{{budgetTotals.othersExpenses | currency : '':''}}&nbsp;
-            </b>({{budgetTotals.othersExpensesPerc}}%)</span>
+          <span class="center"><b>{{budgetTotals?.othersExpenses | currency : '':''}}&nbsp;
+            </b>({{budgetTotals?.othersExpensesPerc}}%)</span>
         </div>
       </div>
       <p></p>
       <div class="center">
         <div class="row center">
           <span class="center">Minhas Receitas:</span>
-          <span class="center"><b>{{budgetTotals.myIncomes | currency : '':''}}&nbsp;
-            </b>({{budgetTotals.myIncomesPerc}}%)</span>
+          <span class="center"><b>{{budgetTotals?.myIncomes | currency : '':''}}&nbsp;
+            </b>({{budgetTotals?.myIncomesPerc}}%)</span>
         </div>
 
         <div class="row center">
           <span class="center">Receitas Terceiros:</span>
-          <span class="center"><b>{{budgetTotals.othersIncomes | currency : '':''}}&nbsp;
-            </b>({{budgetTotals.othersIncomesPerc}}%)</span>
+          <span class="center"><b>{{budgetTotals?.othersIncomes | currency : '':''}}&nbsp;
+            </b>({{budgetTotals?.othersIncomesPerc}}%)</span>
         </div>
       </div>
 
@@ -109,7 +109,7 @@
                   <span *ngIf="row.scheduled" class="material-icons scheduled">schedule</span>
                 </div>
                 <div class="small-text" *ngIf="row.dueDate !== null">
-                  <span><i>Venc.:&nbsp;{{row.dueDate | date: 'dd/MM'}}</i></span>
+                  <span><i class="red">Venc.:&nbsp;{{row.dueDate | date: 'dd/MM'}}</i></span>
                 </div>
               </td>
               <td mat-footer-cell *matFooterCellDef> Total </td>
@@ -374,7 +374,7 @@
                         <th mat-header-cell *matHeaderCellDef>Descrição</th>
                         <td mat-cell *matCellDef="let row" class="warn">{{row.description}}
                           <div class="small-text" *ngIf="row.peopleId !== null || row.parcels > 1">
-                            <span *ngIf="row.parcels > 1">({{row.parcelNumber}}/{{row.parcels}}) </span>
+                            <span class="red" *ngIf="row.parcels > 1">({{row.parcelNumber}}/{{row.parcels}}) </span>
                           </div>
                         </td>
                         <td mat-footer-cell *matFooterCellDef> </td>
@@ -613,7 +613,7 @@
                             <span *ngIf="row.scheduled" class="material-icons scheduled">schedule</span>
                           </div>
                           <div class="small-text" *ngIf="row.dueDate !== null">
-                            <span><i>Venc.:&nbsp;{{row.dueDate | date: 'dd/MM'}}</i></span>
+                            <span><i class="red">Venc.:&nbsp;{{row.dueDate | date: 'dd/MM'}}</i></span>
                           </div>
                         </td>
                         <td mat-footer-cell *matFooterCellDef> </td>
