@@ -57,7 +57,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   expenses!: Expenses[];
   incomes!: Incomes[];
   expensesByCategories!: ExpensesByCategories[];
-  budgetTotals!: BudgetTotals;
+  budgetTotals?: BudgetTotals;
   cardpostingspeople!: CardsPostingsDTO[];
   dataSourcePeople = new MatTableDataSource(this.cardpostingspeople);
   dataSourceCategories = new MatTableDataSource(this.expensesByCategories);

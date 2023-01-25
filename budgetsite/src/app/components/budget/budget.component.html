@@ -662,7 +662,11 @@
                       <!-- Descrição Column -->
                       <ng-container matColumnDef="description-detail">
                         <th mat-header-cell *matHeaderCellDef>Descrição</th>
-                        <td mat-cell *matCellDef="let row" class="warn">{{row.description}}</td>
+                        <td mat-cell *matCellDef="let row" class="warn">{{row.description}}
+                          <div class="small-text" *ngIf="row.parcels > 1">
+                            <span class="red" *ngIf="row.parcels > 1">({{row.parcelNumber}}/{{row.parcels}}) </span>
+                          </div>
+                        </td>
                         <td mat-footer-cell *matFooterCellDef></td>
                       </ng-container>
 
