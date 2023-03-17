@@ -40,8 +40,10 @@
       <div class="row">
         <mat-form-field appearance="fill">
           <mat-label>Descrição</mat-label>
-          <input type="text" id="descriptionFormControl" required matInput formControlName="descriptionFormControl"
-            [(ngModel)]="cardPosting.description" cdkFocusInitial>
+          <input *ngIf="cardPosting.description" type="text" id="descriptionFormControl" required matInput
+            formControlName="descriptionFormControl" [(ngModel)]="cardPosting.description">
+          <input *ngIf="!cardPosting.description" type="text" id="descriptionFormControl" required matInput
+            formControlName="descriptionFormControl" [(ngModel)]="cardPosting.description" cdkFocusInitial>
           <mat-error *ngIf="cardPostingFormGroup.get('descriptionFormControl')?.hasError('required')">
             Campo <strong>obrigatório</strong>.
           </mat-error>
