@@ -495,7 +495,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         categoriesList: this.categoriesList,
         peopleList: this.peopleList,
         parcels: 1,
-        parcelNumber: 1
+        parcelNumber: 1,
+        adding: true
       }
     });
 
@@ -663,7 +664,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         cardsList: this.cardsList,
         accountsList: this.accountsList,
         peopleList: this.peopleList,
-        typesList: this.typesList
+        typesList: this.typesList,
+        adding: true
       }
     });
 
@@ -1238,7 +1240,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   selector: 'expenses-dialog',
   templateUrl: 'expenses-dialog.html',
 })
-export class ExpensesDialog implements OnInit {
+export class ExpensesDialog implements OnInit, AfterViewInit {
 
   cards?: Cards[];
   editing: boolean = false;
@@ -1271,7 +1273,8 @@ export class ExpensesDialog implements OnInit {
     public dialogRef: MatDialogRef<ExpensesDialog>,
     @Inject(MAT_DIALOG_DATA) public expenses: Expenses,
     private categoryService: CategoryService,
-    private peopleService: PeopleService
+    private peopleService: PeopleService,
+    private cd: ChangeDetectorRef
   ) {
   }
 
@@ -1288,6 +1291,11 @@ export class ExpensesDialog implements OnInit {
       this.expenses.parcels === 1;
 
     this.expenses.monthsToRepeat = 12;
+  }
+
+  ngAfterViewInit(): void {
+
+    this.cd.detectChanges();
   }
 
   cancel(): void {
@@ -1438,7 +1446,7 @@ export class ExpensesDialog implements OnInit {
   selector: 'incomes-dialog',
   templateUrl: 'incomes-dialog.html',
 })
-export class IncomesDialog implements OnInit {
+export class IncomesDialog implements OnInit, AfterViewInit {
 
   cards?: Cards[];
   accounts?: Accounts[];
@@ -1465,7 +1473,8 @@ export class IncomesDialog implements OnInit {
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<IncomesDialog>,
     @Inject(MAT_DIALOG_DATA) public incomes: Incomes,
-    private peopleService: PeopleService
+    private peopleService: PeopleService,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -1475,6 +1484,11 @@ export class IncomesDialog implements OnInit {
     this.types = this.incomes.typesList;
 
     this.incomes.monthsToRepeat = 12;
+  }
+
+  ngAfterViewInit(): void {
+
+    this.cd.detectChanges();
   }
 
   cancel(): void {

@@ -20,9 +20,9 @@
       <div class="row">
         <mat-form-field appearance="fill">
           <mat-label>Descrição</mat-label>
-          <input *ngIf="incomes.description" type="text" id="descriptionFormControl" required matInput
+          <input *ngIf="!incomes.adding" type="text" id="descriptionFormControl" required matInput
             formControlName="descriptionFormControl" [(ngModel)]="incomes.description">
-          <input *ngIf="!incomes.description" type="text" id="descriptionFormControl" required matInput
+          <input *ngIf="incomes.adding" type="text" id="descriptionFormControl" required matInput
             formControlName="descriptionFormControl" [(ngModel)]="incomes.description" cdkFocusInitial>
           <mat-error *ngIf="incomesFormGroup.get('descriptionFormControl')?.hasError('required')">
             Campo <strong>obrigatório</strong>.

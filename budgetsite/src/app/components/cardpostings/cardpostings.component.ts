@@ -278,7 +278,8 @@ export class CardPostingsComponent implements OnInit {
         peopleList: this.peopleList,
         categoriesList: this.categoriesList,
         cardsList: this.cardsList,
-        editing: this.editing
+        editing: this.editing,
+        adding: true
       }
     });
 
@@ -492,6 +493,8 @@ export class CardPostingsComponent implements OnInit {
               cardspostingsdto.remaining = cardspostingsdto.toReceive - cardspostingsdto.received;
 
               this.getTotalPeople();
+
+              localStorage.setItem('accountIdCardReceipts', result.accountId);
 
               this.hideProgress = true;
             },
@@ -744,6 +747,11 @@ export class CardReceiptsDialog implements OnInit, AfterViewInit {
   ngOnInit(): void {
 
     this.accounts = this.cardReceipts.accountsList;
+
+    if (localStorage.getItem('accountIdCardReceipts') != null) {
+
+      this.cardReceipts.accountId = +(localStorage.getItem('accountIdCardReceipts')!);
+    }
 
     this.cardReceiptsFormGroup.get('toReceiveFormControl')!.disable();
     this.cardReceiptsFormGroup.get('receivedFormControl')!.disable();
