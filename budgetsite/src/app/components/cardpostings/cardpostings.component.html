@@ -5,34 +5,51 @@
 </div>
 
 <div class="row center">
-
-  <div class="col"></div>
-
-  <div class="col justify-content-center text-center" *ngIf="hideProgress">
-    <span>Total Geral: </span>
-    <span><b>{{total | currency : '':''}}</b></span>
-  </div>
-
-  <div class="col refresh" *ngIf="hideProgress">
-    <button class="default-button" mat-mini-fab matTooltip="atualizar" matTooltipPosition="left" color="warn"
-      aria-label="Atualizar" (click)="refresh()">
-      <mat-icon class="default-icon">autorenew</mat-icon>
-    </button>
-  </div>
-
   <div class="d-flex justify-content-center text-center" *ngIf="hideProgress">
 
-    <div class="row">
+    <div class="col d-flex flex-column justify-content-center" *ngIf="hideProgress">
       <span>Meu Total:</span>
       <span class="align-center"><b>{{myTotal | currency : '':''}} </b>({{percMyTotal}})</span>
     </div>
 
-    <div class="row">
+    <div class="col d-flex flex-column justify-content-center" *ngIf="hideProgress">
+      <span>Total Geral: </span>
+      <span class="align-center"><b>{{total | currency : '':''}}</b></span>
+    </div>
+
+    <div class="col d-flex flex-column justify-content-center" *ngIf="hideProgress">
       <span>Total Terceiros:</span>
-      <span><b>{{othersTotal | currency : '':''}} </b>({{percOthersTotal}})</span>
+      <span class="align-center"><b>{{othersTotal | currency : '':''}} </b>({{percOthersTotal}})</span>
     </div>
 
   </div>
+</div>
+
+<div class="row center">
+  <div class="d-flex justify-content-center text-center" *ngIf="hideProgress">
+
+    <div class="col d-flex flex-column justify-content-center" *ngIf="hideProgress">
+      <span>Fora do Ciclo:</span>
+      <span class="align-center"><b>{{outTheCycleTotal | currency : '':''}} </b>({{percOutTheCycleTotal}})</span>
+    </div>
+
+    <div class="col d-flex flex-column justify-content-center" *ngIf="hideProgress">
+      <span>No Ciclo:</span>
+      <span class="align-center"><b>{{inTheCycleTotal | currency : '':''}} </b>({{percInTheCycleTotal}})</span>
+    </div>
+
+    <div class="col d-flex justify-content-center" *ngIf="hideProgress">
+      <button class="default-button" mat-mini-fab matTooltip="atualizar" matTooltipPosition="left" color="warn"
+        aria-label="Atualizar" (click)="refresh()">
+        <mat-icon class="default-icon">autorenew</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <mat-checkbox *ngIf="hideProgress" [(ngModel)]="justMyShopping" (change)="getTotalAmount()">Apenas minhas compras
+    (Ciclo)</mat-checkbox>
 </div>
 
 <div class="row">

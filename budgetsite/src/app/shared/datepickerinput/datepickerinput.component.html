@@ -1,7 +1,7 @@
 <mat-form-field appearance="fill" style="width: 100%;">
-  <mat-label>Data</mat-label>
+  <mat-label>{{label}}</mat-label>
   <input matInput [matDatepicker]="dp" [formControl]="date" (dateInput)="dateChanged($event.value)">
-  <mat-error *ngIf="date.hasError('required')">
+  <mat-error *ngIf="isRequired && date.hasError('required')">
     Campo <strong>obrigatório</strong>.
   </mat-error>
   <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>

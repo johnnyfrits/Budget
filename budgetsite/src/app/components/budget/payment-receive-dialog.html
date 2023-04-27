@@ -23,7 +23,7 @@
         <mat-form-field appearance="fill">
           <mat-label>Descrição</mat-label>
           <input type="text" id="descriptionFormControl" required matInput formControlName="descriptionFormControl"
-            [(ngModel)]="accountPosting.description" cdkFocusInitial [readonly]="accountPosting.type == 'Y'">
+            [(ngModel)]="accountPosting.description" [readonly]="accountPosting.type == 'Y'">
           <mat-error *ngIf="accountPostingFormGroup.get('descriptionFormControl')?.hasError('required')">
             Campo <strong>obrigatório</strong>.
           </mat-error>

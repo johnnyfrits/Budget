@@ -4,6 +4,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { NgxMatColorPickerComponent, Color } from '@angular-material-components/color-picker';
 import { Cards } from 'src/app/models/cards.model';
 import { CardService } from 'src/app/services/card/card.service';
+import { DatepickerinputComponent } from 'src/app/shared/datepickerinput/datepickerinput.component';
 
 @Component({
   selector: 'app-card',
@@ -128,6 +129,9 @@ export class CardComponent implements OnInit, AfterViewInit {
                   t.color = result.color;
                   t.background = result.background;
                   t.disabled = result.disabled;
+                  t.closingDay = result.closingDay;
+                  t.invoiceStart = result.invoiceStart;
+                  t.invoiceEnd = result.invoiceEnd;
                 });
 
                 if (result.disabled && this.cards!.length > 0) {
@@ -171,6 +175,8 @@ export class CardDialog implements OnInit, AfterViewInit {
 
   @ViewChild('picker1') picker1!: NgxMatColorPickerComponent;
   @ViewChild('picker2') picker2!: NgxMatColorPickerComponent;
+  @ViewChild('invoiceStart') invoiceStart!: DatepickerinputComponent;
+  @ViewChild('invoiceEnd') invoiceEnd!: DatepickerinputComponent;
 
   id?: number;
   userId!: number;
@@ -186,6 +192,9 @@ export class CardDialog implements OnInit, AfterViewInit {
     backgroundFormControl: new FormControl('', Validators.required),
     colorFormControl: new FormControl('', Validators.required),
     disabledFormControl: new FormControl(''),
+    closingDayFormControl: new FormControl(''),
+    invoiceStartFormControl: new FormControl(''),
+    invoiceEndFormControl: new FormControl(''),
   });
 
   constructor(
@@ -203,6 +212,7 @@ export class CardDialog implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
 
+    // this.invoiceStart.date = new moment(this.invoiceStart.;
   }
 
   cancel(): void {
@@ -219,6 +229,9 @@ export class CardDialog implements OnInit, AfterViewInit {
       background: '#' + this.picker1._pickerInput.value!.hex,
       color: '#' + this.picker2._pickerInput.value!.hex,
       disabled: this.cardFormGroup.get('disabledFormControl')?.value,
+      closingDay: this.cardFormGroup.get('closingDayFormControl')?.value,
+      invoiceStart: this.invoiceStart.date.value._d,
+      invoiceEnd: this.invoiceStart.date.value._d,
       editing: this.id != undefined,
       deleting: false
     };
@@ -266,6 +279,9 @@ export class CardDialog implements OnInit, AfterViewInit {
 
       this.cardFormGroup.get('nameFormControl')?.setValue(card.name);
       this.cardFormGroup.get('disabledFormControl')?.setValue(card.disabled);
+      this.cardFormGroup.get('closingDayFormControl')?.setValue(card.closingDay);
+      this.cardFormGroup.get('invoiceStartFormControl')?.setValue(card.invoiceStart);
+      this.cardFormGroup.get('invoiceEndFormControl')?.setValue(card.invoiceEnd);
 
       this.setBackgroundAndColor(card.background!, card.color!);
     }

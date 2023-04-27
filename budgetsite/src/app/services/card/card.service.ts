@@ -28,6 +28,15 @@ export class CardService {
     );
   }
 
+  readWithCardsInvoiceDate(reference?: string): Observable<Cards[]> {
+
+    return this.http.get<Cards[]>(`${ApiUrls.cards}/WithCardsInvoiceDate?reference=${reference}`).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
+
+
   update(card: Cards): Observable<Cards> {
     return this.http.put<Cards>(`${ApiUrls.cards}/${card.id}`, card).pipe(
       map(obj => obj),

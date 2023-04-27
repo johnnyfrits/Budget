@@ -52,6 +52,10 @@ export class CardPostingsComponent implements OnInit {
   percMyTotal: string = '0,00%';
   othersTotal: number = 0;
   percOthersTotal: string = '0,00%';
+  inTheCycleTotal: number = 0;
+  outTheCycleTotal: number = 0;
+  percInTheCycleTotal: string = '0,00%';
+  percOutTheCycleTotal: string = '0,00%';
   hideProgress: boolean = true;
   editing: boolean = false;
   peopleList?: People[];
@@ -62,6 +66,7 @@ export class CardPostingsComponent implements OnInit {
   peoplePanelExpanded: boolean = false;
   categoryPanelExpanded: boolean = false;
   checkCard: boolean = false;
+  justMyShopping: boolean = false;
   darkTheme?: boolean;
   cardPostingsLength: number = 0;
 
@@ -120,6 +125,7 @@ export class CardPostingsComponent implements OnInit {
       }
     );
 
+    // this.cardService.readWithCardsInvoiceDate(this.reference).subscribe(
     this.cardService.read().subscribe(
       {
         next: cards => {
@@ -222,13 +228,42 @@ export class CardPostingsComponent implements OnInit {
         this.cardpostings.map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0;
 
     this.myTotal = this.cardpostings ?
-      this.cardpostings.filter(t => !t.others).map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0
+      this.cardpostings.filter(t => !t.others).map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0;
 
     this.othersTotal = this.cardpostings ?
       this.cardpostings.filter(t => t.others).map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0;
 
-    this.percMyTotal = (this.total ? this.myTotal / this.total * 100 : 0).toFixed(2)?.toString() + '%';;
+    this.percMyTotal = (this.total ? this.myTotal / this.total * 100 : 0).toFixed(2)?.toString() + '%';
     this.percOthersTotal = (this.total ? this.othersTotal / this.total * 100 : 0).toFixed(2)?.toString() + '%';
+
+    // this.inTheCycleTotal = this.cardpostings ?
+    //   this.cardpostings.filter(t => t.inTheCycle).map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0;
+
+    // this.outTheCycleTotal = this.cardpostings ?
+    //   this.cardpostings.filter(t => !t.inTheCycle).map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0;
+
+    // this.percInTheCycleTotal = (this.total ? this.inTheCycleTotal / this.total * 100 : 0).toFixed(2)?.toString() + '%';
+    // this.percOutTheCycleTotal = (this.total ? this.outTheCycleTotal / this.total * 100 : 0).toFixed(2)?.toString() + '%';
+
+    if (this.justMyShopping) {
+
+      this.inTheCycleTotal = this.cardpostings ?
+        this.cardpostings.filter(t => !t.others && (t.parcelNumber == 1 || t.parcelNumber == null)).map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0;
+
+      this.outTheCycleTotal = this.cardpostings ?
+        this.cardpostings.filter(t => !t.others && t.parcelNumber! > 1).map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0;
+    }
+    else {
+
+      this.inTheCycleTotal = this.cardpostings ?
+        this.cardpostings.filter(t => t.parcelNumber == 1 || t.parcelNumber == null).map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0;
+
+      this.outTheCycleTotal = this.cardpostings ?
+        this.cardpostings.filter(t => t.parcelNumber! > 1).map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0;
+    }
+
+    this.percInTheCycleTotal = (this.total ? this.inTheCycleTotal / this.total * 100 : 0).toFixed(2)?.toString() + '%';
+    this.percOutTheCycleTotal = (this.total ? this.outTheCycleTotal / this.total * 100 : 0).toFixed(2)?.toString() + '%';
   }
 
   getFilteredTotalAmount() {

@@ -52,8 +52,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Recebendo</mat-label>
             <input matInput inputmode="numeric" currencyMask formControlName="amountFormControl"
-              [(ngModel)]="cardReceipts.amount" placeholder="0" cdkFocusInitial (change)="onAmountChange()"
-              autocomplete="off">
+              [(ngModel)]="cardReceipts.amount" placeholder="0" (change)="onAmountChange()" autocomplete="off">
             <mat-error *ngIf="cardReceiptsFormGroup.get('amountFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>

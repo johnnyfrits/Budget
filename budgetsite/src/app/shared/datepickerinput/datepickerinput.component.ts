@@ -76,13 +76,20 @@ export const MY_FORMATS = {
 export class DatepickerinputComponent implements OnInit {
 
   @Input() currentDate?: Date;
+  @Input() label?: string = "Data";
+  @Input() isRequired: boolean = true;
   @Output() currentDateChanged: EventEmitter<Date> = new EventEmitter<Date>();
 
-  date = new FormControl(moment(), Validators.required);
+  date = new FormControl();
 
   constructor() { }
 
   ngOnInit(): void {
+
+    if (this.isRequired) {
+
+      this.date = new FormControl(moment(), Validators.required);
+    }
 
     if (this.currentDate) {
 

@@ -31,8 +31,8 @@
       </mat-form-field>
     </div>
 
-    <div class="row">
-      <mat-form-field appearance="fill" style="width: 180px;">
+    <div class="row flex-container">
+      <mat-form-field appearance="fill" class="flex-item" style="width: 150px;">
         <mat-label>Cor de fundo</mat-label>
         <input matInput [ngxMatColorPicker]="picker1" id="backgroundFormControl"
           formControlName="backgroundFormControl">
@@ -42,10 +42,8 @@
           Campo <strong>obrigatório</strong>.
         </mat-error>
       </mat-form-field>
-    </div>
 
-    <div class="row">
-      <mat-form-field appearance="fill" style="width: 180px;">
+      <mat-form-field appearance="fill" class="flex-item" style="width: 150px;">
         <mat-label>Cor do texto</mat-label>
         <input matInput [ngxMatColorPicker]="picker2" id="colorFormControl" formControlName="colorFormControl">
         <ngx-mat-color-toggle matSuffix [for]="picker2"></ngx-mat-color-toggle>
@@ -55,6 +53,15 @@
         </mat-error>
       </mat-form-field>
     </div>
+
+    <!-- <div class="row flex-container">
+      <app-datepickerinput class="flex-item" #invoiceStart style="width: 150px;" label="Início da Fatura"
+        [isRequired]="false" [currentDate]="undefined">
+      </app-datepickerinput>
+      <app-datepickerinput class="flex-item" #invoiceEnd style="width: 150px;" label="Fim da Fatura"
+        [isRequired]="false" [currentDate]="undefined">
+      </app-datepickerinput>
+    </div> -->
 
     <div class="row">
       <mat-checkbox formControlName="disabledFormControl">

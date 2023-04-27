@@ -38,11 +38,19 @@
 
 .previous-month,
 .next-month {
-  color: #6e6e6e
+  color: #6e6e6e;
 }
 
 .line {
   border-color: rgb(255, 64, 129, 0.9);
   border-top-style: solid;
   box-shadow: 0 5px 15px rgba(255, 64, 129, 0.3);
+}
+
+.flex-container {
+  display: flex;
+}
+
+.flex-item {
+  flex: 1;
 }

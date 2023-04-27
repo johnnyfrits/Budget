@@ -27,4 +27,5 @@ export interface CardsPostings {
   deleting?: boolean;
   isSelected?: boolean;
   generateParcels?: boolean;
+  inTheCycle?: boolean;
 }
