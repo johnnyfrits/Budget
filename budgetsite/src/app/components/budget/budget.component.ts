@@ -866,6 +866,10 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
         result.amount = result.amount * (result.type === 'P' ? -1 : 1);
 
+        Date.prototype.toJSON = function () {
+          return moment(this).format("YYYY-MM-DDThh:mm:00.000Z");;
+        };
+
         this.accountPostingsService.create(result).subscribe({
 
           next: () => {
