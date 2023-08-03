@@ -593,6 +593,9 @@ export class CardPostingsDialog implements OnInit, AfterViewInit {
   disableCheck: boolean = true;
   editing: boolean = false;
 
+  disableGenerateParcelsCheck: boolean = true;
+  disableRepeatParcelsCheck: boolean = false;
+
   cardPostingFormGroup = new FormGroup(
     {
       cardIdFormControl: new FormControl('', Validators.required),
@@ -605,6 +608,8 @@ export class CardPostingsDialog implements OnInit, AfterViewInit {
       noteFormControl: new FormControl(''),
       generateParcelsFormControl: new FormControl(''),
       categoryIdFormControl: new FormControl(''),
+      repeatParcelsFormControl: new FormControl(''),
+      monthsToRepeatFormControl: new FormControl(''),
     });
 
   constructor(
@@ -632,6 +637,13 @@ export class CardPostingsDialog implements OnInit, AfterViewInit {
       this.cardPosting.parcels == undefined ||
       this.cardPosting.parcels == null ||
       this.cardPosting.parcels === 1;
+
+    this.disableGenerateParcelsCheck =
+      this.cardPosting.parcels == undefined ||
+      this.cardPosting.parcels == null ||
+      this.cardPosting.parcels === 1;
+
+    this.cardPosting.monthsToRepeat = 12;
   }
 
   cancel(): void {
@@ -667,6 +679,9 @@ export class CardPostingsDialog implements OnInit, AfterViewInit {
 
     if (this.disableCheck) {
       this.cardPosting.generateParcels = false;
+    }
+    else {
+      this.cardPosting.generateParcels = true;
     }
 
     if (event.target.value == '') {
@@ -747,6 +762,21 @@ export class CardPostingsDialog implements OnInit, AfterViewInit {
         );
       }
     });
+  }
+
+  onRepeatParcelsChanged(event: any): void {
+
+    if (this.cardPosting.repeatParcels) {
+
+      this.disableGenerateParcelsCheck = true;
+    }
+    else {
+
+      if (this.cardPosting.parcels! > 1) {
+
+        this.disableGenerateParcelsCheck = false;
+      }
+    }
   }
 }
 

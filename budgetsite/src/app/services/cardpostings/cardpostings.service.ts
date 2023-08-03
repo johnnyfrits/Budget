@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiUrls } from 'src/app/common/api-urls'
 import { CardsPostings } from 'src/app/models/cardspostings.model';
@@ -18,7 +18,7 @@ export class CardPostingsService {
 
     cardPosting.others = cardPosting.peopleId ? true : false;
 
-    return this.http.post<CardsPostings>(`${ApiUrls.cardspostings}${cardPosting.generateParcels ? '/allparcels' : ''}`, cardPosting).pipe(
+    return this.http.post<CardsPostings>(`${ApiUrls.cardspostings}${cardPosting.generateParcels || cardPosting.repeatParcels ? `/allparcels?repeat=${cardPosting.repeatParcels ?? false}&qtyMonths=${cardPosting.monthsToRepeat ?? 0}` : ''}`, cardPosting).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );
@@ -60,7 +60,7 @@ export class CardPostingsService {
 
     cardPosting.others = cardPosting.peopleId ? true : false;
 
-    return this.http.put<CardsPostings>(`${ApiUrls.cardspostings}${cardPosting.generateParcels ? '/allparcels' : ''}/${cardPosting.id}`, cardPosting).pipe(
+    return this.http.put<CardsPostings>(`${ApiUrls.cardspostings}${cardPosting.generateParcels || cardPosting.repeatParcels ? '/allparcels' : ''}/${cardPosting.id}${cardPosting.generateParcels || cardPosting.repeatParcels ? `?repeat=${cardPosting.repeatParcels ?? false}&qtyMonths=${cardPosting.monthsToRepeat ?? 0}` : ''}`, cardPosting).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );

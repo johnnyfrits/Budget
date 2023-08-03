@@ -990,7 +990,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     });
   }
 
-  charge(cpp: CardsPostingsDTO) {
+  charge(cpp: CardsPostingsDTO, noFee: boolean = false) {
 
     let message = "";
 
@@ -1034,9 +1034,11 @@ export class BudgetComponent implements OnInit, AfterViewInit {
             message += strAmount + " " + i.description + "\n";
           });
 
-          let tax = 3;
+          let tax = noFee ? 0 : 3;
 
-          message += tax.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }).replace('R$ ', '').padStart(8, ' ') + " Tarifa de Serviços\n";
+          if (!noFee) {
+            message += tax.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }).replace('R$ ', '').padStart(8, ' ') + " Tarifa de Serviços\n";
+          }
 
           let received = cpp.received > 0 ?
             ("-" + cpp.received.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }).replace('R$ ', '')).padStart(8, ' ') + " (Valor pago)\n" :
@@ -1346,6 +1348,9 @@ export class ExpensesDialog implements OnInit, AfterViewInit {
 
     if (this.disableGenerateParcelsCheck) {
       this.expenses.generateParcels = false;
+    }
+    else {
+      this.expenses.generateParcels = true;
     }
 
     if (event.target.value == '') {

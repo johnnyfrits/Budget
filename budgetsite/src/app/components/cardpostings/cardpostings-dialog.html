@@ -112,6 +112,18 @@
         </mat-checkbox>
       </p>
 
+      <p>
+        <mat-checkbox [(ngModel)]="cardPosting.repeatParcels" formControlName="repeatParcelsFormControl"
+          [disabled]="disableRepeatParcelsCheck" (change)="onRepeatParcelsChanged($event)">
+          Repetir para os próximos
+          <span>
+            <input type="number" inputmode="numeric" style="width:40px !important" onfocus="this.select()" min=1
+              formControlName="monthsToRepeatFormControl" [(ngModel)]="cardPosting.monthsToRepeat">
+          </span>
+          meses
+        </mat-checkbox>
+      </p>
+
       <div class="row">
         <div class="col-10">
           <mat-form-field appearance="fill" floatLabel="always" style="width: 100%;">

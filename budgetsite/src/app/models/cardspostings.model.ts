@@ -28,4 +28,6 @@ export interface CardsPostings {
   isSelected?: boolean;
   generateParcels?: boolean;
   inTheCycle?: boolean;
+  repeatParcels?: boolean;
+  monthsToRepeat?: number;
 }
