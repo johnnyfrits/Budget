@@ -283,7 +283,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
           this.expenses.forEach(expense => {
 
-            if (expense.dueDate && expense.paid == 0) {
+            if (expense.dueDate && expense.paid < expense.toPay) {
 
               if (this.dueToday(expense)) {
 
