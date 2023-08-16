@@ -192,6 +192,14 @@ export class AccountPostingsComponent implements OnInit, AfterViewInit {
         Array(this.dataSource.filteredData)[0].map(t => t.amount).reduce((acc, value) => acc + value, 0) : 0;
   }
 
+  getLastYield() {
+
+    debugger
+    let lastYield = this.dataSource.filteredData.filter(t => t.type === 'Y')[0].amount;
+
+    return lastYield;
+  }
+
   add() {
 
     this.editing = false;
@@ -205,7 +213,9 @@ export class AccountPostingsComponent implements OnInit, AfterViewInit {
         type: "R",
         accountsList: this.accountsList,
         incomesList: this.incomes,
-        expensesList: this.expenses
+        expensesList: this.expenses,
+        totalBalance: this.totalBalance,
+        lastYield: this.getLastYield()
       }
     });
 
@@ -269,7 +279,9 @@ export class AccountPostingsComponent implements OnInit, AfterViewInit {
         expenseId: accountPosting.expenseId,
         incomeId: accountPosting.incomeId,
         incomesList: this.incomes,
-        expensesList: this.expenses
+        expensesList: this.expenses,
+        totalBalance: this.totalBalance,
+        lastYield: this.getLastYield()
       }
     });
 
@@ -405,7 +417,10 @@ export class AccountPostingsDialog implements OnInit, AfterViewInit {
     typeFormControl: new FormControl(''),
     incomeIdFormControl: new FormControl(''),
     expenseIdFormControl: new FormControl(''),
+    totalBalanceFormControl: new FormControl(''),
   });
+
+  totalBalance!: number;
 
   constructor(
     public dialogRef: MatDialogRef<AccountPostingsDialog>,
@@ -413,7 +428,9 @@ export class AccountPostingsDialog implements OnInit, AfterViewInit {
     private cd: ChangeDetectorRef
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+
+  }
 
   ngAfterViewInit(): void {
 
@@ -448,18 +465,44 @@ export class AccountPostingsDialog implements OnInit, AfterViewInit {
     if (this.accountPosting.type === 'Y') {
 
       this.accountPosting.description = 'Rendimento';
+
+      this.accountPosting.amount = this.accountPosting.lastYield;
     }
     else if (this.accountPosting.type === 'C') {
 
       this.accountPosting.description = 'Troco';
     }
     else {
+
       if (this.accountPosting.description === 'Rendimento' ||
         this.accountPosting.description === 'Troco') {
 
         this.accountPosting.description = '';
       }
     }
+  }
+
+  onAmountChanged(event: any): void {
+
+    if (this.accountPosting.type !== 'Y')
+      return;
+
+    if (!event) {
+
+      this.totalBalance = this.accountPosting.totalBalance
+    }
+    else {
+
+      this.totalBalance = this.accountPosting.totalBalance + this.accountPosting.amount;
+    }
+  }
+
+  onTotalBalanceChanged(event: any): void {
+
+    if (this.accountPosting.type !== 'Y')
+      return;
+
+    this.accountPosting.amount = this.totalBalance - this.accountPosting.totalBalance
   }
 
   setTitle() {

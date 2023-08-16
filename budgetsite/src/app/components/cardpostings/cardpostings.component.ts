@@ -813,6 +813,11 @@ export class CardReceiptsDialog implements OnInit, AfterViewInit {
 
     this.accounts = this.cardReceipts.accountsList;
 
+    if (this.cardReceipts.received! > 0) {
+
+      this.cardReceipts.amount = undefined;
+    }
+
     if (localStorage.getItem('accountIdCardReceipts') != null) {
 
       this.cardReceipts.accountId = +(localStorage.getItem('accountIdCardReceipts')!);
@@ -822,6 +827,8 @@ export class CardReceiptsDialog implements OnInit, AfterViewInit {
     this.cardReceiptsFormGroup.get('receivedFormControl')!.disable();
     this.cardReceiptsFormGroup.get('remainingFormControl')!.disable();
     this.cardReceiptsFormGroup.get('changeFormControl')!.disable();
+
+
   }
 
   ngAfterViewInit(): void {
@@ -847,8 +854,8 @@ export class CardReceiptsDialog implements OnInit, AfterViewInit {
 
   onAmountChange(): void {
 
-    this.cardReceipts.change = this.cardReceipts.amount > this.cardReceipts.toReceive! ?
-      +(this.cardReceipts.amount - this.cardReceipts.remaining!).toFixed(2) :
+    this.cardReceipts.change = this.cardReceipts.amount! > this.cardReceipts.toReceive! ?
+      +(this.cardReceipts.amount! - this.cardReceipts.remaining!).toFixed(2) :
       0;
   }
 

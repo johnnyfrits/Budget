@@ -8,7 +8,7 @@ export interface CardsReceipts {
   cardId: number;
   peopleId: string;
   accountId: number;
-  amount: number;
+  amount?: number;
   change?: number;
   note?: string;
   toReceive?: number;
