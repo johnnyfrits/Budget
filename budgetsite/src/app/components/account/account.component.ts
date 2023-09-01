@@ -158,6 +158,7 @@ export class AccountComponent implements OnInit {
                   t.color = result.color;
                   t.background = result.background;
                   t.disabled = result.disabled;
+                  t.position = result.position;
                 });
 
                 if (result.disabled && this.accounts!.length > 0) {
@@ -168,6 +169,8 @@ export class AccountComponent implements OnInit {
 
                   this.setAccount(result);
                 }
+
+                this.ngOnInit();
               },
               error: () => this.hideProgress = true
             }
@@ -179,9 +182,11 @@ export class AccountComponent implements OnInit {
             {
               next: account => {
 
-                this.accounts!.push(account);
+                //this.accounts!.push(account);
 
                 this.setAccount(account);
+
+                this.ngOnInit();
               },
               error: () => this.hideProgress = true
             }
@@ -217,6 +222,7 @@ export class AccountDialog implements OnInit, AfterViewInit {
     colorFormControl: new FormControl('', Validators.required),
     disabledFormControl: new FormControl(''),
     calcInGeneralFormControl: new FormControl(''),
+    positionFormControl: new FormControl(''),
   });
 
   constructor(
@@ -251,6 +257,7 @@ export class AccountDialog implements OnInit, AfterViewInit {
       color: '#' + this.picker2._pickerInput.value!.hex,
       disabled: this.accountFormGroup.get('disabledFormControl')?.value,
       calcInGeneral: this.accountFormGroup.get('calcInGeneralFormControl')?.value,
+      position: this.accountFormGroup.get('positionFormControl')?.value,
       editing: this.id != undefined,
       deleting: false
     };
@@ -299,6 +306,7 @@ export class AccountDialog implements OnInit, AfterViewInit {
       this.accountFormGroup.get('nameFormControl')?.setValue(account.name);
       this.accountFormGroup.get('disabledFormControl')?.setValue(account.disabled);
       this.accountFormGroup.get('calcInGeneralFormControl')?.setValue(account.calcInGeneral);
+      this.accountFormGroup.get('positionFormControl')?.setValue(account.position);
 
       this.setBackgroundAndColor(account.background!, account.color!);
     }
