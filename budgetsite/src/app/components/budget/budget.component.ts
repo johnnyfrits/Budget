@@ -1051,6 +1051,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
           message += "----------------------------```\n";
           message += "*Total: " + total + "*";
 
+          message += "\n\n*PIX: (92)98447-9364*";
+
           console.log(message);
 
           this.clipboardService.copy(message);
