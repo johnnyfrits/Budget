@@ -197,7 +197,7 @@ export class AccountPostingsComponent implements OnInit, AfterViewInit {
     debugger
     let lastYield = this.dataSource.filteredData.filter(t => t.type === 'Y')[0].amount;
 
-    return lastYield;
+    return lastYield == undefined ? 0 : lastYield;
   }
 
   add() {
