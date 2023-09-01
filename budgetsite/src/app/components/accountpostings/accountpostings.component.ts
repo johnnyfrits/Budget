@@ -194,10 +194,12 @@ export class AccountPostingsComponent implements OnInit, AfterViewInit {
 
   getLastYield() {
 
-    debugger
-    let lastYield = this.dataSource.filteredData.filter(t => t.type === 'Y')[0].amount;
+    let lastYield =
+      this.dataSource.filteredData.filter(t => t.type === 'Y').length > 0 ?
+        this.dataSource.filteredData.filter(t => t.type === 'Y')[0].amount :
+        0;
 
-    return lastYield == undefined ? 0 : lastYield;
+    return lastYield;
   }
 
   add() {
