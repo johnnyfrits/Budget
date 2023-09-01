@@ -72,4 +72,12 @@ export class AccountService {
       catchError(e => this.messenger.errorHandler(e))
     );
   }
+
+  updatePositions(accounts: Accounts[]): Observable<Accounts> {
+
+    return this.http.put<any>(`${ApiUrls.accounts}/setpositions`, accounts).pipe(
+      map(obj => obj),
+      catchError(e => this.messenger.errorHandler(e))
+    );
+  }
 }

@@ -11,11 +11,13 @@
       <app-datepicker (referenceChange)="setReference($event)" [accountId]="accountId"></app-datepicker>
       <div class="">
         <mat-progress-bar mode="query" color="accent" *ngIf="!hideProgress"></mat-progress-bar>
-        <button class="account-button" [ngClass]="{'line': buttonName === account.name}" mat-button
-          *ngFor="let account of getAccountsNotDisabled(accounts!)"
-          [ngStyle]="{backgroundColor: account.background, color: account.color}"
-          (click)="setAccount(account)">{{account.name}}
-        </button>
+        <div cdkDropList [cdkDropListData]="accountsNotDisabled!" (cdkDropListDropped)="drop($event)">
+          <button class="account-button example-box" [ngClass]="{'line': buttonName === account.name}" mat-button
+            *ngFor="let account of accountsNotDisabled"
+            [ngStyle]="{backgroundColor: account.background, color: account.color}" (click)="setAccount(account)"
+            cdkDrag>{{account.name}}
+          </button>
+        </div>
         <span class="material-icons add-account" matTooltip="Incluir/Editar Contas" matTooltipPosition="above"
           (click)="accountDialog()">
           <!-- add_circle_outline -->

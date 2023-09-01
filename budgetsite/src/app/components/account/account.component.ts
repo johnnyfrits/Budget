@@ -4,6 +4,14 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { Accounts } from 'src/app/models/accounts.model';
 import { AccountService } from 'src/app/services/account/account.service';
 import { NgxMatColorPickerComponent, Color } from '@angular-material-components/color-picker';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+  CdkDrag,
+  CdkDropList,
+} from '@angular/cdk/drag-drop';
+
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
@@ -12,6 +20,7 @@ import { NgxMatColorPickerComponent, Color } from '@angular-material-components/
 export class AccountComponent implements OnInit {
 
   accounts?: Accounts[];
+  accountsNotDisabled?: Accounts[]
   accountId?: number;
   reference?: string;
   referenceHead?: string;
@@ -48,6 +57,8 @@ export class AccountComponent implements OnInit {
             }
           });
 
+          this.accountsNotDisabled = accounts?.filter(account => account.disabled == null || account.disabled == false);
+
           this.hideProgress = true;
         },
         error: () => this.hideProgress = true
@@ -77,9 +88,26 @@ export class AccountComponent implements OnInit {
     this.hideProgress = true;
   }
 
-  getAccountsNotDisabled(accounts: Accounts[]) {
+  // getAccountsNotDisabled(accounts: Accounts[]) {
 
-    return accounts?.filter(account => account.disabled == null || account.disabled == false);
+  //   return accounts?.filter(account => account.disabled == null || account.disabled == false);
+  // }
+
+  drop(event: CdkDragDrop<any[]>) {
+
+    // moveItemInArray(this.accountsNotDisabled!, event.previousIndex, event.currentIndex);
+
+    // if (event.previousContainer === event.container) {
+    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    // } else {
+    //   transferArrayItem(
+    //     event.previousContainer.data,
+    //     event.container.data,
+    //     event.previousIndex,
+    //     event.currentIndex,
+    //   );
+    // }
+
   }
 
   accountDialog() {
