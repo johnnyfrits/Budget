@@ -59,6 +59,11 @@ export class AccountComponent implements OnInit {
 
           this.accountsNotDisabled = accounts?.filter(account => account.disabled == null || account.disabled == false);
 
+          this.accountsNotDisabled =
+            this.accountsNotDisabled.length > 0 ?
+              this.accountsNotDisabled.sort((a, b) => (a.position! - b.position!)) :
+              this.accountsNotDisabled;
+
           this.hideProgress = true;
         },
         error: () => this.hideProgress = true
