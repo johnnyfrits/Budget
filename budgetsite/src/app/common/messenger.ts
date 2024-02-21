@@ -11,10 +11,10 @@ export class Messenger {
 	constructor(private snackBar: MatSnackBar) { }
 
 	errorHandler(err: any): Observable<any> {
-
+debugger
 		console.log(err);
 
-		this.snackBar.open(err.message, "Fechar",
+		this.snackBar.open(err, "Fechar",
 			{
 				duration: 10000,
 				horizontalPosition: "center",
