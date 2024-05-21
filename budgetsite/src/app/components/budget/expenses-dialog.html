@@ -36,7 +36,7 @@
           <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
             <mat-label>Total da Despesa</mat-label>
             <input matInput inputmode="numeric" currencyMask formControlName="totalToPayFormControl"
-              [(ngModel)]="expenses.totalToPay" placeholder="0" (change)="calculateToPay()" autocomplete="off">
+              [(ngModel)]="expenses.totalToPay" placeholder="0" (ngModelChange)="calculateToPay()" autocomplete="off">
             <mat-error *ngIf="expensesFormGroup.get('totalToPayFormControl')?.hasError('required')">
               Campo <strong>obrigatório</strong>.
             </mat-error>
