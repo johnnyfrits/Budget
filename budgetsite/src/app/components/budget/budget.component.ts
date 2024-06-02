@@ -1,8 +1,25 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 import { ClipboardService } from 'ngx-clipboard';
 import { Messenger } from 'src/app/common/messenger';
 import { Accounts } from 'src/app/models/accounts.model';
@@ -39,23 +56,32 @@ import { PeopleComponent } from '../people/people.component';
   templateUrl: './budget.component.html',
   styleUrls: ['./budget.component.scss'],
   animations: [
-    trigger('detailExpand', [state('collapsed', style({ height: '0px', minHeight: '0' })),
-    state('expanded', style({ height: '*' })),
-    transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition(
+        'expanded <=> collapsed',
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+      ),
     ]),
-    trigger('peopleDetailExpand', [state('collapsed', style({ height: '0px', minHeight: '0' })),
-    state('expanded', style({ height: '*' })),
-    transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    trigger('peopleDetailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition(
+        'expanded <=> collapsed',
+        animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+      ),
     ]),
-  ]
+  ],
 })
 export class BudgetComponent implements OnInit, AfterViewInit {
-
   reference?: string;
   referenceHead?: string;
 
   expenses!: Expenses[];
+  expensesNoFilter!: Expenses[];
   incomes!: Incomes[];
+  incomesNoFilter!: Incomes[];
   expensesByCategories!: ExpensesByCategories[];
   budgetTotals?: BudgetTotals;
   cardpostingspeople!: CardsPostingsDTO[];
@@ -64,9 +90,27 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
   expended: boolean = false;
 
-  displayedExpensesColumns = ['description', 'toPay', 'paid', 'remaining', 'actions'];
-  displayedIncomesColumns = ['description', 'toReceive', 'received', 'remaining', 'actions'];
-  displayedPeopleColumns = ['person', 'toReceive', 'received', 'remaining', 'actions'];
+  displayedExpensesColumns = [
+    'description',
+    'toPay',
+    'paid',
+    'remaining',
+    'actions',
+  ];
+  displayedIncomesColumns = [
+    'description',
+    'toReceive',
+    'received',
+    'remaining',
+    'actions',
+  ];
+  displayedPeopleColumns = [
+    'person',
+    'toReceive',
+    'received',
+    'remaining',
+    'actions',
+  ];
   displayedCategoriesColumns = ['category', 'amount', 'perc'];
 
   toPayTotal: number = 0;
@@ -81,7 +125,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   remainingTotalPeople: number = 0;
   amountTotalCategory: number = 0;
   percTotalCategory: number = 0;
-  monthName: string = "";
+  monthName: string = '';
   hideExpensesProgress: boolean = true;
   hideIncomesProgress: boolean = true;
   hidePeopleProgress: boolean = true;
@@ -91,6 +135,9 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   incomesPanelExpanded: boolean = false;
   peoplePanelExpanded: boolean = false;
   categoryPanelExpanded: boolean = false;
+  justMyValues: boolean = false;
+  justToPay: boolean = false;
+  justToReceive: boolean = false;
   editing: boolean = false;
   cardsList?: Cards[];
   categoriesList?: Categories[];
@@ -99,7 +146,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   typesList = [
     {
       id: 'R',
-      description: 'Recebimento'
+      description: 'Recebimento',
     },
     // {
     //   id: 'P',
@@ -107,15 +154,16 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     // },
     {
       id: 'Y',
-      description: 'Rendimento'
+      description: 'Rendimento',
     },
     {
       id: 'C',
-      description: 'Troco'
+      description: 'Troco',
     },
   ];
 
-  constructor(private expenseService: ExpenseService,
+  constructor(
+    private expenseService: ExpenseService,
     private incomeService: IncomeService,
     private cardPostingsService: CardPostingsService,
     private cd: ChangeDetectorRef,
@@ -128,18 +176,15 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     private clipboardService: ClipboardService,
     private accountPostingsService: AccountPostingsService,
     private budget: BudgetService,
-    private _liveAnnouncer: LiveAnnouncer,
-  ) { }
+    private _liveAnnouncer: LiveAnnouncer
+  ) {}
 
   @ViewChild('sortPeople') sortPeople!: MatSort;
   @ViewChild('sortCategories') sortCategories!: MatSort;
 
-  ngOnInit(): void {
-
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-
     this.cd.detectChanges();
   }
 
@@ -158,106 +203,120 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   }
 
   referenceChanges(reference: string) {
-
     this.reference = reference;
 
-    this.referenceHead = this.reference.substr(4, 2) + "/" + this.reference.substr(0, 4);
+    this.referenceHead =
+      this.reference.substr(4, 2) + '/' + this.reference.substr(0, 4);
 
     this.refresh();
   }
 
-  refresh() {
+  onCheckboxJustMyValuesChange(): void {
+    this.refresh();
+  }
 
+  onCheckboxJustToPayChange(): void {
+    if (this.justToPay) {
+      this.expenses = this.expensesNoFilter.filter((e) => e.remaining > 0);
+    } else {
+      this.expenses = this.expensesNoFilter;
+    }
+  }
+
+  onCheckboxJustToReceiveChange(): void {
+    if (this.justToReceive) {
+      this.incomes = this.incomesNoFilter.filter((e) => e.remaining > 0);
+    } else {
+      this.incomes = this.incomesNoFilter;
+    }
+  }
+
+  refresh() {
     this.hideExpensesProgress = false;
     this.hideIncomesProgress = false;
     this.hidePeopleProgress = false;
     this.hideCategoriesProgress = false;
 
-    this.cardService.read().subscribe(
-      {
-        next: cards => {
+    this.cardService.read().subscribe({
+      next: (cards) => {
+        this.cardsList = cards;
+      },
+      error: () => {
+        this.hideExpensesProgress = false;
+        this.hideIncomesProgress = false;
+        this.hidePeopleProgress = false;
+        this.hideCategoriesProgress = false;
+      },
+    });
 
-          this.cardsList = cards;
-        },
-        error: () => {
-          this.hideExpensesProgress = false;
-          this.hideIncomesProgress = false;
-          this.hidePeopleProgress = false;
-          this.hideCategoriesProgress = false;
-        }
-      }
-    );
+    this.categoryService.read().subscribe({
+      next: (categories) => {
+        this.categoriesList = categories.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+      },
+      error: () => {
+        this.hideExpensesProgress = false;
+        this.hideIncomesProgress = false;
+        this.hidePeopleProgress = false;
+        this.hideCategoriesProgress = false;
+      },
+    });
 
-    this.categoryService.read().subscribe(
-      {
-        next: categories => {
+    this.peopleService.read().subscribe({
+      next: (people) => {
+        this.peopleList = people;
+      },
+      error: () => {
+        this.hideExpensesProgress = false;
+        this.hideIncomesProgress = false;
+        this.hidePeopleProgress = false;
+        this.hideCategoriesProgress = false;
+      },
+    });
 
-          this.categoriesList = categories.sort((a, b) => a.name.localeCompare(b.name));
-        },
-        error: () => {
-          this.hideExpensesProgress = false;
-          this.hideIncomesProgress = false;
-          this.hidePeopleProgress = false;
-          this.hideCategoriesProgress = false;
-        }
-      }
-    );
+    this.accountService.readNotDisabled().subscribe({
+      next: (accounts) => {
+        this.accountsList = accounts;
 
-    this.peopleService.read().subscribe(
-      {
-        next: people => {
-
-          this.peopleList = people;
-        },
-        error: () => {
-          this.hideExpensesProgress = false;
-          this.hideIncomesProgress = false;
-          this.hidePeopleProgress = false;
-          this.hideCategoriesProgress = false;
-        }
-      }
-    );
-
-    this.accountService.readNotDisabled().subscribe(
-      {
-        next: accounts => {
-
-          this.accountsList = accounts;
-
-          this.hideExpensesProgress = true;
-          this.hideIncomesProgress = true;
-          this.hidePeopleProgress = true;
-          this.hideCategoriesProgress = true;
-        },
-        error: () => {
-          this.hideExpensesProgress = true;
-          this.hideIncomesProgress = true;
-          this.hidePeopleProgress = true;
-          this.hideCategoriesProgress = true;
-        }
-      }
-    );
+        this.hideExpensesProgress = true;
+        this.hideIncomesProgress = true;
+        this.hidePeopleProgress = true;
+        this.hideCategoriesProgress = true;
+      },
+      error: () => {
+        this.hideExpensesProgress = true;
+        this.hideIncomesProgress = true;
+        this.hidePeopleProgress = true;
+        this.hideCategoriesProgress = true;
+      },
+    });
 
     this.getData();
 
-    this.budgetPanelExpanded = localStorage.getItem('budgetPanelExpanded') === 'true';
-    this.expensesPanelExpanded = localStorage.getItem('expensesPanelExpanded') === 'true';
-    this.incomesPanelExpanded = localStorage.getItem('incomesPanelExpanded') === 'true';
-    this.peoplePanelExpanded = localStorage.getItem('peoplePanelExpanded') === 'true';
-    this.categoryPanelExpanded = localStorage.getItem('categoryPanelExpanded') === 'true';
+    this.budgetPanelExpanded =
+      localStorage.getItem('budgetPanelExpanded') === 'true';
+    this.expensesPanelExpanded =
+      localStorage.getItem('expensesPanelExpanded') === 'true';
+    this.incomesPanelExpanded =
+      localStorage.getItem('incomesPanelExpanded') === 'true';
+    this.peoplePanelExpanded =
+      localStorage.getItem('peoplePanelExpanded') === 'true';
+    this.categoryPanelExpanded =
+      localStorage.getItem('categoryPanelExpanded') === 'true';
   }
 
   getData() {
-
     if (this.reference) {
-
       this.hideExpensesProgress = false;
       this.hideIncomesProgress = false;
       this.hidePeopleProgress = false;
       this.hideCategoriesProgress = false;
 
       this.expenses = [];
+      this.expensesNoFilter = [];
       this.incomes = [];
+      this.incomesNoFilter = [];
       this.cardpostingspeople = [];
 
       this.getExpenses();
@@ -269,91 +328,83 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   }
 
   getExpenses() {
+    this.expenseService.read(this.reference!, this.justMyValues).subscribe({
+      next: (expenses) => {
+        this.expenses = expenses;
+        this.expensesNoFilter = expenses;
 
-    this.expenseService.read(this.reference!).subscribe(
-      {
-        next: expenses => {
+        this.getExpensesTotals();
 
-          this.expenses = expenses;
+        if (this.justToPay) this.onCheckboxJustToPayChange();
 
-          this.getExpensesTotals();
-
-          let overdue = false; // se houver algum lançamento atrasado
-          let duetoday = false; // se houver algum lançamento vencendo hoje
-
-          this.expenses.forEach(expense => {
-
-            if (expense.dueDate && expense.paid < expense.toPay) {
-
-              if (this.dueToday(expense)) {
-
-                duetoday = true;
-              }
-              else if (this.overDue(expense)) {
-
-                overdue = true;
-              }
-            }
-          });
-
-          if (duetoday && overdue) {
-            this.messenger.message('Há lançamentos vencidos e vencendo hoje!');
-          }
-          else if (duetoday) {
-            this.messenger.message('Há lançamentos vencendo hoje!');
-          }
-          else if (overdue) {
-            this.messenger.message('Há lançamentos vencidos!');
-          }
-        },
-        error: () => {
-
-          this.getExpensesTotals();
+        if (this.justMyValues) {
+          return;
         }
-      }
-    );
+
+        let overdue = false; // se houver algum lançamento atrasado
+        let duetoday = false; // se houver algum lançamento vencendo hoje
+
+        this.expenses.forEach((expense) => {
+          if (expense.dueDate && expense.paid < expense.toPay) {
+            if (this.dueToday(expense)) {
+              duetoday = true;
+            } else if (this.overDue(expense)) {
+              overdue = true;
+            }
+          }
+        });
+
+        if (duetoday && overdue) {
+          this.messenger.message('Há lançamentos vencidos e vencendo hoje!');
+        } else if (duetoday) {
+          this.messenger.message('Há lançamentos vencendo hoje!');
+        } else if (overdue) {
+          this.messenger.message('Há lançamentos vencidos!');
+        }
+      },
+      error: () => {
+        this.getExpensesTotals();
+      },
+    });
   }
 
   getIncomes() {
+    this.incomeService.read(this.reference!, this.justMyValues).subscribe({
+      next: (incomes) => {
+        this.incomes = incomes;
+        this.incomesNoFilter = incomes;
 
-    this.incomeService.read(this.reference!).subscribe(
-      {
-        next: incomes => {
+        if (this.justToReceive) this.onCheckboxJustToReceiveChange();
 
-          this.incomes = incomes;
-
-          this.getIncomesTotals();
-        },
-        error: () => {
-
-          this.getIncomesTotals();
-        }
-      }
-    );
+        this.getIncomesTotals();
+      },
+      error: () => {
+        this.getIncomesTotals();
+      },
+    });
   }
 
   getBudgetTotals() {
-
-    this.budget.getBudgetTotals(this.reference!).subscribe(
-      {
-        next: budgetTotals => {
-
-          this.budgetTotals = budgetTotals;
-        }
-      }
-    );
+    this.budget.getBudgetTotals(this.reference!).subscribe({
+      next: (budgetTotals) => {
+        this.budgetTotals = budgetTotals;
+      },
+    });
   }
 
   getCardsPostingsPeople() {
-
-    this.cardPostingsService.readCardsPostingsPeople(0, this.reference!).subscribe(
-      {
-        next: cardpostingspeople => {
-
+    this.cardPostingsService
+      .readCardsPostingsPeople(0, this.reference!)
+      .subscribe({
+        next: (cardpostingspeople) => {
           // this.cardpostingspeople = cardpostingspeople.sort((a, b) => a.person.localeCompare(b.person)).filter(t => t.person !== '');
-          this.cardpostingspeople = cardpostingspeople.filter(t => t.person !== '');
+          this.cardpostingspeople = cardpostingspeople.filter(
+            (t) => t.person !== ''
+          );
 
-          this.dataSourcePeople = new MatTableDataSource(this.cardpostingspeople)
+          this.dataSourcePeople = new MatTableDataSource(
+            this.cardpostingspeople
+          );
 
           this.dataSourcePeople.sort = this.sortPeople;
 
@@ -361,70 +412,67 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
           this.hidePeopleProgress = true;
         },
-        error: () => this.hidePeopleProgress = true
-      }
-    );
+        error: () => (this.hidePeopleProgress = true),
+      });
   }
 
   getExpensesByCategories() {
+    this.expenseService.readByCategories(this.reference!, 0).subscribe({
+      next: (expensesByCategories) => {
+        this.expensesByCategories = expensesByCategories;
 
-    this.expenseService.readByCategories(this.reference!, 0).subscribe(
-      {
-        next: expensesByCategories => {
+        this.dataSourceCategories = new MatTableDataSource(
+          this.expensesByCategories
+        );
 
-          this.expensesByCategories = expensesByCategories;
+        this.dataSourceCategories.sort = this.sortCategories;
 
-          this.dataSourceCategories = new MatTableDataSource(this.expensesByCategories)
+        this.getTotalByCategories();
 
-          this.dataSourceCategories.sort = this.sortCategories;
-
-          this.getTotalByCategories();
-
-          this.hideCategoriesProgress = true;
-        },
-        error: () => this.hideCategoriesProgress = true
-      }
-    );
+        this.hideCategoriesProgress = true;
+      },
+      error: () => (this.hideCategoriesProgress = true),
+    });
   }
 
   getIncomesTotals() {
+    this.toReceiveTotal = this.incomes
+      ? this.incomes
+          .map((t) => t.toReceive)
+          .reduce((acc, value) => acc + value, 0)
+      : 0;
 
-    this.toReceiveTotal =
-      this.incomes ?
-        this.incomes.map(t => t.toReceive).reduce((acc, value) => acc + value, 0) :
-        0;
+    this.receivedTotal = this.incomes
+      ? this.incomes
+          .map((t) => t.received)
+          .reduce((acc, value) => acc + value, 0)
+      : 0;
 
-    this.receivedTotal =
-      this.incomes ?
-        this.incomes.map(t => t.received).reduce((acc, value) => acc + value, 0) :
-        0;
-
-    this.incomesRemainingTotal =
-      this.incomes ?
-        this.incomes.map(t => t.remaining).reduce((acc, value) => acc + value, 0) :
-        0;
+    this.incomesRemainingTotal = this.incomes
+      ? this.incomes
+          .map((t) => t.remaining)
+          .reduce((acc, value) => acc + value, 0)
+      : 0;
 
     this.expectedBalance = this.toReceiveTotal - this.toPayTotal;
 
-    this.hideIncomesProgress = true
+    this.hideIncomesProgress = true;
   }
 
   getExpensesTotals() {
+    this.toPayTotal = this.expenses
+      ? this.expenses.map((t) => t.toPay).reduce((acc, value) => acc + value, 0)
+      : 0;
 
-    this.toPayTotal =
-      this.expenses ?
-        this.expenses.map(t => t.toPay).reduce((acc, value) => acc + value, 0) :
-        0;
+    this.paidTotal = this.expenses
+      ? this.expenses.map((t) => t.paid).reduce((acc, value) => acc + value, 0)
+      : 0;
 
-    this.paidTotal =
-      this.expenses ?
-        this.expenses.map(t => t.paid).reduce((acc, value) => acc + value, 0) :
-        0;
-
-    this.expensesRemainingTotal =
-      this.expenses ?
-        this.expenses.map(t => t.remaining).reduce((acc, value) => acc! + value!, 0) :
-        0;
+    this.expensesRemainingTotal = this.expenses
+      ? this.expenses
+          .map((t) => t.remaining)
+          .reduce((acc, value) => acc! + value!, 0)
+      : 0;
 
     this.expectedBalance = this.toReceiveTotal - this.toPayTotal;
 
@@ -432,58 +480,70 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   }
 
   getTotalPeople() {
+    this.toReceiveTotalPeople = this.cardpostingspeople
+      ? this.cardpostingspeople
+          .map((t) => t.toReceive)
+          .reduce((acc, value) => acc + value, 0)
+      : 0;
 
-    this.toReceiveTotalPeople =
-      this.cardpostingspeople ?
-        this.cardpostingspeople.map(t => t.toReceive).reduce((acc, value) => acc + value, 0) : 0;
+    this.receivedTotalPeople = this.cardpostingspeople
+      ? this.cardpostingspeople
+          .map((t) => t.received)
+          .reduce((acc, value) => acc + value, 0)
+      : 0;
 
-    this.receivedTotalPeople =
-      this.cardpostingspeople ?
-        this.cardpostingspeople.map(t => t.received).reduce((acc, value) => acc + value, 0) : 0;
-
-    this.remainingTotalPeople =
-      this.cardpostingspeople ?
-        this.cardpostingspeople.map(t => t.remaining).reduce((acc, value) => acc + value, 0) : 0;
+    this.remainingTotalPeople = this.cardpostingspeople
+      ? this.cardpostingspeople
+          .map((t) => t.remaining)
+          .reduce((acc, value) => acc + value, 0)
+      : 0;
   }
 
   getTotalByCategories() {
+    this.amountTotalCategory = this.expensesByCategories
+      ? this.expensesByCategories
+          .map((t) => t.amount!)
+          .reduce((acc, value) => acc + value, 0)
+      : 0;
 
-    this.amountTotalCategory =
-      this.expensesByCategories ?
-        this.expensesByCategories.map(t => t.amount!).reduce((acc, value) => acc + value, 0) : 0;
-
-    this.percTotalCategory =
-      this.expensesByCategories ?
-        this.expensesByCategories.map(t => t.perc!).reduce((acc, value) => acc + value, 0) : 0;
+    this.percTotalCategory = this.expensesByCategories
+      ? this.expensesByCategories
+          .map((t) => t.perc!)
+          .reduce((acc, value) => acc + value, 0)
+      : 0;
   }
 
   getPeopleCardsPostingsTotal(cardpostingspeople: CardsPostingsDTO) {
-
-    return cardpostingspeople.cardsPostings.map(t => t.amount).reduce((acc, value) => acc + value, 0);
+    return cardpostingspeople.cardsPostings
+      .map((t) => t.amount)
+      .reduce((acc, value) => acc + value, 0);
   }
 
   getPeopleAccountsPostingsTotal(cardpostingspeople: CardsPostingsDTO) {
-
-    return cardpostingspeople.accountsPostings.map(t => t.amount).reduce((acc, value) => acc + value, 0);
+    return cardpostingspeople.accountsPostings
+      .map((t) => t.amount)
+      .reduce((acc, value) => acc + value, 0);
   }
 
   getPeopleIncomesToReceiveTotal(cardpostingspeople: CardsPostingsDTO) {
-
-    return cardpostingspeople.incomes.map(t => t.toReceive).reduce((acc, value) => acc + value, 0);
+    return cardpostingspeople.incomes
+      .map((t) => t.toReceive)
+      .reduce((acc, value) => acc + value, 0);
   }
 
   getPeopleIncomesReceivedTotal(cardpostingspeople: CardsPostingsDTO) {
-
-    return cardpostingspeople.incomes.map(t => t.received).reduce((acc, value) => acc + value, 0);
+    return cardpostingspeople.incomes
+      .map((t) => t.received)
+      .reduce((acc, value) => acc + value, 0);
   }
 
   getPeopleIncomesRemaingTotal(cardpostingspeople: CardsPostingsDTO) {
-
-    return cardpostingspeople.incomes.map(t => t.toReceive - t.received).reduce((acc, value) => acc + value, 0);
+    return cardpostingspeople.incomes
+      .map((t) => t.toReceive - t.received)
+      .reduce((acc, value) => acc + value, 0);
   }
 
   addExpense(): void {
-
     this.editing = false;
 
     const dialogRef = this.dialog.open(ExpensesDialog, {
@@ -496,54 +556,47 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         peopleList: this.peopleList,
         parcels: 1,
         parcelNumber: 1,
-        adding: true
-      }
+        adding: true,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-
         this.hideExpensesProgress = false;
         this.hideCategoriesProgress = false;
 
         result.position = this.expenses.length + 1;
 
-        this.expenseService.create(result).subscribe(
-          {
-            next: expenses => {
+        this.expenseService.create(result).subscribe({
+          next: (expenses) => {
+            expenses.remaining = expenses.toPay - expenses.paid;
 
-              expenses.remaining = expenses.toPay - expenses.paid;
+            //this.expenses.push(expenses); não funcionou assim como nas outras funções, acredito que seja por causa do Expension Panel (mat-expansion-panel)
 
-              //this.expenses.push(expenses); não funcionou assim como nas outras funções, acredito que seja por causa do Expension Panel (mat-expansion-panel)
+            expenses.overdue = this.overDue(expenses);
+            expenses.duetoday = this.dueToday(expenses);
 
-              expenses.overdue = this.overDue(expenses);
-              expenses.duetoday = this.dueToday(expenses);
+            this.expenses = [...this.expenses, expenses]; // somente funcionou assim
+            this.expensesNoFilter = [...this.expensesNoFilter, expenses];
 
-              this.expenses = [...this.expenses, expenses]; // somente funcionou assim
+            this.categoriesList = result.categoriesList;
+            this.peopleList = result.peopleList;
 
-              this.categoriesList = result.categoriesList;
-              this.peopleList = result.peopleList;
-
-              this.getBudgetTotals();
-              this.getExpensesTotals();
-              this.getExpensesByCategories();
-            },
-            error: () => {
-
-              this.hideExpensesProgress = true;
-              this.hideCategoriesProgress = true;
-            }
-          }
-        );
+            this.getBudgetTotals();
+            this.getExpensesTotals();
+            this.getExpensesByCategories();
+          },
+          error: () => {
+            this.hideExpensesProgress = true;
+            this.hideCategoriesProgress = true;
+          },
+        });
       }
     });
   }
 
   editOrDeleteExpense(expense: Expenses, event: any): void {
-
-    if (event.target.textContent! == "more_vert") {
-
+    if (event.target.textContent! == 'more_vert') {
       return;
     }
 
@@ -573,43 +626,38 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         deleting: false,
         cardsList: this.cardsList,
         categoriesList: this.categoriesList,
-        peopleList: this.peopleList
-      }
+        peopleList: this.peopleList,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-
         this.hideExpensesProgress = false;
         this.hideCategoriesProgress = false;
 
         if (result.deleting) {
+          this.expenseService.delete(result.id).subscribe({
+            next: () => {
+              this.expenses = this.expenses.filter((t) => t.id! != result.id!);
+              this.expensesNoFilter = this.expensesNoFilter.filter(
+                (t) => t.id! != result.id!
+              );
 
-          this.expenseService.delete(result.id).subscribe(
-            {
-              next: () => {
-
-                this.expenses = this.expenses.filter(t => t.id! != result.id!);
-
-                this.getBudgetTotals();
-                this.getExpensesTotals();
-                this.getExpensesByCategories();
-              },
-              error: () => {
-
-                this.hideExpensesProgress = true;
-                this.hideCategoriesProgress = true;
-              }
-            }
-          );
+              this.getBudgetTotals();
+              this.getExpensesTotals();
+              this.getExpensesByCategories();
+            },
+            error: () => {
+              this.hideExpensesProgress = true;
+              this.hideCategoriesProgress = true;
+            },
+          });
         } else {
-
-          this.expenseService.update(result).subscribe(
-            {
-              next: () => {
-
-                this.expenses.filter(t => t.id === result.id).map(t => {
+          this.expenseService.update(result).subscribe({
+            next: () => {
+              this.expenses
+                .filter((t) => t.id === result.id)
+                .map((t) => {
                   t.id = result.id;
                   t.userId = result.userId;
                   t.reference = result.reference;
@@ -631,29 +679,34 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                   t.duetoday = this.dueToday(t);
                 });
 
-                this.expenses = [...this.expenses.filter(e => e.reference === this.reference)];
+              this.expenses = [
+                ...this.expenses.filter((e) => e.reference === this.reference),
+              ];
 
-                this.categoriesList = result.categoriesList;
-                this.peopleList = result.peopleList;
+              this.expensesNoFilter = [
+                ...this.expensesNoFilter.filter(
+                  (e) => e.reference === this.reference
+                ),
+              ];
 
-                this.getBudgetTotals();
-                this.getExpensesTotals();
-                this.getExpensesByCategories();
-              },
-              error: () => {
+              this.categoriesList = result.categoriesList;
+              this.peopleList = result.peopleList;
 
-                this.hideExpensesProgress = true;
-                this.hideCategoriesProgress = true;
-              }
-            }
-          );
+              this.getBudgetTotals();
+              this.getExpensesTotals();
+              this.getExpensesByCategories();
+            },
+            error: () => {
+              this.hideExpensesProgress = true;
+              this.hideCategoriesProgress = true;
+            },
+          });
         }
       }
     });
   }
 
   addIncome(): void {
-
     this.editing = false;
 
     const dialogRef = this.dialog.open(IncomesDialog, {
@@ -665,45 +718,39 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         accountsList: this.accountsList,
         peopleList: this.peopleList,
         typesList: this.typesList,
-        adding: true
-      }
+        adding: true,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-
         this.hideIncomesProgress = false;
 
         result.position = this.incomes.length + 1;
 
-        this.incomeService.create(result).subscribe(
-          {
-            next: incomes => {
+        this.incomeService.create(result).subscribe({
+          next: (incomes) => {
+            //this.incomes.push(incomes); não funcionou assim como nas outras funções, acredito que seja por causa do Expension Panel (mat-expansion-panel)
 
-              //this.incomes.push(incomes); não funcionou assim como nas outras funções, acredito que seja por causa do Expension Panel (mat-expansion-panel)
+            incomes.remaining = incomes.toReceive - incomes.received;
 
-              incomes.remaining = incomes.toReceive - incomes.received;
+            this.incomes = [...this.incomes, incomes]; // somente funcionou assim
+            this.incomesNoFilter = [...this.incomesNoFilter, incomes];
 
-              this.incomes = [...this.incomes, incomes]; // somente funcionou assim
+            this.peopleList = result.peopleList;
 
-              this.peopleList = result.peopleList;
-
-              this.getCardsPostingsPeople();
-              this.getBudgetTotals();
-              this.getIncomesTotals();
-            },
-            error: () => this.hideIncomesProgress = true
-          }
-        );
+            this.getCardsPostingsPeople();
+            this.getBudgetTotals();
+            this.getIncomesTotals();
+          },
+          error: () => (this.hideIncomesProgress = true),
+        });
       }
     });
   }
 
   editOrDeleteIncome(income: Incomes, event: any) {
-
-    if (event.target.textContent! == "more_vert") {
-
+    if (event.target.textContent! == 'more_vert') {
       return;
     }
 
@@ -730,39 +777,34 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         cardsList: this.cardsList,
         accountsList: this.accountsList,
         typesList: this.typesList,
-        peopleList: this.peopleList
-      }
+        peopleList: this.peopleList,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-
         this.hideIncomesProgress = false;
 
         if (result.deleting) {
+          this.incomeService.delete(result.id).subscribe({
+            next: () => {
+              this.incomes = this.incomes.filter((t) => t.id! != result.id!);
+              this.incomesNoFilter = this.incomesNoFilter.filter(
+                (t) => t.id! != result.id!
+              );
 
-          this.incomeService.delete(result.id).subscribe(
-            {
-              next: () => {
-
-                this.incomes = this.incomes.filter(t => t.id! != result.id!);
-
-                this.getCardsPostingsPeople();
-                this.getBudgetTotals();
-                this.getIncomesTotals();
-              },
-              error: () => this.hideIncomesProgress = true
-            }
-          );
+              this.getCardsPostingsPeople();
+              this.getBudgetTotals();
+              this.getIncomesTotals();
+            },
+            error: () => (this.hideIncomesProgress = true),
+          });
         } else {
-
-          this.incomeService.update(result).subscribe(
-            {
-              next: () => {
-
-                this.incomes.filter(t => t.id === result.id).map(t => {
-
+          this.incomeService.update(result).subscribe({
+            next: () => {
+              this.incomes
+                .filter((t) => t.id === result.id)
+                .map((t) => {
                   t.id = result.id;
                   t.userId = result.userId;
                   t.reference = result.reference;
@@ -778,74 +820,70 @@ export class BudgetComponent implements OnInit, AfterViewInit {
                   t.peopleId = result.peopleId;
                 });
 
-                this.incomes = [...this.incomes.filter(i => i.reference === this.reference)];
+              this.incomes = [
+                ...this.incomes.filter((i) => i.reference === this.reference),
+              ];
 
-                this.peopleList = result.peopleList;
+              this.incomesNoFilter = [
+                ...this.incomesNoFilter.filter(
+                  (i) => i.reference === this.reference
+                ),
+              ];
 
-                this.getCardsPostingsPeople();
-                this.getBudgetTotals();
-                this.getIncomesTotals();
-              },
-              error: () => this.hideIncomesProgress = true
-            }
-          );
+              this.peopleList = result.peopleList;
+
+              this.getCardsPostingsPeople();
+              this.getBudgetTotals();
+              this.getIncomesTotals();
+            },
+            error: () => (this.hideIncomesProgress = true),
+          });
         }
       }
     });
   }
 
   budgetPanelClosed() {
-
     localStorage.setItem('budgetPanelExpanded', 'false');
   }
 
   budgetPanelOpened() {
-
     localStorage.setItem('budgetPanelExpanded', 'true');
   }
 
   expensesPanelClosed() {
-
     localStorage.setItem('expensesPanelExpanded', 'false');
   }
 
   expensesPanelOpened() {
-
     localStorage.setItem('expensesPanelExpanded', 'true');
   }
 
   incomesPanelClosed() {
-
     localStorage.setItem('incomesPanelExpanded', 'false');
   }
 
   peoplePanelClosed() {
-
     localStorage.setItem('peoplePanelExpanded', 'false');
   }
 
   incomesPanelOpened() {
-
     localStorage.setItem('incomesPanelExpanded', 'true');
   }
 
   peoplePanelOpened() {
-
     localStorage.setItem('peoplePanelExpanded', 'true');
   }
 
   categoryPanelClosed() {
-
     localStorage.setItem('categoryPanelExpanded', 'false');
   }
 
   categoryPanelOpened() {
-
     localStorage.setItem('categoryPanelExpanded', 'true');
   }
 
   pay(expense: Expenses) {
-
     const dialogRef = this.dialog.open(PaymentReceiveDialog, {
       width: '400px',
       data: {
@@ -854,26 +892,22 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         amount: expense.remaining,
         note: expense.note,
         type: 'P',
-        expenseId: expense.id
-      }
+        expenseId: expense.id,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-
         this.hideExpensesProgress = false;
 
         result.amount = result.amount * (result.type === 'P' ? -1 : 1);
 
         Date.prototype.toJSON = function () {
-          return moment(this).format("YYYY-MM-DDThh:mm:00.000Z");;
+          return moment(this).format('YYYY-MM-DDThh:mm:00.000Z');
         };
 
         this.accountPostingsService.create(result).subscribe({
-
           next: () => {
-
             expense.paid = +(expense.paid + Math.abs(result.amount)).toFixed(2);
             expense.remaining = +(expense.toPay - expense.paid).toFixed(2);
             expense.scheduled = false;
@@ -883,24 +917,20 @@ export class BudgetComponent implements OnInit, AfterViewInit {
             this.getExpensesTotals();
 
             if (result.type === 'P') {
-
               localStorage.setItem('accountIdPayExpense', result.accountId);
-            }
-            else if (result.type === 'R') {
-
+            } else if (result.type === 'R') {
               localStorage.setItem('accountIdReceiveIncome', result.accountId);
             }
 
-            this.hideExpensesProgress = true
+            this.hideExpensesProgress = true;
           },
-          error: () => this.hideExpensesProgress = true
+          error: () => (this.hideExpensesProgress = true),
         });
       }
     });
   }
 
   receive(income: Incomes) {
-
     const dialogRef = this.dialog.open(PaymentReceiveDialog, {
       width: '400px',
       data: {
@@ -909,81 +939,69 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         amount: income.remaining,
         note: income.note,
         type: 'R',
-        incomeId: income.id
-      }
+        incomeId: income.id,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-
         this.hideExpensesProgress = false;
 
         result.amount = result.amount * (result.type === 'P' ? -1 : 1);
 
         Date.prototype.toJSON = function () {
-          return moment(this).format("YYYY-MM-DDThh:mm:00.000Z");;
+          return moment(this).format('YYYY-MM-DDThh:mm:00.000Z');
         };
 
         this.accountPostingsService.create(result).subscribe({
-
           next: () => {
-
-            income.received = +(income.received + Math.abs(result.amount)).toFixed(2);
+            income.received = +(
+              income.received + Math.abs(result.amount)
+            ).toFixed(2);
             income.remaining = +(income.toReceive - income.received).toFixed(2);
 
             this.getIncomesTotals();
 
             localStorage.setItem('accountIdReceiveIncome', result.accountId);
 
-            this.hideExpensesProgress = true
+            this.hideExpensesProgress = true;
           },
-          error: () => this.hideExpensesProgress = true
+          error: () => (this.hideExpensesProgress = true),
         });
       }
     });
   }
 
   addValue(row: any, type: string) {
-
     const dialogRef = this.dialog.open(AddvalueComponent, {
       width: '400px',
       data: {
         id: row.id,
         description: row.description,
-        type: type
-      }
+        type: type,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-
         if (result.type === 'P') {
-
           this.expenseService.updateValue(result.id, result.amount).subscribe({
-
             next: () => {
-
               row.toPay = +(row.toPay + result.amount).toFixed(2);
               row.totalToPay = +(row.totalToPay + result.amount).toFixed(2);
               row.remaining = +(row.toPay - (row.paid ?? 0)).toFixed(2);
 
               this.getExpensesTotals();
-            }
+            },
           });
-        }
-        else if (result.type === 'R') {
-
+        } else if (result.type === 'R') {
           this.incomeService.updateValue(result.id, result.amount).subscribe({
-
             next: () => {
-
               row.toReceive = +(row.toReceive + result.amount).toFixed(2);
               row.remaining = +(row.toReceive - (row.received ?? 0)).toFixed(2);
 
               this.getIncomesTotals();
-            }
+            },
           });
         }
       }
@@ -991,88 +1009,111 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   }
 
   charge(cpp: CardsPostingsDTO, noFee: boolean = false) {
-
-    let message = "";
+    let message = '';
 
     let hour = new Date().getHours();
 
     if (hour < 12) {
-
-      message = "Bom dia!";
-
+      message = 'Bom dia!';
     } else if (hour < 18) {
-
-      message = "Boa tarde!";
-
+      message = 'Boa tarde!';
     } else {
-
-      message = "Boa noite!";
+      message = 'Boa noite!';
     }
 
-    this.cardPostingsService.readByPeopleId(cpp.person, this.reference!, 0).subscribe(
-      {
-        next: cardPostingsPeople => {
-
-          message += "\nSeguem os valores deste mês:";
+    this.cardPostingsService
+      .readByPeopleId(cpp.person, this.reference!, 0)
+      .subscribe({
+        next: (cardPostingsPeople) => {
+          message += '\nSeguem os valores deste mês:';
           let month = Number(this.reference?.substring(4, 6));
-          message += "\n\n*Vencimento 01/" + (month + 1).toString().padStart(2, '0') + "*\n\n";
-          message += "```";
+          message +=
+            '\n\n*Vencimento 01/' +
+            (month + 1).toString().padStart(2, '0') +
+            '*\n\n';
+          message += '```';
 
-          cardPostingsPeople.cardsPostings.forEach(cp => {
+          cardPostingsPeople.cardsPostings.forEach((cp) => {
+            let strAmount = cp.amount
+              .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+              .replace('R$ ', '')
+              .padStart(8, ' ');
 
-            let strAmount = cp.amount.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }).replace('R$ ', '').padStart(8, ' ');
+            let strParcels =
+              cp.parcels! > 1
+                ? ' (' + cp.parcelNumber! + '/' + cp.parcels! + ')'
+                : '';
 
-            let strParcels = cp.parcels! > 1 ? " (" + cp.parcelNumber! + "/" + cp.parcels! + ")" : "";
-
-            message += strAmount + " " + cp.description + strParcels + "\n";
+            message += strAmount + ' ' + cp.description + strParcels + '\n';
           });
 
-          cardPostingsPeople.incomes.forEach(i => {
+          cardPostingsPeople.incomes.forEach((i) => {
+            let strAmount = i.toReceive
+              .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+              .replace('R$ ', '')
+              .padStart(8, ' ');
 
-            let strAmount = i.toReceive.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }).replace('R$ ', '').padStart(8, ' ');
-
-            message += strAmount + " " + i.description + "\n";
+            message += strAmount + ' ' + i.description + '\n';
           });
 
           let tax = noFee ? 0 : 3;
 
           if (!noFee) {
-            message += tax.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }).replace('R$ ', '').padStart(8, ' ') + " Tarifa de Serviços\n";
+            message +=
+              tax
+                .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+                .replace('R$ ', '')
+                .padStart(8, ' ') + ' Tarifa de Serviços\n';
           }
 
-          let received = cpp.received > 0 ?
-            ("-" + cpp.received.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }).replace('R$ ', '')).padStart(8, ' ') + " (Valor pago)\n" :
-            "";
+          let received =
+            cpp.received > 0
+              ? (
+                  '-' +
+                  cpp.received
+                    .toLocaleString('pt-br', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    })
+                    .replace('R$ ', '')
+                ).padStart(8, ' ') + ' (Valor pago)\n'
+              : '';
 
           message += received;
 
-          let total = (cpp.remaining + tax).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
+          let total = (cpp.remaining + tax).toLocaleString('pt-br', {
+            style: 'currency',
+            currency: 'BRL',
+          });
 
-          message += "----------------------------```\n";
-          message += "*Total: " + total + "*";
+          message += '----------------------------```\n';
+          message += '*Total: ' + total + '*';
 
-          message += "\n\n*PIX: (92)98447-9364*";
+          message += '\n\n*PIX: (92)98447-9364*';
 
           console.log(message);
 
           this.clipboardService.copy(message);
 
-          this.messenger.message("Mensagem copiada para área de transferência.");
-        }
-      }
-    );
+          this.messenger.message(
+            'Mensagem copiada para área de transferência.'
+          );
+        },
+      });
   }
 
   dropExpenses(event: CdkDragDrop<any[]>) {
+    if (this.justToPay) return;
 
-    const previousIndex = this.expenses.findIndex(row => row === event.item.data);
+    const previousIndex = this.expenses.findIndex(
+      (row) => row === event.item.data
+    );
 
     moveItemInArray(this.expenses, previousIndex, event.currentIndex);
 
     this.expenses = this.expenses.slice();
 
     this.expenses.forEach((expense, index) => {
-
       expense.position = index + 1;
 
       this.expenseService.update(expense).subscribe();
@@ -1080,15 +1121,17 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   }
 
   dropIncomes(event: CdkDragDrop<any[]>) {
+    if (this.justToReceive) return;
 
-    const previousIndex = this.incomes.findIndex(row => row === event.item.data);
+    const previousIndex = this.incomes.findIndex(
+      (row) => row === event.item.data
+    );
 
     moveItemInArray(this.incomes, previousIndex, event.currentIndex);
 
     this.incomes = this.incomes.slice();
 
     this.incomes.forEach((expense, index) => {
-
       expense.position = index + 1;
 
       this.incomeService.update(expense).subscribe();
@@ -1104,41 +1147,30 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     row.expanding = true;
 
     if (row.expanded) {
-
       row.expanded = false;
 
       row.expanding = false;
-
     } else {
-
       row.expanded = true;
 
       if (row.expenses == null && row.cardsPostings == null) {
+        this.expenseService.readByCategory(row).subscribe({
+          next: (expensesByCategories) => {
+            row.expenses = expensesByCategories.expenses;
+            row.cardsPostings = expensesByCategories.cardsPostings;
 
-        this.expenseService.readByCategory(row).subscribe(
-          {
-            next: expensesByCategories => {
-
-              row.expenses = expensesByCategories.expenses;
-              row.cardsPostings = expensesByCategories.cardsPostings;
-
-              row.expanding = false;
-            },
-            error: () => row.expanding = false
-          }
-        );
-      }
-      else {
-
+            row.expanding = false;
+          },
+          error: () => (row.expanding = false),
+        });
+      } else {
         row.expanding = false;
       }
     }
   }
 
   peopleToggleRow(row: CardsPostingsDTO, event: any) {
-
-    if (event.target.textContent! == "more_vert") {
-
+    if (event.target.textContent! == 'more_vert') {
       return;
     }
 
@@ -1150,21 +1182,17 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     row.expanding = true;
 
     if (row.expanded) {
-
       row.expanded = false;
 
       row.expanding = false;
-
     } else {
-
       row.expanded = true;
 
       if (row.cardsPostings == null) {
-
-        this.cardPostingsService.readByPeopleId(row.person, row.reference, row.cardId).subscribe(
-          {
-            next: people => {
-
+        this.cardPostingsService
+          .readByPeopleId(row.person, row.reference, row.cardId)
+          .subscribe({
+            next: (people) => {
               row.cardsPostings = people.cardsPostings;
               row.incomes = people.incomes;
               // row.cardsReceipts = people.cardsReceipts;
@@ -1172,41 +1200,16 @@ export class BudgetComponent implements OnInit, AfterViewInit {
 
               row.expanding = false;
             },
-            error: () => row.expanding = false
-          }
-        );
-      }
-      else {
-
+            error: () => (row.expanding = false),
+          });
+      } else {
         row.expanding = false;
       }
     }
   }
 
-  // getAccountName(row: AccountsPostings) {
-
-  //   return row.cardReceipt ? row.account!.name : row.income!.account!.name
-  // }
-
-  // getBackground(row: AccountsPostings) {
-
-  //   return row.cardReceipt ? row.cardReceipt.account!.background : row.income!.account!.background;
-  // }
-
-  // getColor(row: AccountsPostings) {
-
-  //   return row.cardReceipt ? row.cardReceipt.account!.color : row.income!.account!.color;
-  // }
-
-  // getDescription(row: AccountsPostings) {
-
-  //   return row.cardReceipt ? row.cardReceipt.account!.color : row.income!.account!.color;
-  // }
-
   dueToday(expense: Expenses) {
-
     if (!expense.dueDate) {
-
       return false;
     }
 
@@ -1224,9 +1227,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   }
 
   overDue(expense: Expenses) {
-
     if (!expense.dueDate) {
-
       return false;
     }
 
@@ -1249,7 +1250,6 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   templateUrl: 'expenses-dialog.html',
 })
 export class ExpensesDialog implements OnInit, AfterViewInit {
-
   cards?: Cards[];
   editing: boolean = false;
 
@@ -1257,7 +1257,6 @@ export class ExpensesDialog implements OnInit, AfterViewInit {
   disableRepeatParcelsCheck: boolean = false;
 
   expensesFormGroup = new FormGroup({
-
     descriptionFormControl: new FormControl('', Validators.required),
     toPayFormControl: new FormControl('', Validators.required),
     paidFormControl: new FormControl(''),
@@ -1283,11 +1282,9 @@ export class ExpensesDialog implements OnInit, AfterViewInit {
     private categoryService: CategoryService,
     private peopleService: PeopleService,
     private cd: ChangeDetectorRef
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
-
     this.cards = this.expenses.cardsList;
 
     this.expenses.parcelNumber = this.expenses.parcelNumber ?? 1;
@@ -1302,56 +1299,56 @@ export class ExpensesDialog implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
     this.cd.detectChanges();
   }
 
   cancel(): void {
-
     this.dialogRef.close();
   }
 
   save(): void {
-
     this.dialogRef.close(this.expenses);
   }
 
   delete(): void {
-
     this.expenses.deleting = true;
 
     this.dialogRef.close(this.expenses);
   }
 
   setCard(): void {
-
-    this.expenses.card = this.expenses.cardsList?.find(t => t.id == this.expenses.cardId);
+    this.expenses.card = this.expenses.cardsList?.find(
+      (t) => t.id == this.expenses.cardId
+    );
   }
 
   calculateRemaining(): void {
-
-    this.expenses.paid = (this.expenses.paid ?? 0) > this.expenses.toPay ? this.expenses.toPay : this.expenses.paid;
-    this.expenses.remaining = +(this.expenses.toPay - (this.expenses.paid ?? 0)).toFixed(2);
+    this.expenses.paid =
+      (this.expenses.paid ?? 0) > this.expenses.toPay
+        ? this.expenses.toPay
+        : this.expenses.paid;
+    this.expenses.remaining = +(
+      this.expenses.toPay - (this.expenses.paid ?? 0)
+    ).toFixed(2);
   }
 
-  onParcelNumberChanged(event: any): void {
-  }
+  onParcelNumberChanged(event: any): void {}
 
   calculateToPay(): void {
-
-    this.expenses.toPay = +(this.expenses.totalToPay / this.expenses.parcels!).toFixed(2);
+    this.expenses.toPay = +(
+      this.expenses.totalToPay / this.expenses.parcels!
+    ).toFixed(2);
 
     this.calculateRemaining();
   }
 
   onParcelsChanged(event: any): void {
-
-    this.disableGenerateParcelsCheck = event.target.value == '' || this.expenses.parcels! <= 1;
+    this.disableGenerateParcelsCheck =
+      event.target.value == '' || this.expenses.parcels! <= 1;
 
     if (this.disableGenerateParcelsCheck) {
       this.expenses.generateParcels = false;
-    }
-    else {
+    } else {
       this.expenses.generateParcels = true;
     }
 
@@ -1363,91 +1360,75 @@ export class ExpensesDialog implements OnInit, AfterViewInit {
   }
 
   onGenerateParcelsChanged(event: any): void {
-
     if (this.expenses.generateParcels) {
-
       this.disableRepeatParcelsCheck = true;
       this.expensesFormGroup.get('monthsToRepeatFormControl')!.disable();
-    }
-    else {
-
+    } else {
       this.disableRepeatParcelsCheck = false;
       this.expensesFormGroup.get('monthsToRepeatFormControl')!.enable();
     }
   }
 
   onRepeatParcelsChanged(event: any): void {
-
     if (this.expenses.repeatParcels) {
-
       this.disableGenerateParcelsCheck = true;
-    }
-    else {
-
+    } else {
       if (this.expenses.parcels! > 1) {
-
         this.disableGenerateParcelsCheck = false;
       }
     }
   }
 
   setTitle() {
-
     return 'Despesa - ' + (this.expenses.editing ? 'Editar' : 'Incluir');
   }
 
   addCategory() {
-
     this.editing = false;
 
     const dialogRef = this.dialog.open(CategoryComponent, {
       width: '400px',
       data: {
-        editing: this.editing
-      }
+        editing: this.editing,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-
-        this.categoryService.create(result).subscribe(
-          {
-            next: category => {
-
-              this.expenses.categoriesList = [...this.expenses.categoriesList!, category].sort((a, b) => a.name.localeCompare(b.name));
-              this.expenses.categoryId = category.id;
-            }
-          }
-        );
+        this.categoryService.create(result).subscribe({
+          next: (category) => {
+            this.expenses.categoriesList = [
+              ...this.expenses.categoriesList!,
+              category,
+            ].sort((a, b) => a.name.localeCompare(b.name));
+            this.expenses.categoryId = category.id;
+          },
+        });
       }
     });
   }
 
   addPeople() {
-
     this.editing = false;
 
     const dialogRef = this.dialog.open(PeopleComponent, {
       width: '400px',
       data: {
-        editing: this.editing
-      }
+        editing: this.editing,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-
-        this.peopleService.create(result).subscribe(
-          {
-            next: people => {
-
-              this.expenses.peopleList = [...this.expenses.peopleList!, people].sort((a, b) => a.id.localeCompare(b.id));
-              this.expenses.peopleId = people.id;
-            }
-          }
-        );
+        this.peopleService.create(result).subscribe({
+          next: (people) => {
+            this.expenses.peopleList = [
+              ...this.expenses.peopleList!,
+              people,
+            ].sort((a, b) => a.id.localeCompare(b.id));
+            this.expenses.peopleId = people.id;
+          },
+        });
       }
     });
   }
@@ -1458,7 +1439,6 @@ export class ExpensesDialog implements OnInit, AfterViewInit {
   templateUrl: 'incomes-dialog.html',
 })
 export class IncomesDialog implements OnInit, AfterViewInit {
-
   cards?: Cards[];
   accounts?: Accounts[];
   types?: IncomesTypes[];
@@ -1466,7 +1446,6 @@ export class IncomesDialog implements OnInit, AfterViewInit {
   editing: boolean = false;
 
   incomesFormGroup = new FormGroup({
-
     descriptionFormControl: new FormControl('', Validators.required),
     toReceiveFormControl: new FormControl('', Validators.required),
     receivedFormControl: new FormControl(''),
@@ -1486,10 +1465,9 @@ export class IncomesDialog implements OnInit, AfterViewInit {
     @Inject(MAT_DIALOG_DATA) public incomes: Incomes,
     private peopleService: PeopleService,
     private cd: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-
     this.cards = this.incomes.cardsList;
     this.accounts = this.incomes.accountsList;
     this.types = this.incomes.typesList;
@@ -1498,67 +1476,64 @@ export class IncomesDialog implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-
     this.cd.detectChanges();
   }
 
   cancel(): void {
-
     this.dialogRef.close();
   }
 
   save(): void {
-
     this.dialogRef.close(this.incomes);
   }
 
   delete(): void {
-
     this.incomes.deleting = true;
 
     this.dialogRef.close(this.incomes);
   }
 
   setCard(): void {
-
-    this.incomes.card = this.incomes.cardsList?.find(t => t.id == this.incomes.cardId);
+    this.incomes.card = this.incomes.cardsList?.find(
+      (t) => t.id == this.incomes.cardId
+    );
   }
 
   calculateRemaining(): void {
-
-    this.incomes.received = (this.incomes.received ?? 0) > this.incomes.toReceive ? this.incomes.toReceive : this.incomes.received;
-    this.incomes.remaining = +(this.incomes.toReceive - (this.incomes.received ?? 0)).toFixed(2);
+    this.incomes.received =
+      (this.incomes.received ?? 0) > this.incomes.toReceive
+        ? this.incomes.toReceive
+        : this.incomes.received;
+    this.incomes.remaining = +(
+      this.incomes.toReceive - (this.incomes.received ?? 0)
+    ).toFixed(2);
   }
 
   setTitle() {
-
     return 'Receita - ' + (this.incomes.editing ? 'Editar' : 'Incluir');
   }
 
   addPeople() {
-
     this.editing = false;
 
     const dialogRef = this.dialog.open(PeopleComponent, {
       width: '400px',
       data: {
-        editing: this.editing
-      }
+        editing: this.editing,
+      },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-
-        this.peopleService.create(result).subscribe(
-          {
-            next: people => {
-
-              this.incomes.peopleList = [...this.incomes.peopleList!, people].sort((a, b) => a.id.localeCompare(b.id));
-              this.incomes.peopleId = people.id;
-            }
-          }
-        );
+        this.peopleService.create(result).subscribe({
+          next: (people) => {
+            this.incomes.peopleList = [
+              ...this.incomes.peopleList!,
+              people,
+            ].sort((a, b) => a.id.localeCompare(b.id));
+            this.incomes.peopleId = people.id;
+          },
+        });
       }
     });
   }
@@ -1569,13 +1544,11 @@ export class IncomesDialog implements OnInit, AfterViewInit {
   templateUrl: 'payment-receive-dialog.html',
 })
 export class PaymentReceiveDialog implements OnInit, AfterViewInit {
-
   @ViewChild('datepickerinput') datepickerinput!: DatepickerinputComponent;
 
   accountsList?: Accounts[];
 
   accountPostingFormGroup = new FormGroup({
-
     descriptionFormControl: new FormControl('', Validators.required),
     amountFormControl: new FormControl('', Validators.required),
     accountFormControl: new FormControl('', Validators.required),
@@ -1588,78 +1561,72 @@ export class PaymentReceiveDialog implements OnInit, AfterViewInit {
     @Inject(MAT_DIALOG_DATA) public accountPosting: AccountsPostings,
     private accountService: AccountService,
     private cd: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     //Teste
-    this.accountService.readNotDisabled().subscribe(
-      {
-        next: accounts => {
+    this.accountService.readNotDisabled().subscribe({
+      next: (accounts) => {
+        this.accountsList = accounts;
 
-          this.accountsList = accounts;
-
-          if (this.accountPosting.type == 'P' && localStorage.getItem('accountIdPayExpense') != null) {
-
-            this.accountPosting.accountId = +(localStorage.getItem('accountIdPayExpense')!);
-          }
-          else if (this.accountPosting.type == 'R' && localStorage.getItem('accountIdReceiveIncome') != null) {
-
-            this.accountPosting.accountId = +(localStorage.getItem('accountIdReceiveIncome')!);
-          }
+        if (
+          this.accountPosting.type == 'P' &&
+          localStorage.getItem('accountIdPayExpense') != null
+        ) {
+          this.accountPosting.accountId = +localStorage.getItem(
+            'accountIdPayExpense'
+          )!;
+        } else if (
+          this.accountPosting.type == 'R' &&
+          localStorage.getItem('accountIdReceiveIncome') != null
+        ) {
+          this.accountPosting.accountId = +localStorage.getItem(
+            'accountIdReceiveIncome'
+          )!;
         }
-      }
-    );
+      },
+    });
   }
 
   ngAfterViewInit(): void {
-
     this.accountPosting.date = this.datepickerinput.date.value._d;
     this.cd.detectChanges();
   }
 
   cancel(): void {
-
     this.dialogRef.close();
   }
 
   currentDateChanged(date: Date) {
-
     this.accountPosting.date = date;
   }
 
   save(): void {
-
     this.dialogRef.close(this.accountPosting);
   }
 
   delete(): void {
-
     this.accountPosting.deleting = true;
 
     this.dialogRef.close(this.accountPosting);
   }
 
   onTypeChange(): void {
-
     if (this.accountPosting.type === 'Y') {
-
       this.accountPosting.description = 'Rendimento';
-    }
-    else if (this.accountPosting.type === 'C') {
-
+    } else if (this.accountPosting.type === 'C') {
       this.accountPosting.description = 'Troco';
-    }
-    else {
-      if (this.accountPosting.description === 'Rendimento' ||
-        this.accountPosting.description === 'Troco') {
-
+    } else {
+      if (
+        this.accountPosting.description === 'Rendimento' ||
+        this.accountPosting.description === 'Troco'
+      ) {
         this.accountPosting.description = '';
       }
     }
   }
 
   setTitle() {
-
     return this.accountPosting.description.replace('Pag.', 'Pagar');
   }
 }

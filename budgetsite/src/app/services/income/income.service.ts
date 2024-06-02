@@ -21,9 +21,9 @@ export class IncomeService {
     );
   }
 
-  read(reference: string): Observable<Incomes[]> {
+  read(reference: string, justMyValues: boolean): Observable<Incomes[]> {
 
-    return this.http.get<Incomes[]>(`${ApiUrls.incomes}/reference/${reference}`).pipe(
+    return this.http.get<Incomes[]>(`${ApiUrls.incomes}/reference${justMyValues ? '2' : ''}/${reference}`).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );

@@ -9,6 +9,15 @@
       <app-datepicker [showMonthName]="false" (referenceChange)="referenceChanges($event)"
         (monthChange)="monthName=$event" [budgetId]=1>
       </app-datepicker>
+      <div class="row" style="margin-top: 10px">
+        <mat-checkbox [(ngModel)]="justMyValues" (ngModelChange)="onCheckboxJustMyValuesChange()">Apenas meus valores</mat-checkbox>
+      </div>
+      <div class="row" style="margin-top: 10px">
+        <mat-checkbox [(ngModel)]="justToPay" (ngModelChange)="onCheckboxJustToPayChange()">Apenas despesas a pagar</mat-checkbox>
+      </div>
+      <div class="row" style="margin-top: 10px">
+        <mat-checkbox [(ngModel)]="justToReceive" (ngModelChange)="onCheckboxJustToReceiveChange()">Apenas receitas a receber</mat-checkbox>
+      </div>
     </mat-expansion-panel>
   </mat-accordion>
   <!-- SPINNER -->

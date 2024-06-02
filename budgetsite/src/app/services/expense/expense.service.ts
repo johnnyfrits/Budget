@@ -22,13 +22,15 @@ export class ExpenseService {
     );
   }
 
-  read(reference: string): Observable<Expenses[]> {
+  read(reference: string, justMyValues: boolean): Observable<Expenses[]> {
+    const url = `${ApiUrls.expenses}/reference${justMyValues ? '2' : ''}/${reference}`;
 
-    return this.http.get<Expenses[]>(`${ApiUrls.expenses}/reference/${reference}`).pipe(
+    return this.http.get<Expenses[]>(url).pipe(
       map(obj => obj),
       catchError(e => this.messenger.errorHandler(e))
     );
   }
+
 
   readComboList(reference: string): Observable<Expenses[]> {
 

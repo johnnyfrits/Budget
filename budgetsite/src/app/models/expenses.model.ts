@@ -11,7 +11,7 @@ export interface Expenses {
   toPay: number;
   totalToPay: number;
   paid: number;
-  remaining?: number;
+  remaining: number;
   note?: string;
   cardId?: number;
   dueDate?: Date;
