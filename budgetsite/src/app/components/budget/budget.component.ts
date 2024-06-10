@@ -114,10 +114,12 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   displayedCategoriesColumns = ['category', 'amount', 'perc'];
 
   toPayTotal: number = 0;
+  toPayTotalNoFilter: number = 0;
   paidTotal: number = 0;
   expensesRemainingTotal?: number = 0;
   expectedBalance: number = 0;
   toReceiveTotal: number = 0;
+  toReceiveTotalNoFilter: number = 0;
   receivedTotal: number = 0;
   incomesRemainingTotal: number = 0;
   toReceiveTotalPeople: number = 0;
@@ -216,11 +218,15 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   }
 
   onCheckboxJustToPayChange(): void {
+    debugger
     if (this.justToPay) {
       this.expenses = this.expensesNoFilter.filter((e) => e.remaining > 0);
     } else {
       this.expenses = this.expensesNoFilter;
     }
+
+    this.getIncomesTotals();
+    this.getExpensesTotals();
   }
 
   onCheckboxJustToReceiveChange(): void {
@@ -454,7 +460,13 @@ export class BudgetComponent implements OnInit, AfterViewInit {
           .reduce((acc, value) => acc + value, 0)
       : 0;
 
-    this.expectedBalance = this.toReceiveTotal - this.toPayTotal;
+    this.toReceiveTotalNoFilter = this.incomesNoFilter
+      ? this.incomesNoFilter
+          .map((t) => t.toReceive)
+          .reduce((acc, value) => acc + value, 0)
+      : 0;
+
+    this.expectedBalance = this.toReceiveTotalNoFilter - this.toPayTotalNoFilter;
 
     this.hideIncomesProgress = true;
   }
@@ -474,7 +486,13 @@ export class BudgetComponent implements OnInit, AfterViewInit {
           .reduce((acc, value) => acc! + value!, 0)
       : 0;
 
-    this.expectedBalance = this.toReceiveTotal - this.toPayTotal;
+    this.toPayTotalNoFilter = this.expensesNoFilter
+      ? this.expensesNoFilter
+          .map((t) => t.toPay)
+          .reduce((acc, value) => acc + value, 0)
+      : 0;
+
+    this.expectedBalance = this.toReceiveTotalNoFilter - this.toPayTotalNoFilter;
 
     this.hideExpensesProgress = true;
   }
