@@ -1,13 +1,24 @@
-import { Component, OnInit, AfterViewInit, ViewChild, Inject, ChangeDetectorRef } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { CardsPostings } from "src/app/models/cardspostings.model";
-import { CategoryService } from "src/app/services/category/category.service";
-import { PeopleService } from "src/app/services/people/people.service";
-import { DatepickerinputComponent } from "src/app/shared/datepickerinput/datepickerinput.component";
-import { CategoryComponent } from "../category/category.component";
-import { PeopleComponent } from "../people/people.component";
-
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+  Inject,
+  ChangeDetectorRef,
+} from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
+import { CardsPostings } from 'src/app/models/cardspostings.model';
+import { CategoryService } from 'src/app/services/category/category.service';
+import { PeopleService } from 'src/app/services/people/people.service';
+import { DatepickerinputComponent } from 'src/app/shared/datepickerinput/datepickerinput.component';
+import { CategoryComponent } from '../category/category.component';
+import { PeopleComponent } from '../people/people.component';
+import { CardPostingsService } from 'src/app/services/cardpostings/cardpostings.service';
 
 @Component({
   selector: 'cardpostings-dialog',
@@ -46,8 +57,9 @@ export class CardPostingsDialog implements OnInit, AfterViewInit {
     @Inject(MAT_DIALOG_DATA) public cardPosting: CardsPostings,
     private categoryService: CategoryService,
     private peopleService: PeopleService,
+    private cardPostingsService: CardPostingsService,
     private cd: ChangeDetectorRef
-  ) { }
+  ) {}
 
   ngAfterViewInit(): void {
     if (!this.cardPosting.id) {
@@ -186,5 +198,21 @@ export class CardPostingsDialog implements OnInit, AfterViewInit {
         this.disableGenerateParcelsCheck = false;
       }
     }
+  }
+
+  onDescriptionChange() {
+    if (!this.cardPosting.description) return;
+
+    if (this.cardPosting.categoryId != null) return;
+
+    this.cardPostingsService
+      .getCategoryByDescription(this.cardPosting.description)
+      .subscribe({
+        next: (categoryId) => {
+          if (categoryId != null) {
+            this.cardPosting.categoryId = categoryId.categoryId;
+          }
+        },
+      });
   }
 }

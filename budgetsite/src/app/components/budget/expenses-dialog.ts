@@ -1,13 +1,23 @@
-import { Component, OnInit, AfterViewInit, Inject, ChangeDetectorRef } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { Cards } from "src/app/models/cards.model";
-import { Expenses } from "src/app/models/expenses.model";
-import { CategoryService } from "src/app/services/category/category.service";
-import { PeopleService } from "src/app/services/people/people.service";
-import { CategoryComponent } from "../category/category.component";
-import { PeopleComponent } from "../people/people.component";
-
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  Inject,
+  ChangeDetectorRef,
+} from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {
+  MatDialog,
+  MatDialogRef,
+  MAT_DIALOG_DATA,
+} from '@angular/material/dialog';
+import { Cards } from 'src/app/models/cards.model';
+import { Expenses } from 'src/app/models/expenses.model';
+import { CategoryService } from 'src/app/services/category/category.service';
+import { PeopleService } from 'src/app/services/people/people.service';
+import { CategoryComponent } from '../category/category.component';
+import { PeopleComponent } from '../people/people.component';
+import { ExpenseService } from 'src/app/services/expense/expense.service';
 
 @Component({
   selector: 'expenses-dialog',
@@ -46,8 +56,9 @@ export class ExpensesDialog implements OnInit, AfterViewInit {
     @Inject(MAT_DIALOG_DATA) public expenses: Expenses,
     private categoryService: CategoryService,
     private peopleService: PeopleService,
-    private cd: ChangeDetectorRef
-  ) { }
+    private cd: ChangeDetectorRef,
+    private expenseService: ExpenseService
+  ) {}
 
   ngOnInit(): void {
     this.cards = this.expenses.cardsList;
@@ -97,7 +108,7 @@ export class ExpensesDialog implements OnInit, AfterViewInit {
     ).toFixed(2);
   }
 
-  onParcelNumberChanged(event: any): void { }
+  onParcelNumberChanged(event: any): void {}
 
   calculateToPay(): void {
     this.expenses.toPay = +(
@@ -196,5 +207,21 @@ export class ExpensesDialog implements OnInit, AfterViewInit {
         });
       }
     });
+  }
+
+  onDescriptionChange() {
+    if (!this.expenses.description) return;
+
+    if (this.expenses.categoryId != null) return;
+
+    this.expenseService
+      .getCategoryByDescription(this.expenses.description)
+      .subscribe({
+        next: (categoryId) => {
+          if (categoryId != null) {
+            this.expenses.categoryId = categoryId.categoryId;
+          }
+        },
+      });
   }
 }
