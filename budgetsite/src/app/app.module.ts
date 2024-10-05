@@ -51,8 +51,13 @@ import { AccountComponent, AccountDialog } from './components/account/account.co
 import { AccountPostingsComponent, AccountPostingsDialog } from './components/accountpostings/accountpostings.component';
 import { CardViewComponent } from './views/card-view/card-view.component';
 import { CardComponent, CardDialog } from './components/card/card.component';
-import { CardPostingsComponent, CardPostingsDialog, CardReceiptsDialog } from './components/cardpostings/cardpostings.component';
-import { BudgetComponent, ExpensesDialog, IncomesDialog, PaymentReceiveDialog } from './components/budget/budget.component';
+import { CardPostingsComponent } from './components/cardpostings/cardpostings.component';
+import { CardReceiptsDialog } from './components/cardpostings/cardreceipts-dialog';
+import { CardPostingsDialog } from './components/cardpostings/cardpostings-dialog';
+import { BudgetComponent } from './components/budget/budget.component';
+import { PaymentReceiveDialog } from './components/budget/payment-receive-dialog';
+import { IncomesDialog } from './components/budget/incomes-dialog';
+import { ExpensesDialog } from './components/budget/expenses-dialog';
 import { DatepickerComponent } from './shared/datepicker/datepicker.component';
 import { BudgetViewComponent } from './views/budget-view/budget-view.component';
 import { DatepickerinputComponent } from './shared/datepickerinput/datepickerinput.component';

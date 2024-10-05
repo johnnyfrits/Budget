@@ -3,16 +3,10 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
-  Inject,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import {
   animate,
   state,
@@ -27,19 +21,16 @@ import { Cards } from 'src/app/models/cards.model';
 import { CardsPostingsDTO } from 'src/app/models/cardspostingsdto.model';
 import { Expenses } from 'src/app/models/expenses.model';
 import { Incomes } from 'src/app/models/incomes.model';
-import { IncomesTypes } from 'src/app/models/types.model';
 import { AccountService } from 'src/app/services/account/account.service';
 import { CardService } from 'src/app/services/card/card.service';
 import { CardPostingsService } from 'src/app/services/cardpostings/cardpostings.service';
 import { ExpenseService } from 'src/app/services/expense/expense.service';
 import { IncomeService } from 'src/app/services/income/income.service';
-import { AccountsPostings } from 'src/app/models/accountspostings.model';
 import { AccountPostingsService } from 'src/app/services/accountpostings/accountpostings.service';
 import { BudgetTotals } from './../../models/budgettotals';
 import { BudgetService } from 'src/app/services/budget/budget.service';
 import { Categories } from 'src/app/models/categories.model';
 import { CategoryService } from 'src/app/services/category/category.service';
-import { CategoryComponent } from '../category/category.component';
 import { ExpensesByCategories } from 'src/app/models/expensesbycategories';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -47,9 +38,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { People } from 'src/app/models/people.model';
 import { PeopleService } from 'src/app/services/people/people.service';
 import { AddvalueComponent } from 'src/app/shared/addvalue/addvalue.component';
-import { DatepickerinputComponent } from 'src/app/shared/datepickerinput/datepickerinput.component';
 import moment from 'moment';
-import { PeopleComponent } from '../people/people.component';
+import { ExpensesDialog } from './expenses-dialog';
+import { IncomesDialog } from './incomes-dialog';
+import { PaymentReceiveDialog } from './payment-receive-dialog';
 
 @Component({
   selector: 'app-budget',
@@ -218,7 +210,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
   }
 
   onCheckboxJustToPayChange(): void {
-    debugger
+    debugger;
     if (this.justToPay) {
       this.expenses = this.expensesNoFilter.filter((e) => e.remaining > 0);
     } else {
@@ -466,7 +458,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
           .reduce((acc, value) => acc + value, 0)
       : 0;
 
-    this.expectedBalance = this.toReceiveTotalNoFilter - this.toPayTotalNoFilter;
+    this.expectedBalance =
+      this.toReceiveTotalNoFilter - this.toPayTotalNoFilter;
 
     this.hideIncomesProgress = true;
   }
@@ -492,7 +485,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
           .reduce((acc, value) => acc + value, 0)
       : 0;
 
-    this.expectedBalance = this.toReceiveTotalNoFilter - this.toPayTotalNoFilter;
+    this.expectedBalance =
+      this.toReceiveTotalNoFilter - this.toPayTotalNoFilter;
 
     this.hideExpensesProgress = true;
   }
@@ -907,7 +901,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
       data: {
         reference: expense.reference,
         description: 'Pag. ' + expense.description,
-        amount: expense.remaining,
+        amount: expense.remaining == expense.toPay ? expense.remaining : null,
+        remaining: expense.remaining,
         note: expense.note,
         type: 'P',
         expenseId: expense.id,
@@ -954,7 +949,8 @@ export class BudgetComponent implements OnInit, AfterViewInit {
       data: {
         reference: income.reference,
         description: 'Rec. ' + income.description,
-        amount: income.remaining,
+        amount: income.remaining == income.toReceive ? income.remaining : null,
+        remaining: income.remaining,
         note: income.note,
         type: 'R',
         incomeId: income.id,
@@ -1260,391 +1256,5 @@ export class BudgetComponent implements OnInit, AfterViewInit {
     expense.overdue = today.getTime() > dueDate.getTime();
 
     return expense.overdue;
-  }
-}
-
-@Component({
-  selector: 'expenses-dialog',
-  templateUrl: 'expenses-dialog.html',
-})
-export class ExpensesDialog implements OnInit, AfterViewInit {
-  cards?: Cards[];
-  editing: boolean = false;
-
-  disableGenerateParcelsCheck: boolean = true;
-  disableRepeatParcelsCheck: boolean = false;
-
-  expensesFormGroup = new FormGroup({
-    descriptionFormControl: new FormControl('', Validators.required),
-    toPayFormControl: new FormControl('', Validators.required),
-    paidFormControl: new FormControl(''),
-    remainingFormControl: new FormControl(''),
-    noteFormControl: new FormControl(''),
-    cardIdFormControl: new FormControl(''),
-    categoryIdFormControl: new FormControl(''),
-    dueDateFormControl: new FormControl(''),
-    parcelNumberFormControl: new FormControl(''),
-    parcelsFormControl: new FormControl(''),
-    totalToPayFormControl: new FormControl('', Validators.required),
-    generateParcelsFormControl: new FormControl(''),
-    repeatParcelsFormControl: new FormControl(''),
-    monthsToRepeatFormControl: new FormControl(''),
-    scheduledFormControl: new FormControl(''),
-    peopleFormControl: new FormControl(''),
-  });
-
-  constructor(
-    public dialog: MatDialog,
-    public dialogRef: MatDialogRef<ExpensesDialog>,
-    @Inject(MAT_DIALOG_DATA) public expenses: Expenses,
-    private categoryService: CategoryService,
-    private peopleService: PeopleService,
-    private cd: ChangeDetectorRef
-  ) {}
-
-  ngOnInit(): void {
-    this.cards = this.expenses.cardsList;
-
-    this.expenses.parcelNumber = this.expenses.parcelNumber ?? 1;
-    this.expenses.parcels = this.expenses.parcels ?? 1;
-
-    this.disableGenerateParcelsCheck =
-      this.expenses.parcels == undefined ||
-      this.expenses.parcels == null ||
-      this.expenses.parcels === 1;
-
-    this.expenses.monthsToRepeat = 12;
-  }
-
-  ngAfterViewInit(): void {
-    this.cd.detectChanges();
-  }
-
-  cancel(): void {
-    this.dialogRef.close();
-  }
-
-  save(): void {
-    this.dialogRef.close(this.expenses);
-  }
-
-  delete(): void {
-    this.expenses.deleting = true;
-
-    this.dialogRef.close(this.expenses);
-  }
-
-  setCard(): void {
-    this.expenses.card = this.expenses.cardsList?.find(
-      (t) => t.id == this.expenses.cardId
-    );
-  }
-
-  calculateRemaining(): void {
-    this.expenses.paid =
-      (this.expenses.paid ?? 0) > this.expenses.toPay
-        ? this.expenses.toPay
-        : this.expenses.paid;
-    this.expenses.remaining = +(
-      this.expenses.toPay - (this.expenses.paid ?? 0)
-    ).toFixed(2);
-  }
-
-  onParcelNumberChanged(event: any): void {}
-
-  calculateToPay(): void {
-    this.expenses.toPay = +(
-      this.expenses.totalToPay / this.expenses.parcels!
-    ).toFixed(2);
-
-    this.calculateRemaining();
-  }
-
-  onParcelsChanged(event: any): void {
-    this.disableGenerateParcelsCheck =
-      event.target.value == '' || this.expenses.parcels! <= 1;
-
-    if (this.disableGenerateParcelsCheck) {
-      this.expenses.generateParcels = false;
-    } else {
-      this.expenses.generateParcels = true;
-    }
-
-    if (event.target.value == '') {
-      this.expenses.parcels = 1;
-    }
-
-    this.calculateToPay();
-  }
-
-  onGenerateParcelsChanged(event: any): void {
-    if (this.expenses.generateParcels) {
-      this.disableRepeatParcelsCheck = true;
-      this.expensesFormGroup.get('monthsToRepeatFormControl')!.disable();
-    } else {
-      this.disableRepeatParcelsCheck = false;
-      this.expensesFormGroup.get('monthsToRepeatFormControl')!.enable();
-    }
-  }
-
-  onRepeatParcelsChanged(event: any): void {
-    if (this.expenses.repeatParcels) {
-      this.disableGenerateParcelsCheck = true;
-    } else {
-      if (this.expenses.parcels! > 1) {
-        this.disableGenerateParcelsCheck = false;
-      }
-    }
-  }
-
-  setTitle() {
-    return 'Despesa - ' + (this.expenses.editing ? 'Editar' : 'Incluir');
-  }
-
-  addCategory() {
-    this.editing = false;
-
-    const dialogRef = this.dialog.open(CategoryComponent, {
-      width: '400px',
-      data: {
-        editing: this.editing,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.categoryService.create(result).subscribe({
-          next: (category) => {
-            this.expenses.categoriesList = [
-              ...this.expenses.categoriesList!,
-              category,
-            ].sort((a, b) => a.name.localeCompare(b.name));
-            this.expenses.categoryId = category.id;
-          },
-        });
-      }
-    });
-  }
-
-  addPeople() {
-    this.editing = false;
-
-    const dialogRef = this.dialog.open(PeopleComponent, {
-      width: '400px',
-      data: {
-        editing: this.editing,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.peopleService.create(result).subscribe({
-          next: (people) => {
-            this.expenses.peopleList = [
-              ...this.expenses.peopleList!,
-              people,
-            ].sort((a, b) => a.id.localeCompare(b.id));
-            this.expenses.peopleId = people.id;
-          },
-        });
-      }
-    });
-  }
-}
-
-@Component({
-  selector: 'incomes-dialog',
-  templateUrl: 'incomes-dialog.html',
-})
-export class IncomesDialog implements OnInit, AfterViewInit {
-  cards?: Cards[];
-  accounts?: Accounts[];
-  types?: IncomesTypes[];
-
-  editing: boolean = false;
-
-  incomesFormGroup = new FormGroup({
-    descriptionFormControl: new FormControl('', Validators.required),
-    toReceiveFormControl: new FormControl('', Validators.required),
-    receivedFormControl: new FormControl(''),
-    remainingFormControl: new FormControl(''),
-    noteFormControl: new FormControl(''),
-    cardIdFormControl: new FormControl(''),
-    accountIdFormControl: new FormControl(''),
-    typeFormControl: new FormControl(''),
-    repeatIncomeFormControl: new FormControl(''),
-    monthsToRepeatFormControl: new FormControl(''),
-    peopleFormControl: new FormControl(''),
-  });
-
-  constructor(
-    public dialog: MatDialog,
-    public dialogRef: MatDialogRef<IncomesDialog>,
-    @Inject(MAT_DIALOG_DATA) public incomes: Incomes,
-    private peopleService: PeopleService,
-    private cd: ChangeDetectorRef
-  ) {}
-
-  ngOnInit(): void {
-    this.cards = this.incomes.cardsList;
-    this.accounts = this.incomes.accountsList;
-    this.types = this.incomes.typesList;
-
-    this.incomes.monthsToRepeat = 12;
-  }
-
-  ngAfterViewInit(): void {
-    this.cd.detectChanges();
-  }
-
-  cancel(): void {
-    this.dialogRef.close();
-  }
-
-  save(): void {
-    this.dialogRef.close(this.incomes);
-  }
-
-  delete(): void {
-    this.incomes.deleting = true;
-
-    this.dialogRef.close(this.incomes);
-  }
-
-  setCard(): void {
-    this.incomes.card = this.incomes.cardsList?.find(
-      (t) => t.id == this.incomes.cardId
-    );
-  }
-
-  calculateRemaining(): void {
-    this.incomes.received =
-      (this.incomes.received ?? 0) > this.incomes.toReceive
-        ? this.incomes.toReceive
-        : this.incomes.received;
-    this.incomes.remaining = +(
-      this.incomes.toReceive - (this.incomes.received ?? 0)
-    ).toFixed(2);
-  }
-
-  setTitle() {
-    return 'Receita - ' + (this.incomes.editing ? 'Editar' : 'Incluir');
-  }
-
-  addPeople() {
-    this.editing = false;
-
-    const dialogRef = this.dialog.open(PeopleComponent, {
-      width: '400px',
-      data: {
-        editing: this.editing,
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.peopleService.create(result).subscribe({
-          next: (people) => {
-            this.incomes.peopleList = [
-              ...this.incomes.peopleList!,
-              people,
-            ].sort((a, b) => a.id.localeCompare(b.id));
-            this.incomes.peopleId = people.id;
-          },
-        });
-      }
-    });
-  }
-}
-
-@Component({
-  selector: 'payment-receive-dialog',
-  templateUrl: 'payment-receive-dialog.html',
-})
-export class PaymentReceiveDialog implements OnInit, AfterViewInit {
-  @ViewChild('datepickerinput') datepickerinput!: DatepickerinputComponent;
-
-  accountsList?: Accounts[];
-
-  accountPostingFormGroup = new FormGroup({
-    descriptionFormControl: new FormControl('', Validators.required),
-    amountFormControl: new FormControl('', Validators.required),
-    accountFormControl: new FormControl('', Validators.required),
-    noteFormControl: new FormControl(''),
-    typeFormControl: new FormControl(''),
-  });
-
-  constructor(
-    public dialogRef: MatDialogRef<PaymentReceiveDialog>,
-    @Inject(MAT_DIALOG_DATA) public accountPosting: AccountsPostings,
-    private accountService: AccountService,
-    private cd: ChangeDetectorRef
-  ) {}
-
-  ngOnInit(): void {
-    //Teste
-    this.accountService.readNotDisabled().subscribe({
-      next: (accounts) => {
-        this.accountsList = accounts;
-
-        if (
-          this.accountPosting.type == 'P' &&
-          localStorage.getItem('accountIdPayExpense') != null
-        ) {
-          this.accountPosting.accountId = +localStorage.getItem(
-            'accountIdPayExpense'
-          )!;
-        } else if (
-          this.accountPosting.type == 'R' &&
-          localStorage.getItem('accountIdReceiveIncome') != null
-        ) {
-          this.accountPosting.accountId = +localStorage.getItem(
-            'accountIdReceiveIncome'
-          )!;
-        }
-      },
-    });
-  }
-
-  ngAfterViewInit(): void {
-    this.accountPosting.date = this.datepickerinput.date.value._d;
-    this.cd.detectChanges();
-  }
-
-  cancel(): void {
-    this.dialogRef.close();
-  }
-
-  currentDateChanged(date: Date) {
-    this.accountPosting.date = date;
-  }
-
-  save(): void {
-    this.dialogRef.close(this.accountPosting);
-  }
-
-  delete(): void {
-    this.accountPosting.deleting = true;
-
-    this.dialogRef.close(this.accountPosting);
-  }
-
-  onTypeChange(): void {
-    if (this.accountPosting.type === 'Y') {
-      this.accountPosting.description = 'Rendimento';
-    } else if (this.accountPosting.type === 'C') {
-      this.accountPosting.description = 'Troco';
-    } else {
-      if (
-        this.accountPosting.description === 'Rendimento' ||
-        this.accountPosting.description === 'Troco'
-      ) {
-        this.accountPosting.description = '';
-      }
-    }
-  }
-
-  setTitle() {
-    return this.accountPosting.description.replace('Pag.', 'Pagar');
   }
 }

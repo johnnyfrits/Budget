@@ -1,11 +1,10 @@
-@use '@angular/material'as mat;
-@use '../src/app/shared/datepicker/datepicker.component'as datepicker;
+@use "@angular/material" as mat;
+@use "../src/app/shared/datepicker/datepicker.component" as datepicker;
 
-@import '~@angular/material/theming';
+@import "~@angular/material/theming";
 @include mat.core();
 
 :root {
-
   --border-radius: 4px;
 
   .table-container {
@@ -86,20 +85,30 @@ $light-primary: mat.define-palette(mat.$indigo-palette, 900);
 $light-accent: mat.define-palette(mat.$pink-palette);
 //$light-warn: mat.define-palette(mat.$pink-palette);
 
-$light-theme: mat.define-light-theme((color: (primary: $light-primary,
+$light-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $light-primary,
       accent: $light-accent,
       //warn: $light-warn,
-    )));
+    ),
+  )
+);
 
 // Define a dark theme
 $dark-primary: mat.define-palette(mat.$grey-palette, 800);
 $dark-accent: mat.define-palette(mat.$pink-palette);
 $dark-warn: mat.define-palette(mat.$amber-palette);
 
-$dark-theme: mat.define-dark-theme((color: (primary: $dark-primary,
+$dark-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $dark-primary,
       accent: $dark-accent,
       warn: $dark-warn,
-    )));
+    ),
+  )
+);
 
 $sidenav-dark: map-get($dark-theme, primary);
 $sidenav-light: map-get($light-theme, primary);
@@ -112,7 +121,6 @@ $primary-light: map-get($light-theme, primary);
 // Apply the dark theme only when the `.dark-theme` CSS class is applied
 // to an ancestor element of the components (such as `body`).
 .dark-theme {
-
   @include mat.all-component-colors($dark-theme);
   @include datepicker.theme($dark-theme);
 
@@ -122,7 +130,7 @@ $primary-light: map-get($light-theme, primary);
   $underline-color-accent: mat-color($accent);
   $underline-color-warn: mat-color($warn);
 
-  --toolbar-color: #FFFFFF;
+  --toolbar-color: #ffffff;
   --white-color: white;
   --red-color: rgb(255, 144, 136);
   --red2-color: rgb(255, 200, 200);
@@ -131,7 +139,7 @@ $primary-light: map-get($light-theme, primary);
   --blue2-color: rgb(208, 215, 255);
   --blue3-color: rgb(63, 81, 181);
   --pink-color: rgb(255, 203, 221);
-  --month-name-color: #FFFFFF;
+  --month-name-color: #ffffff;
   --summary-background-color: #424242;
   --expansion-panel-header: var(--white-color);
   --accent: rgb(233, 30, 99);
@@ -191,7 +199,7 @@ $primary-light: map-get($light-theme, primary);
   }
 
   .mat-toolbar a {
-    color: var(--toolbar-color)
+    color: var(--toolbar-color);
   }
 
   .mat-nav-list {
@@ -324,7 +332,9 @@ $primary-light: map-get($light-theme, primary);
     }
   }
 
-  .mat-form-field-type-mat-native-select.mat-focused:not(.mat-form-field-invalid) {
+  .mat-form-field-type-mat-native-select.mat-focused:not(
+      .mat-form-field-invalid
+    ) {
     .mat-form-field-infix::after {
       color: var(--white-color);
     }
@@ -353,15 +363,15 @@ $primary-light: map-get($light-theme, primary);
   input[type="number"] {
     text-align: right;
     background-color: #555555;
-    color: #FFFFFF;
+    color: #ffffff;
   }
 
   .mat-form-field.mat-focused.mat-primary .mat-select-arrow {
-    color: #FFFFFF;
+    color: #ffffff;
   }
 
   .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
-    color: #FFFFFF;
+    color: #ffffff;
   }
 
   .without-category {
@@ -400,13 +410,23 @@ $primary-light: map-get($light-theme, primary);
       color: #393939 !important;
     }
   }
+
+  .valor-total-button {
+    border: 1px solid #3a3a3a;
+    background-color: #3a3a3a;
+    transition: background-color 0.3s, border-color 0.3s; /* Transição suave para hover */
+  }
+
+  .valor-total-button:hover {
+    background-color: #757575; /* Um tom mais claro para o hover */
+  }
 }
 
 .light-theme {
   @include mat.all-component-colors($light-theme);
   // @include nav.theme($light-theme);
 
-  --toolbar-color: #FFFFFF;
+  --toolbar-color: #ffffff;
   --black-color: black;
   --red-color: red;
   --green-color: green;
@@ -439,7 +459,7 @@ $primary-light: map-get($light-theme, primary);
   }
 
   .mat-toolbar a {
-    color: var(--toolbar-color)
+    color: var(--toolbar-color);
   }
 
   .mat-nav-list {
@@ -505,11 +525,11 @@ $primary-light: map-get($light-theme, primary);
   }
 
   tr.summary:nth-child(even) {
-    background: var(--nth-child-even-color)
+    background: var(--nth-child-even-color);
   }
 
   tr.summary:nth-child(odd) {
-    background: var(--nth-child-odd-color)
+    background: var(--nth-child-odd-color);
   }
 
   .saldos {
@@ -560,7 +580,7 @@ $primary-light: map-get($light-theme, primary);
   }
 
   tr.expenses:nth-child(odd) {
-    background: rgb(251, 221, 205)
+    background: rgb(251, 221, 205);
   }
 
   .mat-header-cell-incomes {
@@ -587,7 +607,6 @@ $primary-light: map-get($light-theme, primary);
 
   .accent {
     color: #ff4081;
-    ;
   }
 
   .warn {
@@ -597,8 +616,17 @@ $primary-light: map-get($light-theme, primary);
   .card-yield-checked {
     background-color: yellow !important;
   }
-}
 
+  .valor-total-button {
+    border: 1px solid #a6a6a6;
+    background-color: #a6a6a6;
+    transition: background-color 0.3s, border-color 0.3s; /* Transição suave para hover */
+  }
+
+  .valor-total-button:hover {
+    background-color: #e0e0e0; /* Um tom mais claro para o hover */
+  }
+}
 
 html,
 body {
@@ -627,11 +655,11 @@ tr.mat-row {
 }
 
 tr:nth-child(even) {
-  background: #e0e0e0
+  background: #e0e0e0;
 }
 
 tr:nth-child(odd) {
-  background: #f2f2f2
+  background: #f2f2f2;
 }
 
 tr.mat-footer-row {
@@ -684,8 +712,8 @@ input.right-align {
   display: flex;
   flex-wrap: wrap;
   margin-top: calc(-1 * var(--bs-gutter-y));
-  margin-right: calc(-.5 * var(--bs-gutter-x));
-  margin-left: calc(-.5 * var(--bs-gutter-x));
+  margin-right: calc(-0.5 * var(--bs-gutter-x));
+  margin-left: calc(-0.5 * var(--bs-gutter-x));
 }
 
 .mytable2 {
@@ -732,8 +760,7 @@ input[type="number"] {
   box-sizing: border-box;
   border-radius: 4px;
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-    0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+    0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
 .cdk-drag-placeholder {

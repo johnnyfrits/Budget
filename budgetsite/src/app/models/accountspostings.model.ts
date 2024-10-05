@@ -11,6 +11,7 @@ export interface AccountsPostings {
   position?: number;
   description: string;
   amount: number;
+  remaining: number;
   runningAmount: number;
   note?: string;
   type?: string;

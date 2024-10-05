@@ -1,82 +1,167 @@
 <div class="">
   <form [formGroup]="cardReceiptsFormGroup">
-
     <div class="cancel">
-      <button class="default-button" mat-mini-fab matTooltip="Cancelar" color="accent" aria-label="Cancelar"
-        (click)="cancel()">
+      <button
+        class="default-button"
+        mat-mini-fab
+        matTooltip="Cancelar"
+        color="accent"
+        aria-label="Cancelar"
+        (click)="cancel()"
+      >
         <mat-icon class="default-icon">close</mat-icon>
       </button>
     </div>
 
     <h2 mat-dialog-title>{{setTitle()}}</h2>
     <div mat-dialog-content>
-
       <div class="row">
         <div class="col">
-          <app-datepickerinput #datepickerinput [currentDate]="cardReceipts.date"
-            (currentDateChanged)="currentDateChanged($event)">
+          <app-datepickerinput
+            #datepickerinput
+            [currentDate]="cardReceipts.date"
+            (currentDateChanged)="currentDateChanged($event)"
+          >
           </app-datepickerinput>
         </div>
       </div>
 
       <div class="row center">
-
         <div class="col-6">
-          <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
+          <mat-form-field
+            appearance="fill"
+            floatLabel="always"
+            style="width: 100% !important"
+          >
             <mat-label>A Receber</mat-label>
-            <input matInput inputmode="numeric" currencyMask formControlName="toReceiveFormControl" readonly
-              [(ngModel)]="cardReceipts.toReceive" placeholder="0" autocomplete="off">
+            <input
+              matInput
+              inputmode="numeric"
+              currencyMask
+              formControlName="toReceiveFormControl"
+              readonly
+              [(ngModel)]="cardReceipts.toReceive"
+              placeholder="0"
+              autocomplete="off"
+            />
           </mat-form-field>
         </div>
 
         <div class="col-6">
-          <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
+          <mat-form-field
+            appearance="fill"
+            floatLabel="always"
+            style="width: 100% !important"
+          >
             <mat-label>Recebido</mat-label>
-            <input matInput inputmode="numeric" currencyMask formControlName="receivedFormControl" readonly
-              [(ngModel)]="cardReceipts.received" placeholder="0" autocomplete="off">
+            <input
+              matInput
+              inputmode="numeric"
+              currencyMask
+              formControlName="receivedFormControl"
+              readonly
+              [(ngModel)]="cardReceipts.received"
+              placeholder="0"
+              autocomplete="off"
+            />
           </mat-form-field>
         </div>
 
         <div class="col-6">
-          <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
+          <mat-form-field
+            appearance="fill"
+            floatLabel="always"
+            style="width: 100% !important"
+          >
             <mat-label>Restante</mat-label>
-            <input matInput inputmode="numeric" currencyMask formControlName="remainingFormControl" readonly
-              [(ngModel)]="cardReceipts.remaining" placeholder="0" autocomplete="off">
+            <input
+              matInput
+              inputmode="numeric"
+              currencyMask
+              formControlName="remainingFormControl"
+              readonly
+              [(ngModel)]="cardReceipts.remaining"
+              placeholder="0"
+              autocomplete="off"
+            />
           </mat-form-field>
         </div>
       </div>
 
       <div class="row">
-
         <div class="col-6">
-          <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
+          <mat-form-field
+            appearance="fill"
+            floatLabel="always"
+            style="width: 100% !important"
+          >
             <mat-label>Recebendo</mat-label>
-            <input matInput inputmode="numeric" currencyMask formControlName="amountFormControl"
-              [(ngModel)]="cardReceipts.amount" placeholder="0" (change)="onAmountChange()" autocomplete="off">
-            <mat-error *ngIf="cardReceiptsFormGroup.get('amountFormControl')?.hasError('required')">
+            <input
+              matInput
+              id="amount"
+              inputmode="numeric"
+              currencyMask
+              formControlName="amountFormControl"
+              [(ngModel)]="cardReceipts.amount"
+              placeholder="0"
+              (change)="onAmountChange()"
+              autocomplete="off"
+            />
+            <mat-error
+              *ngIf="cardReceiptsFormGroup.get('amountFormControl')?.hasError('required')"
+            >
               Campo <strong>obrigatório</strong>.
             </mat-error>
           </mat-form-field>
         </div>
-
-        <div class="col-6">
-          <mat-form-field appearance="fill" floatLabel="always" style="width:100% !important">
-            <mat-label>Troco</mat-label>
-            <input matInput inputmode="numeric" currencyMask formControlName="changeFormControl"
-              [(ngModel)]="cardReceipts.change" placeholder="0" autocomplete="off">
-          </mat-form-field>
+        <div class="col btn-valor-total">
+          <button
+            mat-flat-button
+            class="valor-total-button"
+            aria-label="Valor Total"
+            (click)="setTotalAmount()"
+          >
+            <span class="material-icons">done_all</span>
+            Valor Total
+          </button>
         </div>
 
+        <!-- <div class="col-6">
+          <mat-form-field
+            appearance="fill"
+            floatLabel="always"
+            style="width: 100% !important"
+          >
+            <mat-label>Troco</mat-label>
+            <input
+              matInput
+              inputmode="numeric"
+              currencyMask
+              formControlName="changeFormControl"
+              [(ngModel)]="cardReceipts.change"
+              placeholder="0"
+              autocomplete="off"
+            />
+          </mat-form-field>
+        </div> -->
       </div>
 
       <div class="row">
         <mat-form-field appearance="fill" floatLabel="always">
           <mat-label>Conta</mat-label>
-          <mat-select mat-input [(ngModel)]="cardReceipts.accountId" formControlName="accountFormControl">
+          <mat-select
+            mat-input
+            [(ngModel)]="cardReceipts.accountId"
+            formControlName="accountFormControl"
+          >
             <mat-option>-- Nenhuma --</mat-option>
-            <mat-option *ngFor="let account of accounts" [value]="account.id">{{ account.name }}</mat-option>
+            <mat-option *ngFor="let account of accounts" [value]="account.id"
+              >{{ account.name }}</mat-option
+            >
           </mat-select>
-          <mat-error *ngIf="cardReceiptsFormGroup.get('accountFormControl')?.hasError('required')">
+          <mat-error
+            *ngIf="cardReceiptsFormGroup.get('accountFormControl')?.hasError('required')"
+          >
             Campo <strong>obrigatório</strong>.
           </mat-error>
         </mat-form-field>
@@ -85,7 +170,11 @@
       <div class="row">
         <mat-form-field appearance="fill">
           <mat-label>Comentário</mat-label>
-          <textarea matInput [(ngModel)]="cardReceipts.note" formControlName="noteFormControl"></textarea>
+          <textarea
+            matInput
+            [(ngModel)]="cardReceipts.note"
+            formControlName="noteFormControl"
+          ></textarea>
         </mat-form-field>
       </div>
     </div>
@@ -93,14 +182,21 @@
     <div class="row">
       <div class="col">
         <div mat-dialog-actions>
-          <button [disabled]="!cardReceiptsFormGroup.valid" class="default-button" mat-mini-fab matTooltip="Salvar"
-            matTooltipPosition="right" class="bg-primary" aria-label="Salvar" [mat-dialog-close]="cardReceipts"
-            (click)="save()">
+          <button
+            [disabled]="!cardReceiptsFormGroup.valid"
+            class="default-button"
+            mat-mini-fab
+            matTooltip="Salvar"
+            matTooltipPosition="right"
+            class="bg-primary"
+            aria-label="Salvar"
+            [mat-dialog-close]="cardReceipts"
+            (click)="save()"
+          >
             <mat-icon class="default-icon">save</mat-icon>
           </button>
         </div>
       </div>
-
     </div>
   </form>
 </div>
