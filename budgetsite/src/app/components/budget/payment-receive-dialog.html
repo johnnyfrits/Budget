@@ -73,13 +73,15 @@
         </div>
         <div class="col btn-valor-total">
           <button
-            mat-flat-button
-            class="valor-total-button"
+            class="default-button"
+            mat-mini-fab
+            matTooltip="Valor Total"
+            matTooltipPosition="right"
+            color="warn"
             aria-label="Valor Total"
             (click)="setTotalAmount()"
           >
-            <span class="material-icons">done_all</span>
-            Valor Total
+            <mat-icon class="default-icon">done_all</mat-icon>
           </button>
         </div>
       </div>
