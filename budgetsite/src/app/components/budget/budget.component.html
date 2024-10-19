@@ -3,55 +3,108 @@
     <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false">
       <mat-expansion-panel-header>
         <span class="material-icons center"> calendar_month </span>
-        <span class="center">{{referenceHead}}</span>
-        <div class="center month-name2"><b>{{monthName}}</b></div>
+        <span class="center">{{ referenceHead }}</span>
+        <div class="center month-name2">
+          <b>{{ monthName }}</b>
+        </div>
       </mat-expansion-panel-header>
-      <app-datepicker [showMonthName]="false" (referenceChange)="referenceChanges($event)"
-        (monthChange)="monthName=$event" [budgetId]=1>
+      <app-datepicker
+        [showMonthName]="false"
+        (referenceChange)="referenceChanges($event)"
+        (monthChange)="monthName = $event"
+        [budgetId]="1"
+      >
       </app-datepicker>
       <div class="row" style="margin-top: 10px">
-        <mat-checkbox [(ngModel)]="justMyValues" (ngModelChange)="onCheckboxJustMyValuesChange()">Apenas meus valores</mat-checkbox>
+        <mat-checkbox
+          [(ngModel)]="justMyValues"
+          (ngModelChange)="onCheckboxJustMyValuesChange()"
+          >Apenas meus valores</mat-checkbox
+        >
       </div>
       <div class="row" style="margin-top: 10px">
-        <mat-checkbox [(ngModel)]="justToPay" (ngModelChange)="onCheckboxJustToPayChange()">Apenas despesas a pagar</mat-checkbox>
+        <mat-checkbox
+          [(ngModel)]="justToPay"
+          (ngModelChange)="onCheckboxJustToPayChange()"
+          >Apenas despesas a pagar</mat-checkbox
+        >
       </div>
       <div class="row" style="margin-top: 10px">
-        <mat-checkbox [(ngModel)]="justToReceive" (ngModelChange)="onCheckboxJustToReceiveChange()">Apenas receitas a receber</mat-checkbox>
+        <mat-checkbox
+          [(ngModel)]="justToReceive"
+          (ngModelChange)="onCheckboxJustToReceiveChange()"
+          >Apenas receitas a receber</mat-checkbox
+        >
       </div>
     </mat-expansion-panel>
   </mat-accordion>
   <!-- SPINNER -->
   <div class="row center" style="margin-top: 10px">
     <div class="row justify-content-center">
-      <mat-spinner color="accent"
-        *ngIf="!hideExpensesProgress || !hideIncomesProgress || !hidePeopleProgress || !hideCategoriesProgress">
+      <mat-spinner
+        color="accent"
+        *ngIf="
+          !hideExpensesProgress ||
+          !hideIncomesProgress ||
+          !hidePeopleProgress ||
+          !hideCategoriesProgress
+        "
+      >
       </mat-spinner>
     </div>
   </div>
-  <div class="row center"
-    *ngIf="hideExpensesProgress && hideIncomesProgress && hidePeopleProgress && hideCategoriesProgress">
+  <div
+    class="row center"
+    *ngIf="
+      hideExpensesProgress &&
+      hideIncomesProgress &&
+      hidePeopleProgress &&
+      hideCategoriesProgress
+    "
+  >
     <div class="col"></div>
     <div class="col">
       <div class="row justify-content-center text-center">
         <span>Saldo Previsto:</span>
-        <span [ngClass]="expectedBalance < 0 ? 'negative' : 'positive'"><b>{{expectedBalance | currency : '':''}}</b>
+        <span [ngClass]="expectedBalance < 0 ? 'negative' : 'positive'"
+          ><b>{{ expectedBalance | currency : "" : "" }}</b>
         </span>
       </div>
     </div>
     <div class="col refresh">
-      <button class="default-button" mat-mini-fab matTooltip="atualizar" matTooltipPosition="left" color="warn"
-        aria-label="Atualizar" (click)="refresh()">
+      <button
+        class="default-button"
+        mat-mini-fab
+        matTooltip="atualizar"
+        matTooltipPosition="left"
+        color="warn"
+        aria-label="Atualizar"
+        (click)="refresh()"
+      >
         <mat-icon class="default-icon">autorenew</mat-icon>
       </button>
     </div>
-
   </div>
 
   <!-- BUDGET TOTALS -->
-  <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false"
-    *ngIf="hideExpensesProgress || hideIncomesProgress || hidePeopleProgress || hideCategoriesProgress">
-    <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false" [(expanded)]="budgetPanelExpanded"
-      (closed)="budgetPanelClosed()" (opened)="budgetPanelOpened()">
+  <mat-accordion
+    displayMode="default"
+    [multi]="true"
+    [hideToggle]="false"
+    *ngIf="
+      hideExpensesProgress ||
+      hideIncomesProgress ||
+      hidePeopleProgress ||
+      hideCategoriesProgress
+    "
+  >
+    <mat-expansion-panel
+      class="mat-panel-budget"
+      [hideToggle]="false"
+      [(expanded)]="budgetPanelExpanded"
+      (closed)="budgetPanelClosed()"
+      (opened)="budgetPanelOpened()"
+    >
       <mat-expansion-panel-header class="primary">
         <span class="material-icons center primary">numbers</span>
         <span class="center primary">Totais</span>
@@ -60,114 +113,216 @@
       <div class="center">
         <div class="row center">
           <span class="center">Minhas Despesas:</span>
-          <span class="center"><b>{{budgetTotals?.myExpenses | currency : '':''}}&nbsp;
-            </b>({{budgetTotals?.myExpensesPerc}}%)</span>
+          <span class="center"
+            ><b>{{ budgetTotals?.myExpenses | currency : "" : "" }}&nbsp; </b
+            >({{ budgetTotals?.myExpensesPerc }}%)</span
+          >
         </div>
 
         <div class="row center">
           <span class="center">Despesas Terceiros:</span>
-          <span class="center"><b>{{budgetTotals?.othersExpenses | currency : '':''}}&nbsp;
-            </b>({{budgetTotals?.othersExpensesPerc}}%)</span>
+          <span class="center"
+            ><b
+              >{{ budgetTotals?.othersExpenses | currency : "" : "" }}&nbsp; </b
+            >({{ budgetTotals?.othersExpensesPerc }}%)</span
+          >
         </div>
       </div>
       <p></p>
       <div class="center">
         <div class="row center">
           <span class="center">Minhas Receitas:</span>
-          <span class="center"><b>{{budgetTotals?.myIncomes | currency : '':''}}&nbsp;
-            </b>({{budgetTotals?.myIncomesPerc}}%)</span>
+          <span class="center"
+            ><b>{{ budgetTotals?.myIncomes | currency : "" : "" }}&nbsp; </b>({{
+              budgetTotals?.myIncomesPerc
+            }}%)</span
+          >
         </div>
 
         <div class="row center">
           <span class="center">Receitas Terceiros:</span>
-          <span class="center"><b>{{budgetTotals?.othersIncomes | currency : '':''}}&nbsp;
-            </b>({{budgetTotals?.othersIncomesPerc}}%)</span>
+          <span class="center"
+            ><b>{{ budgetTotals?.othersIncomes | currency : "" : "" }}&nbsp; </b
+            >({{ budgetTotals?.othersIncomesPerc }}%)</span
+          >
         </div>
       </div>
-
     </mat-expansion-panel>
   </mat-accordion>
 
   <!-- EXPENSES -->
-  <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false"
-    *ngIf="hideExpensesProgress || hideIncomesProgress || hidePeopleProgress || hideCategoriesProgress">
-    <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false" [(expanded)]="expensesPanelExpanded"
-      (closed)="expensesPanelClosed()" (opened)="expensesPanelOpened()">
+  <mat-accordion
+    displayMode="default"
+    [multi]="true"
+    [hideToggle]="false"
+    *ngIf="
+      hideExpensesProgress ||
+      hideIncomesProgress ||
+      hidePeopleProgress ||
+      hideCategoriesProgress
+    "
+  >
+    <mat-expansion-panel
+      class="mat-panel-budget"
+      [hideToggle]="false"
+      [(expanded)]="expensesPanelExpanded"
+      (closed)="expensesPanelClosed()"
+      (opened)="expensesPanelOpened()"
+    >
       <mat-expansion-panel-header class="accent">
         <span class="material-icons center accent">money_off</span>
         <span class="center accent">Despesas</span>
       </mat-expansion-panel-header>
       <div class="row center">
         <div class="row center">
-          <button class="default-button" color="accent" mat-mini-fab matTooltip="Adicionar despesa"
-            matTooltipPosition="above" aria-label="Adicionar despesa" (click)="addExpense()">
+          <button
+            class="default-button"
+            color="accent"
+            mat-mini-fab
+            matTooltip="Adicionar despesa"
+            matTooltipPosition="above"
+            aria-label="Adicionar despesa"
+            (click)="addExpense()"
+          >
             <mat-icon class="default-icon">post_add</mat-icon>
           </button>
         </div>
         <div class="table-container mat-elevation-z8 mytable2">
-          <table mat-table [dataSource]="expenses" cdkDropList [cdkDropListData]="expenses"
-            (cdkDropListDropped)="dropExpenses($event)">
-
+          <table
+            mat-table
+            [dataSource]="expenses"
+            cdkDropList
+            [cdkDropListData]="expenses"
+            (cdkDropListDropped)="dropExpenses($event)"
+          >
             <!-- Descrição Column -->
             <ng-container matColumnDef="description">
               <th mat-header-cell *matHeaderCellDef>Descrição</th>
-              <td mat-cell *matCellDef="let row"
-                [ngClass]="{'without-category': row.cardId == null && row.categoryId == null}">
-                <div style="display: flex;">
-                  {{row.description}}<span *ngIf="row.parcels > 1">&nbsp;({{row.parcelNumber}}/{{row.parcels}}) </span>
-                  <span *ngIf="row.scheduled" class="material-icons scheduled">schedule</span>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                [ngClass]="{
+                  'without-category':
+                    row.cardId == null && row.categoryId == null
+                }"
+              >
+                <div style="display: flex">
+                  {{ row.description
+                  }}<span *ngIf="row.parcels > 1"
+                    >&nbsp;({{ row.parcelNumber }}/{{ row.parcels }})
+                  </span>
+                  <span *ngIf="row.scheduled" class="material-icons scheduled"
+                    >schedule</span
+                  >
                 </div>
                 <div class="small-text" *ngIf="row.dueDate !== null">
-                  <span><i class="red">Venc.:&nbsp;{{row.dueDate | date: 'dd/MM'}}</i></span>
+                  <span
+                    ><i class="red"
+                      >Venc.:&nbsp;{{ row.dueDate | date : "dd/MM" }}</i
+                    ></span
+                  >
                 </div>
               </td>
-              <td mat-footer-cell *matFooterCellDef> Total </td>
+              <td mat-footer-cell *matFooterCellDef>Total</td>
             </ng-container>
 
             <!-- A Pagar Column -->
             <ng-container matColumnDef="toPay">
               <th mat-header-cell *matHeaderCellDef>A Pagar</th>
-              <td mat-cell *matCellDef="let row"
-                [ngClass]="{'without-category': row.cardId == null && row.categoryId == null}">
-                {{row.toPay | currency : '':''}}</td>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                [ngClass]="{
+                  'without-category':
+                    row.cardId == null && row.categoryId == null
+                }"
+              >
+                {{ row.toPay | currency : "" : "" }}
+              </td>
               <td mat-footer-cell *matFooterCellDef>
-                {{toPayTotal | currency : '':''}}</td>
+                {{ toPayTotal | currency : "" : "" }}
+              </td>
             </ng-container>
 
             <!-- Pago Column -->
             <ng-container matColumnDef="paid">
               <th mat-header-cell *matHeaderCellDef>Pago</th>
-              <td mat-cell *matCellDef="let row"
-                [ngClass]="{'negative': true, 'without-category': row.cardId == null && row.categoryId == null}">
-                {{row.paid | currency : '':''}}</td>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                [ngClass]="{
+                  negative: true,
+                  'without-category':
+                    row.cardId == null && row.categoryId == null
+                }"
+              >
+                {{ row.paid | currency : "" : "" }}
+              </td>
               <td mat-footer-cell *matFooterCellDef [ngClass]="'negative'">
-                {{paidTotal | currency : '':''}}</td>
+                {{ paidTotal | currency : "" : "" }}
+              </td>
             </ng-container>
 
             <!-- Restante Column -->
             <ng-container matColumnDef="remaining">
               <th mat-header-cell *matHeaderCellDef>Restante</th>
-              <td mat-cell *matCellDef="let row"
-                [ngClass]="{'negative': true, 'without-category': row.cardId == null && row.categoryId == null}">
-                {{row.remaining | currency : '':''}}</td>
+              <td
+                mat-cell
+                *matCellDef="let row"
+                [ngClass]="{
+                  negative: true,
+                  'without-category':
+                    row.cardId == null && row.categoryId == null
+                }"
+              >
+                {{ row.remaining | currency : "" : "" }}
+              </td>
               <td mat-footer-cell *matFooterCellDef [ngClass]="'negative'">
-                {{expensesRemainingTotal | currency : '':''}}</td>
+                {{ expensesRemainingTotal | currency : "" : "" }}
+              </td>
             </ng-container>
 
             <!-- Ações Column -->
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let row">
-                <button mat-icon-button class="icon-actions" [matMenuTriggerFor]="menu">
+                <button
+                  mat-icon-button
+                  class="icon-actions"
+                  [matMenuTriggerFor]="menu"
+                >
                   <mat-icon class="expenses-actions">more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item [id]="row.remaining > 0 ? 'menu-expenses' : ''" (click)="pay(row)"
-                    [disabled]="row.remaining <= 0">
-                    <mat-icon [id]="row.remaining > 0 ? 'menu-icon-expenses': ''">price_check</mat-icon>
+                  <button
+                    mat-menu-item
+                    [id]="row.remaining > 0 ? 'menu-expenses' : ''"
+                    (click)="pay(row)"
+                    [disabled]="row.remaining <= 0"
+                  >
+                    <mat-icon
+                      [id]="row.remaining > 0 ? 'menu-icon-expenses' : ''"
+                      >price_check</mat-icon
+                    >
                     <span>Pagar</span>
                   </button>
-                  <button mat-menu-item id="menu-expenses2" (click)="addValue(row, 'P')">
+                  <button
+                    mat-menu-item
+                    [id]="row.remaining > 0 ? 'menu-expenses' : ''"
+                    (click)="payWithCard(row)"
+                    [disabled]="row.remaining <= 0"
+                  >
+                    <mat-icon
+                      [id]="row.remaining > 0 ? 'menu-icon-expenses' : ''"
+                      >credit_score</mat-icon
+                    >
+                    <span>Pagar com Cartão</span>
+                  </button>
+                  <button
+                    mat-menu-item
+                    id="menu-expenses2"
+                    (click)="addValue(row, 'P')"
+                  >
                     <mat-icon id="menu-icon-expenses2">add</mat-icon>
                     <span>Adicionar valor</span>
                   </button>
@@ -176,13 +331,25 @@
               <td mat-footer-cell *matFooterCellDef></td>
             </ng-container>
 
-            <tr class="expenses mat-header-cell-expenses" mat-header-row
-              *matHeaderRowDef="displayedExpensesColumns; sticky: false"></tr>
-            <tr class="expenses" (click)="editOrDeleteExpense(row, $event)" mat-row
-              *matRowDef="let row; columns: displayedExpensesColumns" cdkDrag [cdkDragData]=row
-              [ngClass]="{'card-yield-checked': row.overdue || row.duetoday}">
-            </tr>
-            <tr class="expenses" mat-footer-row *matFooterRowDef="displayedExpensesColumns; sticky: false"></tr>
+            <tr
+              class="expenses mat-header-cell-expenses"
+              mat-header-row
+              *matHeaderRowDef="displayedExpensesColumns; sticky: false"
+            ></tr>
+            <tr
+              class="expenses"
+              (click)="editOrDeleteExpense(row, $event)"
+              mat-row
+              *matRowDef="let row; columns: displayedExpensesColumns"
+              cdkDrag
+              [cdkDragData]="row"
+              [ngClass]="{ 'card-yield-checked': row.overdue || row.duetoday }"
+            ></tr>
+            <tr
+              class="expenses"
+              mat-footer-row
+              *matFooterRowDef="displayedExpensesColumns; sticky: false"
+            ></tr>
           </table>
         </div>
       </div>
@@ -190,10 +357,24 @@
   </mat-accordion>
 
   <!-- INCOMES -->
-  <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false"
-    *ngIf="hideExpensesProgress || hideIncomesProgress || hidePeopleProgress || hideCategoriesProgress">
-    <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false" [(expanded)]="incomesPanelExpanded"
-      (closed)="incomesPanelClosed()" (opened)="incomesPanelOpened()">
+  <mat-accordion
+    displayMode="default"
+    [multi]="true"
+    [hideToggle]="false"
+    *ngIf="
+      hideExpensesProgress ||
+      hideIncomesProgress ||
+      hidePeopleProgress ||
+      hideCategoriesProgress
+    "
+  >
+    <mat-expansion-panel
+      class="mat-panel-budget"
+      [hideToggle]="false"
+      [(expanded)]="incomesPanelExpanded"
+      (closed)="incomesPanelClosed()"
+      (opened)="incomesPanelOpened()"
+    >
       <mat-expansion-panel-header>
         <span class="material-icons center primary">attach_money</span>
         <span class="center primary">Receitas</span>
@@ -201,63 +382,96 @@
 
       <div class="row center">
         <div class="row center">
-          <button class="default-button incomes-add" mat-mini-fab matTooltip="Adicionar receita"
-            matTooltipPosition="above" aria-label="Adicionar receita" (click)="addIncome()">
+          <button
+            class="default-button incomes-add"
+            mat-mini-fab
+            matTooltip="Adicionar receita"
+            matTooltipPosition="above"
+            aria-label="Adicionar receita"
+            (click)="addIncome()"
+          >
             <mat-icon class="default-icon">post_add</mat-icon>
           </button>
         </div>
         <div class="table-container mat-elevation-z8 mytable2">
-          <table mat-table [dataSource]="incomes" cdkDropList [cdkDropListData]="incomes"
-            (cdkDropListDropped)="dropIncomes($event)">
+          <table
+            mat-table
+            [dataSource]="incomes"
+            cdkDropList
+            [cdkDropListData]="incomes"
+            (cdkDropListDropped)="dropIncomes($event)"
+          >
             <!-- Descrição Column -->
             <ng-container matColumnDef="description">
               <th mat-header-cell *matHeaderCellDef>Descrição</th>
               <td mat-cell *matCellDef="let row">
-                {{row.description}}</td>
-              <td mat-footer-cell *matFooterCellDef> Total </td>
+                {{ row.description }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef>Total</td>
             </ng-container>
 
             <!-- A Receber Column -->
             <ng-container matColumnDef="toReceive">
               <th mat-header-cell *matHeaderCellDef>A Receber</th>
               <td mat-cell *matCellDef="let row">
-                {{row.toReceive | currency : '':''}}</td>
+                {{ row.toReceive | currency : "" : "" }}
+              </td>
               <td mat-footer-cell *matFooterCellDef>
-                {{toReceiveTotal | currency : '':''}}</td>
+                {{ toReceiveTotal | currency : "" : "" }}
+              </td>
             </ng-container>
 
             <!-- Recebido Column -->
             <ng-container matColumnDef="received">
               <th mat-header-cell *matHeaderCellDef>Recebido</th>
               <td mat-cell *matCellDef="let row" [ngClass]="'primary'">
-                {{row.received | currency : '':''}}</td>
+                {{ row.received | currency : "" : "" }}
+              </td>
               <td mat-footer-cell *matFooterCellDef [ngClass]="'primary'">
-                {{receivedTotal | currency : '':''}}</td>
+                {{ receivedTotal | currency : "" : "" }}
+              </td>
             </ng-container>
 
             <!-- Restante Column -->
             <ng-container matColumnDef="remaining">
               <th mat-header-cell *matHeaderCellDef>Restante</th>
               <td mat-cell *matCellDef="let row" [ngClass]="'primary'">
-                {{row.remaining | currency : '':''}}</td>
+                {{ row.remaining | currency : "" : "" }}
+              </td>
               <td mat-footer-cell *matFooterCellDef [ngClass]="'primary'">
-                {{incomesRemainingTotal | currency : '':''}}</td>
+                {{ incomesRemainingTotal | currency : "" : "" }}
+              </td>
             </ng-container>
 
             <!-- Ações Column -->
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let row">
-                <button mat-icon-button class="icon-actions" [matMenuTriggerFor]="menu">
+                <button
+                  mat-icon-button
+                  class="icon-actions"
+                  [matMenuTriggerFor]="menu"
+                >
                   <mat-icon class="incomes-actions">more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
-                  <button mat-menu-item [id]="row.remaining > 0 ? 'menu-incomes' : ''" (click)="receive(row)"
-                    [disabled]="row.remaining <= 0">
-                    <mat-icon [id]="row.remaining > 0 ? 'menu-icon-incomes' : ''">price_check</mat-icon>
+                  <button
+                    mat-menu-item
+                    [id]="row.remaining > 0 ? 'menu-incomes' : ''"
+                    (click)="receive(row)"
+                    [disabled]="row.remaining <= 0"
+                  >
+                    <mat-icon
+                      [id]="row.remaining > 0 ? 'menu-icon-incomes' : ''"
+                      >price_check</mat-icon
+                    >
                     <span>Receber</span>
                   </button>
-                  <button mat-menu-item id="menu-incomes2" (click)="addValue(row, 'R')">
+                  <button
+                    mat-menu-item
+                    id="menu-incomes2"
+                    (click)="addValue(row, 'R')"
+                  >
                     <mat-icon id="menu-icon-incomes2">add</mat-icon>
                     <span>Adicionar valor</span>
                   </button>
@@ -266,11 +480,25 @@
               <td mat-footer-cell *matFooterCellDef></td>
             </ng-container>
 
-            <tr class="incomes mat-header-cell-incomes" mat-header-row
-              *matHeaderRowDef="displayedIncomesColumns; sticky: false"></tr>
-            <tr class="incomes" (click)="editOrDeleteIncome(row, $event)" mat-row
-              *matRowDef="let row; columns: displayedIncomesColumns" cdkDrag cdkDragDelay="2000" [cdkDragData]=row></tr>
-            <tr class="incomes" mat-footer-row *matFooterRowDef="displayedIncomesColumns; sticky: false"></tr>
+            <tr
+              class="incomes mat-header-cell-incomes"
+              mat-header-row
+              *matHeaderRowDef="displayedIncomesColumns; sticky: false"
+            ></tr>
+            <tr
+              class="incomes"
+              (click)="editOrDeleteIncome(row, $event)"
+              mat-row
+              *matRowDef="let row; columns: displayedIncomesColumns"
+              cdkDrag
+              cdkDragDelay="2000"
+              [cdkDragData]="row"
+            ></tr>
+            <tr
+              class="incomes"
+              mat-footer-row
+              *matFooterRowDef="displayedIncomesColumns; sticky: false"
+            ></tr>
           </table>
         </div>
       </div>
@@ -278,10 +506,24 @@
   </mat-accordion>
 
   <!-- PEOPLE -->
-  <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false"
-    *ngIf="hideExpensesProgress || hideIncomesProgress || hidePeopleProgress || hideCategoriesProgress">
-    <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false" [(expanded)]="peoplePanelExpanded"
-      (closed)="peoplePanelClosed()" (opened)="peoplePanelOpened()">
+  <mat-accordion
+    displayMode="default"
+    [multi]="true"
+    [hideToggle]="false"
+    *ngIf="
+      hideExpensesProgress ||
+      hideIncomesProgress ||
+      hidePeopleProgress ||
+      hideCategoriesProgress
+    "
+  >
+    <mat-expansion-panel
+      class="mat-panel-budget"
+      [hideToggle]="false"
+      [(expanded)]="peoplePanelExpanded"
+      (closed)="peoplePanelClosed()"
+      (opened)="peoplePanelOpened()"
+    >
       <mat-expansion-panel-header>
         <span class="material-icons center accent">people</span>
         <span class="center accent">Pessoas</span>
@@ -289,45 +531,105 @@
 
       <div class="row center">
         <div class="table-container mat-elevation-z8 mytable2">
-          <table mat-table #sortPeople="matSort" [dataSource]="dataSourcePeople" multiTemplateDataRows matSort
-            matSortActive="person" matSortDirection="asc" (matSortChange)="announceSortChange($event)">
+          <table
+            mat-table
+            #sortPeople="matSort"
+            [dataSource]="dataSourcePeople"
+            multiTemplateDataRows
+            matSort
+            matSortActive="person"
+            matSortDirection="asc"
+            (matSortChange)="announceSortChange($event)"
+          >
             <!-- Descrição Column -->
             <ng-container matColumnDef="person">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="after" start="asc"
-                sortActionDescription="Ordernar por Pessoa" style="width: 150px">Pessoa</th>
-              <td mat-cell *matCellDef="let row">{{row.person}}</td>
-              <td mat-footer-cell *matFooterCellDef> Total</td>
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                arrowPosition="after"
+                start="asc"
+                sortActionDescription="Ordernar por Pessoa"
+                style="width: 150px"
+              >
+                Pessoa
+              </th>
+              <td mat-cell *matCellDef="let row">{{ row.person }}</td>
+              <td mat-footer-cell *matFooterCellDef>Total</td>
             </ng-container>
 
             <!-- A Receber Column -->
             <ng-container matColumnDef="toReceive">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" start="desc"
-                sortActionDescription="Ordernar por A Receber" style="width: 100px">A Receber</th>
-              <td mat-cell *matCellDef="let row">{{row.toReceive | currency : '':''}}</td>
-              <td mat-footer-cell *matFooterCellDef>{{toReceiveTotalPeople | currency : '':''}}</td>
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                arrowPosition="before"
+                start="desc"
+                sortActionDescription="Ordernar por A Receber"
+                style="width: 100px"
+              >
+                A Receber
+              </th>
+              <td mat-cell *matCellDef="let row">
+                {{ row.toReceive | currency : "" : "" }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef>
+                {{ toReceiveTotalPeople | currency : "" : "" }}
+              </td>
             </ng-container>
 
             <!-- Recebido Column -->
             <ng-container matColumnDef="received">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" start="desc"
-                sortActionDescription="Ordernar por Recebido" style="width: 100px">Recebido</th>
-              <td mat-cell *matCellDef="let row">{{row.received | currency : '':''}}</td>
-              <td mat-footer-cell *matFooterCellDef>{{receivedTotalPeople | currency : '':''}}</td>
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                arrowPosition="before"
+                start="desc"
+                sortActionDescription="Ordernar por Recebido"
+                style="width: 100px"
+              >
+                Recebido
+              </th>
+              <td mat-cell *matCellDef="let row">
+                {{ row.received | currency : "" : "" }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef>
+                {{ receivedTotalPeople | currency : "" : "" }}
+              </td>
             </ng-container>
 
             <!-- Restante Column -->
             <ng-container matColumnDef="remaining">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" start="desc"
-                sortActionDescription="Ordernar por Restante" style="width: 100px">Restante</th>
-              <td mat-cell *matCellDef="let row">{{row.remaining | currency : '':''}}</td>
-              <td mat-footer-cell *matFooterCellDef>{{remainingTotalPeople | currency : '':''}}</td>
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                arrowPosition="before"
+                start="desc"
+                sortActionDescription="Ordernar por Restante"
+                style="width: 100px"
+              >
+                Restante
+              </th>
+              <td mat-cell *matCellDef="let row">
+                {{ row.remaining | currency : "" : "" }}
+              </td>
+              <td mat-footer-cell *matFooterCellDef>
+                {{ remainingTotalPeople | currency : "" : "" }}
+              </td>
             </ng-container>
 
             <!-- Ações Column -->
             <ng-container matColumnDef="actions">
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let row">
-                <button mat-icon-button class="icon-actions" [matMenuTriggerFor]="menu">
+                <button
+                  mat-icon-button
+                  class="icon-actions"
+                  [matMenuTriggerFor]="menu"
+                >
                   <mat-icon class="people-actions">more_vert</mat-icon>
                 </button>
                 <mat-menu #menu="matMenu">
@@ -335,7 +637,11 @@
                     <mat-icon id="menu-icon-people">whatsapp</mat-icon>
                     <span>Copiar lançamentos p/ WhatsApp</span>
                   </button>
-                  <button mat-menu-item id="menu-people" (click)="charge(row, true)">
+                  <button
+                    mat-menu-item
+                    id="menu-people"
+                    (click)="charge(row, true)"
+                  >
                     <mat-icon id="menu-icon-people">whatsapp</mat-icon>
                     <span>Copiar lançamentos p/ WhatsApp (sem taxa)</span>
                   </button>
@@ -345,89 +651,171 @@
             </ng-container>
 
             <ng-container matColumnDef="peopleExpandedDetail">
-              <td mat-cell *matCellDef="let row" [attr.colspan]="displayedPeopleColumns.length"
-                [ngClass]="{'td-expanded-detail': row.expanded}">
-
+              <td
+                mat-cell
+                *matCellDef="let row"
+                [attr.colspan]="displayedPeopleColumns.length"
+                [ngClass]="{ 'td-expanded-detail': row.expanded }"
+              >
                 <!-- SPINNER -->
-                <div [ngClass]="{'expanded-detail row justify-content-center': true}"
-                  [@detailExpand]="row.expanded ? 'expanded' : 'collapsed'">
-                  <mat-spinner color="accent" *ngIf="row.expanding" [diameter]="50" [strokeWidth]="8">
+                <div
+                  [ngClass]="{
+                    'expanded-detail row justify-content-center': true
+                  }"
+                  [@detailExpand]="row.expanded ? 'expanded' : 'collapsed'"
+                >
+                  <mat-spinner
+                    color="accent"
+                    *ngIf="row.expanding"
+                    [diameter]="50"
+                    [strokeWidth]="8"
+                  >
                   </mat-spinner>
                 </div>
 
                 <!-- CARDS-POSTINGS -->
-                <div *ngIf="row.cardsPostings?.length > 0"
-                  [ngClass]="{'expanded-detail': true, 'div-expanded-detail1': row.expanded}"
-                  [@detailExpand]="row.expanded ? 'expanded' : 'collapsed'">
+                <div
+                  *ngIf="row.cardsPostings?.length > 0"
+                  [ngClass]="{
+                    'expanded-detail': true,
+                    'div-expanded-detail1': row.expanded
+                  }"
+                  [@detailExpand]="row.expanded ? 'expanded' : 'collapsed'"
+                >
                   <div
-                    [ngClass]="{'table-container mat-elevation-z8': true, 'div-expanded-detail2 table-detail': row.expanded}">
+                    [ngClass]="{
+                      'table-container mat-elevation-z8': true,
+                      'div-expanded-detail2 table-detail': row.expanded
+                    }"
+                  >
                     <p class="header-title-detail">Cartões</p>
                     <table mat-table [dataSource]="row.cardsPostings">
                       <!-- Cartão Column -->
                       <ng-container matColumnDef="card-detail">
                         <th mat-header-cell *matHeaderCellDef>Cartão</th>
                         <td mat-cell *matCellDef="let row">
-                          <span class="card-detail"
-                            [ngStyle]="{backgroundColor: row.card.background, color: row.card.color}">
-                            {{row.card.name}}
+                          <span
+                            class="card-detail"
+                            [ngStyle]="{
+                              backgroundColor: row.card.background,
+                              color: row.card.color
+                            }"
+                          >
+                            {{ row.card.name }}
                           </span>
                         </td>
-                        <td mat-footer-cell *matFooterCellDef> Total</td>
+                        <td mat-footer-cell *matFooterCellDef>Total</td>
                       </ng-container>
 
                       <!-- Data Column -->
                       <ng-container matColumnDef="date-detail">
                         <th mat-header-cell *matHeaderCellDef>Data</th>
-                        <td mat-cell *matCellDef="let row" class="warn">{{row.date | date: 'dd/MM'}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
+                        <td mat-cell *matCellDef="let row" class="warn">
+                          {{ row.date | date : "dd/MM" }}
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
                       </ng-container>
 
                       <!-- Descrição Column -->
                       <ng-container matColumnDef="description-detail">
                         <th mat-header-cell *matHeaderCellDef>Descrição</th>
-                        <td mat-cell *matCellDef="let row" class="warn">{{row.description}}
-                          <div class="small-text" *ngIf="row.peopleId !== null || row.parcels > 1">
-                            <span class="red" *ngIf="row.parcels > 1">({{row.parcelNumber}}/{{row.parcels}}) </span>
+                        <td mat-cell *matCellDef="let row" class="warn">
+                          {{ row.description }}
+                          <div
+                            class="small-text"
+                            *ngIf="row.peopleId !== null || row.parcels > 1"
+                          >
+                            <span class="red" *ngIf="row.parcels > 1"
+                              >({{ row.parcelNumber }}/{{ row.parcels }})
+                            </span>
                           </div>
                         </td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
                       </ng-container>
 
                       <!-- Valor Column -->
                       <ng-container matColumnDef="amount-detail">
                         <th mat-header-cell *matHeaderCellDef>Valor</th>
-                        <td mat-cell *matCellDef="let row" class="warn">{{row.amount | currency : '':''}}</td>
-                        <td mat-footer-cell *matFooterCellDef>{{getPeopleCardsPostingsTotal(row) | currency : '':''}}
+                        <td mat-cell *matCellDef="let row" class="warn">
+                          {{ row.amount | currency : "" : "" }}
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef>
+                          {{
+                            getPeopleCardsPostingsTotal(row)
+                              | currency : "" : ""
+                          }}
                         </td>
                       </ng-container>
 
-                      <tr mat-header-row
-                        *matHeaderRowDef="['card-detail', 'date-detail', 'description-detail', 'amount-detail']; sticky: false">
-                      </tr>
-                      <tr mat-row
-                        *matRowDef="let row; columns: ['card-detail', 'date-detail', 'description-detail', 'amount-detail']">
-                      </tr>
-                      <tr mat-footer-row
-                        *matFooterRowDef="['card-detail', 'date-detail', 'description-detail', 'amount-detail']; sticky: false">
-                      </tr>
+                      <tr
+                        mat-header-row
+                        *matHeaderRowDef="
+                          [
+                            'card-detail',
+                            'date-detail',
+                            'description-detail',
+                            'amount-detail'
+                          ];
+                          sticky: false
+                        "
+                      ></tr>
+                      <tr
+                        mat-row
+                        *matRowDef="
+                          let row;
+                          columns: [
+                            'card-detail',
+                            'date-detail',
+                            'description-detail',
+                            'amount-detail'
+                          ]
+                        "
+                      ></tr>
+                      <tr
+                        mat-footer-row
+                        *matFooterRowDef="
+                          [
+                            'card-detail',
+                            'date-detail',
+                            'description-detail',
+                            'amount-detail'
+                          ];
+                          sticky: false
+                        "
+                      ></tr>
                     </table>
                   </div>
                 </div>
 
                 <!-- INCOMES -->
-                <div *ngIf="row.incomes?.length > 0"
-                  [ngClass]="{'expanded-detail': true, 'div-expanded-detail1': row.expanded}"
-                  [@detailExpand]="row.expanded ? 'expanded' : 'collapsed'">
+                <div
+                  *ngIf="row.incomes?.length > 0"
+                  [ngClass]="{
+                    'expanded-detail': true,
+                    'div-expanded-detail1': row.expanded
+                  }"
+                  [@detailExpand]="row.expanded ? 'expanded' : 'collapsed'"
+                >
                   <div
-                    [ngClass]="{'table-container mat-elevation-z8': true, 'div-expanded-detail2 table-detail': row.expanded}">
+                    [ngClass]="{
+                      'table-container mat-elevation-z8': true,
+                      'div-expanded-detail2 table-detail': row.expanded
+                    }"
+                  >
                     <p class="header-title-detail">Receitas</p>
                     <table mat-table [dataSource]="row.incomes">
                       <!-- Descrição Column -->
                       <ng-container matColumnDef="description-detail">
-                        <th mat-header-cell *matHeaderCellDef style="width: 150px">Descrição</th>
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          style="width: 150px"
+                        >
+                          Descrição
+                        </th>
                         <td mat-cell *matCellDef="let row" class="warn">
-                          <div style="display: flex;">
-                            {{row.description}}
+                          <div style="display: flex">
+                            {{ row.description }}
                           </div>
                         </td>
                         <td mat-footer-cell *matFooterCellDef>Total</td>
@@ -435,57 +823,136 @@
 
                       <!-- A Receber Column -->
                       <ng-container matColumnDef="toReceive-detail">
-                        <th mat-header-cell *matHeaderCellDef style="width: 100px">A Receber</th>
-                        <td mat-cell *matCellDef="let row" class="warn">{{row.toReceive | currency : '':''}}</td>
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          style="width: 100px"
+                        >
+                          A Receber
+                        </th>
+                        <td mat-cell *matCellDef="let row" class="warn">
+                          {{ row.toReceive | currency : "" : "" }}
+                        </td>
                         <td mat-footer-cell *matFooterCellDef>
-                          {{getPeopleIncomesToReceiveTotal(row) | currency : '':''}}</td>
+                          {{
+                            getPeopleIncomesToReceiveTotal(row)
+                              | currency : "" : ""
+                          }}
+                        </td>
                       </ng-container>
 
                       <!-- Recebido Column -->
                       <ng-container matColumnDef="received-detail">
-                        <th mat-header-cell *matHeaderCellDef style="width: 100px">Recebido</th>
-                        <td mat-cell *matCellDef="let row" class="warn">{{row.received | currency : '':''}}</td>
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          style="width: 100px"
+                        >
+                          Recebido
+                        </th>
+                        <td mat-cell *matCellDef="let row" class="warn">
+                          {{ row.received | currency : "" : "" }}
+                        </td>
                         <td mat-footer-cell *matFooterCellDef>
-                          {{getPeopleIncomesReceivedTotal(row) | currency : '':''}}</td>
+                          {{
+                            getPeopleIncomesReceivedTotal(row)
+                              | currency : "" : ""
+                          }}
+                        </td>
                       </ng-container>
 
                       <!-- Restante Column -->
                       <ng-container matColumnDef="remaing-detail">
-                        <th mat-header-cell *matHeaderCellDef style="width: 100px">Restante</th>
+                        <th
+                          mat-header-cell
+                          *matHeaderCellDef
+                          style="width: 100px"
+                        >
+                          Restante
+                        </th>
                         <td mat-cell *matCellDef="let row" class="warn">
-                          {{row.toReceive - row.received | currency : '':''}}</td>
+                          {{
+                            row.toReceive - row.received | currency : "" : ""
+                          }}
+                        </td>
                         <td mat-footer-cell *matFooterCellDef>
-                          {{getPeopleIncomesRemaingTotal(row) | currency : '':''}}</td>
+                          {{
+                            getPeopleIncomesRemaingTotal(row)
+                              | currency : "" : ""
+                          }}
+                        </td>
                       </ng-container>
 
-                      <tr mat-header-row
-                        *matHeaderRowDef="['description-detail', 'toReceive-detail', 'received-detail', 'remaing-detail']; sticky: false">
-                      </tr>
-                      <tr mat-row
-                        *matRowDef="let row; columns: ['description-detail', 'toReceive-detail', 'received-detail', 'remaing-detail']">
-                      </tr>
-                      <tr mat-footer-row
-                        *matFooterRowDef="['description-detail', 'toReceive-detail', 'received-detail', 'remaing-detail']; sticky: false">
-                      </tr>
+                      <tr
+                        mat-header-row
+                        *matHeaderRowDef="
+                          [
+                            'description-detail',
+                            'toReceive-detail',
+                            'received-detail',
+                            'remaing-detail'
+                          ];
+                          sticky: false
+                        "
+                      ></tr>
+                      <tr
+                        mat-row
+                        *matRowDef="
+                          let row;
+                          columns: [
+                            'description-detail',
+                            'toReceive-detail',
+                            'received-detail',
+                            'remaing-detail'
+                          ]
+                        "
+                      ></tr>
+                      <tr
+                        mat-footer-row
+                        *matFooterRowDef="
+                          [
+                            'description-detail',
+                            'toReceive-detail',
+                            'received-detail',
+                            'remaing-detail'
+                          ];
+                          sticky: false
+                        "
+                      ></tr>
                     </table>
                   </div>
                 </div>
 
                 <!-- ACCOUNTS-POSTINGS -->
-                <div *ngIf="row.accountsPostings?.length > 0"
-                  [ngClass]="{'expanded-detail': true, 'div-expanded-detail1': row.expanded}"
-                  [@detailExpand]="row.expanded ? 'expanded' : 'collapsed'">
+                <div
+                  *ngIf="row.accountsPostings?.length > 0"
+                  [ngClass]="{
+                    'expanded-detail': true,
+                    'div-expanded-detail1': row.expanded
+                  }"
+                  [@detailExpand]="row.expanded ? 'expanded' : 'collapsed'"
+                >
                   <div
-                    [ngClass]="{'table-container mat-elevation-z8': true, 'div-expanded-detail2 table-detail': row.expanded}">
+                    [ngClass]="{
+                      'table-container mat-elevation-z8': true,
+                      'div-expanded-detail2 table-detail': row.expanded
+                    }"
+                  >
                     <p class="header-title-detail">Recebimentos</p>
                     <table mat-table [dataSource]="row.accountsPostings">
                       <!-- Cartão Column -->
                       <ng-container matColumnDef="card-detail">
                         <th mat-header-cell *matHeaderCellDef>Cartão</th>
                         <td mat-cell *matCellDef="let row">
-                          <span class="card-detail" *ngIf="row.cardReceipt"
-                            [ngStyle]="{backgroundColor: row.cardReceipt.card.background, color: row.cardReceipt.card.color}">
-                            {{row.cardReceipt!.card.name}}
+                          <span
+                            class="card-detail"
+                            *ngIf="row.cardReceipt"
+                            [ngStyle]="{
+                              backgroundColor: row.cardReceipt.card.background,
+                              color: row.cardReceipt.card.color
+                            }"
+                          >
+                            {{ row.cardReceipt!.card.name }}
                           </span>
                         </td>
                         <td mat-footer-cell *matFooterCellDef>Total</td>
@@ -495,57 +962,114 @@
                       <ng-container matColumnDef="account-detail">
                         <th mat-header-cell *matHeaderCellDef>Conta</th>
                         <td mat-cell *matCellDef="let row">
-                          <span class="account-detail"
-                            [ngStyle]="{backgroundColor: row.account.background, color: row.account.color}">
-                            {{row.account.name}}
+                          <span
+                            class="account-detail"
+                            [ngStyle]="{
+                              backgroundColor: row.account.background,
+                              color: row.account.color
+                            }"
+                          >
+                            {{ row.account.name }}
                           </span>
                         </td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
                       </ng-container>
 
                       <!-- Data Column -->
                       <ng-container matColumnDef="date-detail">
                         <th mat-header-cell *matHeaderCellDef>Data</th>
-                        <td mat-cell *matCellDef="let row" class="warn">{{row.date | date: 'dd/MM'}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
+                        <td mat-cell *matCellDef="let row" class="warn">
+                          {{ row.date | date : "dd/MM" }}
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
                       </ng-container>
 
                       <!-- Descrição Column -->
                       <ng-container matColumnDef="description-detail">
                         <th mat-header-cell *matHeaderCellDef>Descrição</th>
-                        <td mat-cell *matCellDef="let row" class="warn">{{row.description}}</td>
+                        <td mat-cell *matCellDef="let row" class="warn">
+                          {{ row.description }}
+                        </td>
                         <td mat-footer-cell *matFooterCellDef></td>
                       </ng-container>
 
                       <!-- Valor Column -->
                       <ng-container matColumnDef="amount-detail">
                         <th mat-header-cell *matHeaderCellDef>Valor</th>
-                        <td mat-cell *matCellDef="let row" class="warn">{{row.amount | currency : '':''}}</td>
-                        <td mat-footer-cell *matFooterCellDef>{{getPeopleAccountsPostingsTotal(row) | currency : '':''}}
+                        <td mat-cell *matCellDef="let row" class="warn">
+                          {{ row.amount | currency : "" : "" }}
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef>
+                          {{
+                            getPeopleAccountsPostingsTotal(row)
+                              | currency : "" : ""
+                          }}
                         </td>
                       </ng-container>
 
-                      <tr mat-header-row
-                        *matHeaderRowDef="['card-detail', 'account-detail', 'date-detail', 'description-detail', 'amount-detail']; sticky: false">
-                      </tr>
-                      <tr mat-row
-                        *matRowDef="let row; columns: ['card-detail', 'account-detail', 'date-detail', 'description-detail', 'amount-detail']">
-                      </tr>
-                      <tr mat-footer-row
-                        *matFooterRowDef="['card-detail', 'account-detail', 'date-detail', 'description-detail', 'amount-detail']; sticky: false">
-                      </tr>
+                      <tr
+                        mat-header-row
+                        *matHeaderRowDef="
+                          [
+                            'card-detail',
+                            'account-detail',
+                            'date-detail',
+                            'description-detail',
+                            'amount-detail'
+                          ];
+                          sticky: false
+                        "
+                      ></tr>
+                      <tr
+                        mat-row
+                        *matRowDef="
+                          let row;
+                          columns: [
+                            'card-detail',
+                            'account-detail',
+                            'date-detail',
+                            'description-detail',
+                            'amount-detail'
+                          ]
+                        "
+                      ></tr>
+                      <tr
+                        mat-footer-row
+                        *matFooterRowDef="
+                          [
+                            'card-detail',
+                            'account-detail',
+                            'date-detail',
+                            'description-detail',
+                            'amount-detail'
+                          ];
+                          sticky: false
+                        "
+                      ></tr>
                     </table>
                   </div>
                 </div>
-
               </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedPeopleColumns; sticky: false"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedPeopleColumns" (click)="peopleToggleRow(row, $event)">
-            </tr>
-            <tr mat-row *matRowDef="let row; columns: ['peopleExpandedDetail']" class="height-detail-row"></tr>
-            <tr mat-footer-row *matFooterRowDef="displayedPeopleColumns; sticky: false"></tr>
+            <tr
+              mat-header-row
+              *matHeaderRowDef="displayedPeopleColumns; sticky: false"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedPeopleColumns"
+              (click)="peopleToggleRow(row, $event)"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: ['peopleExpandedDetail']"
+              class="height-detail-row"
+            ></tr>
+            <tr
+              mat-footer-row
+              *matFooterRowDef="displayedPeopleColumns; sticky: false"
+            ></tr>
           </table>
         </div>
       </div>
@@ -553,10 +1077,24 @@
   </mat-accordion>
 
   <!-- CATEGORIES -->
-  <mat-accordion displayMode="default" [multi]="true" [hideToggle]="false"
-    *ngIf="hideExpensesProgress && hideIncomesProgress && hidePeopleProgress && hideCategoriesProgress">
-    <mat-expansion-panel class="mat-panel-budget" [hideToggle]="false" [(expanded)]="categoryPanelExpanded"
-      (closed)="categoryPanelClosed()" (opened)="categoryPanelOpened()">
+  <mat-accordion
+    displayMode="default"
+    [multi]="true"
+    [hideToggle]="false"
+    *ngIf="
+      hideExpensesProgress &&
+      hideIncomesProgress &&
+      hidePeopleProgress &&
+      hideCategoriesProgress
+    "
+  >
+    <mat-expansion-panel
+      class="mat-panel-budget"
+      [hideToggle]="false"
+      [(expanded)]="categoryPanelExpanded"
+      (closed)="categoryPanelClosed()"
+      (opened)="categoryPanelOpened()"
+    >
       <mat-expansion-panel-header>
         <span class="material-icons center warn">category</span>
         <span class="center warn">Categorias</span>
@@ -564,55 +1102,110 @@
 
       <div class="row center">
         <div class="table-container mat-elevation-z8 mytable2">
-          <table mat-table #sortCategories="matSort" multiTemplateDataRows [dataSource]="dataSourceCategories" matSort
-            matSortActive="amount" matSortDirection="desc" (matSortChange)="announceSortChange($event)">
+          <table
+            mat-table
+            #sortCategories="matSort"
+            multiTemplateDataRows
+            [dataSource]="dataSourceCategories"
+            matSort
+            matSortActive="amount"
+            matSortDirection="desc"
+            (matSortChange)="announceSortChange($event)"
+          >
             <!-- Categoria Column -->
             <ng-container matColumnDef="category">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="after" start="asc"
-                sortActionDescription="Ordernar por Categoria">
-                Categoria</th>
-              <td mat-cell *matCellDef="let row">{{row.category}}
-              </td>
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                arrowPosition="after"
+                start="asc"
+                sortActionDescription="Ordernar por Categoria"
+              >
+                Categoria
+              </th>
+              <td mat-cell *matCellDef="let row">{{ row.category }}</td>
               <td mat-footer-cell *matFooterCellDef>Total</td>
             </ng-container>
 
             <!-- Valor Column -->
             <ng-container matColumnDef="amount">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" start="desc"
-                sortActionDescription="Ordernar por Total">Total
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                arrowPosition="before"
+                start="desc"
+                sortActionDescription="Ordernar por Total"
+              >
+                Total
               </th>
-              <td mat-cell *matCellDef="let row">{{row.amount | currency : '':''}}</td>
+              <td mat-cell *matCellDef="let row">
+                {{ row.amount | currency : "" : "" }}
+              </td>
               <td mat-footer-cell *matFooterCellDef>
-                {{amountTotalCategory | currency : '':''}}</td>
+                {{ amountTotalCategory | currency : "" : "" }}
+              </td>
             </ng-container>
 
             <!-- Perc. Column -->
             <ng-container matColumnDef="perc">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" start="desc"
-                sortActionDescription="Ordernar por Percentual">%
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                arrowPosition="before"
+                start="desc"
+                sortActionDescription="Ordernar por Percentual"
+              >
+                %
               </th>
-              <td mat-cell *matCellDef="let row">{{row.perc | currency : '':''}}%</td>
+              <td mat-cell *matCellDef="let row">
+                {{ row.perc | currency : "" : "" }}%
+              </td>
               <td mat-footer-cell *matFooterCellDef>
-                {{percTotalCategory | currency : '':''}}%</td>
+                {{ percTotalCategory | currency : "" : "" }}%
+              </td>
             </ng-container>
 
             <ng-container matColumnDef="expandedDetail">
-              <td mat-cell *matCellDef="let row" [attr.colspan]="displayedCategoriesColumns.length"
-                [ngClass]="{'td-expanded-detail': row.expanded}">
-
+              <td
+                mat-cell
+                *matCellDef="let row"
+                [attr.colspan]="displayedCategoriesColumns.length"
+                [ngClass]="{ 'td-expanded-detail': row.expanded }"
+              >
                 <!-- SPINNER -->
-                <div [ngClass]="{'expanded-detail row justify-content-center': true}"
-                  [@detailExpand]="row.expanded ? 'expanded' : 'collapsed'">
-                  <mat-spinner color="accent" *ngIf="row.expanding" [diameter]="50" [strokeWidth]="8">
+                <div
+                  [ngClass]="{
+                    'expanded-detail row justify-content-center': true
+                  }"
+                  [@detailExpand]="row.expanded ? 'expanded' : 'collapsed'"
+                >
+                  <mat-spinner
+                    color="accent"
+                    *ngIf="row.expanding"
+                    [diameter]="50"
+                    [strokeWidth]="8"
+                  >
                   </mat-spinner>
                 </div>
 
                 <!-- EXPENSES -->
-                <div *ngIf="row.expenses?.length > 0"
-                  [ngClass]="{'expanded-detail': true, 'div-expanded-detail1': row.expanded}"
-                  [@detailExpand]="row.expanded ? 'expanded' : 'collapsed'">
+                <div
+                  *ngIf="row.expenses?.length > 0"
+                  [ngClass]="{
+                    'expanded-detail': true,
+                    'div-expanded-detail1': row.expanded
+                  }"
+                  [@detailExpand]="row.expanded ? 'expanded' : 'collapsed'"
+                >
                   <div
-                    [ngClass]="{'table-container mat-elevation-z8': true, 'div-expanded-detail2 table-detail': row.expanded}">
+                    [ngClass]="{
+                      'table-container mat-elevation-z8': true,
+                      'div-expanded-detail2 table-detail': row.expanded
+                    }"
+                  >
                     <p class="header-title-detail">Despesas</p>
                     <table mat-table [dataSource]="row.expenses">
                       <!-- Descrição Column -->
@@ -620,64 +1213,25 @@
                         <th mat-header-cell *matHeaderCellDef>Descrição</th>
                         <!-- <td mat-cell *matCellDef="let row" class="warn">{{row.description}}</td> -->
                         <td mat-cell *matCellDef="let row" class="warn">
-                          <div style="display: flex;">
-                            {{row.description}}<span
-                              *ngIf="row.parcels > 1">&nbsp;({{row.parcelNumber}}/{{row.parcels}}) </span>
-                            <span *ngIf="row.scheduled" class="material-icons scheduled">schedule</span>
+                          <div style="display: flex">
+                            {{ row.description
+                            }}<span *ngIf="row.parcels > 1"
+                              >&nbsp;({{ row.parcelNumber }}/{{ row.parcels }})
+                            </span>
+                            <span
+                              *ngIf="row.scheduled"
+                              class="material-icons scheduled"
+                              >schedule</span
+                            >
                           </div>
                           <div class="small-text" *ngIf="row.dueDate !== null">
-                            <span><i class="red">Venc.:&nbsp;{{row.dueDate | date: 'dd/MM'}}</i></span>
-                          </div>
-                        </td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                      </ng-container>
-
-                      <!-- Valor Column -->
-                      <ng-container matColumnDef="amount-detail">
-                        <th mat-header-cell *matHeaderCellDef>Valor</th>
-                        <td mat-cell *matCellDef="let row" class="warn">{{row.toPay | currency : '':''}}</td>
-                        <td mat-footer-cell *matFooterCellDef class="warn">{{0 | currency : '':''}}</td>
-                      </ng-container>
-
-                      <tr mat-header-row *matHeaderRowDef="['description-detail', 'amount-detail']; sticky: false"></tr>
-                      <tr mat-row *matRowDef="let row; columns: ['description-detail', 'amount-detail']"></tr>
-                    </table>
-                  </div>
-                </div>
-
-                <!-- CARDS-POSTINGS -->
-                <div *ngIf="row.cardsPostings?.length > 0"
-                  [ngClass]="{'expanded-detail': true, 'div-expanded-detail1': row.expanded}"
-                  [@detailExpand]="row.expanded ? 'expanded' : 'collapsed'">
-                  <div
-                    [ngClass]="{'table-container mat-elevation-z8': true, 'div-expanded-detail2 table-detail': row.expanded}">
-                    <p class="header-title-detail">Cartões</p>
-                    <table mat-table [dataSource]="row.cardsPostings">
-                      <!-- Cartão Column -->
-                      <ng-container matColumnDef="card-detail">
-                        <th mat-header-cell *matHeaderCellDef>Cartão</th>
-                        <td mat-cell *matCellDef="let row">
-                          <span class="card-detail"
-                            [ngStyle]="{backgroundColor: row.card.background, color: row.card.color}">
-                            {{row.card.name}}
-                          </span>
-                        </td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                      </ng-container>
-
-                      <!-- Data Column -->
-                      <ng-container matColumnDef="date-detail">
-                        <th mat-header-cell *matHeaderCellDef>Data</th>
-                        <td mat-cell *matCellDef="let row" class="warn">{{row.date | date: 'dd/MM'}}</td>
-                        <td mat-footer-cell *matFooterCellDef> </td>
-                      </ng-container>
-
-                      <!-- Descrição Column -->
-                      <ng-container matColumnDef="description-detail">
-                        <th mat-header-cell *matHeaderCellDef>Descrição</th>
-                        <td mat-cell *matCellDef="let row" class="warn">{{row.description}}
-                          <div class="small-text" *ngIf="row.parcels > 1">
-                            <span class="red" *ngIf="row.parcels > 1">({{row.parcelNumber}}/{{row.parcels}}) </span>
+                            <span
+                              ><i class="red"
+                                >Venc.:&nbsp;{{
+                                  row.dueDate | date : "dd/MM"
+                                }}</i
+                              ></span
+                            >
                           </div>
                         </td>
                         <td mat-footer-cell *matFooterCellDef></td>
@@ -686,30 +1240,151 @@
                       <!-- Valor Column -->
                       <ng-container matColumnDef="amount-detail">
                         <th mat-header-cell *matHeaderCellDef>Valor</th>
-                        <td mat-cell *matCellDef="let row" class="warn">{{row.amount | currency : '':''}}</td>
-                        <td mat-footer-cell *matFooterCellDef>{{0 | currency : '':''}}</td>
+                        <td mat-cell *matCellDef="let row" class="warn">
+                          {{ row.toPay | currency : "" : "" }}
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef class="warn">
+                          {{ 0 | currency : "" : "" }}
+                        </td>
                       </ng-container>
 
-                      <tr mat-header-row
-                        *matHeaderRowDef="['card-detail', 'date-detail', 'description-detail', 'amount-detail']; sticky: false">
-                      </tr>
-                      <tr mat-row
-                        *matRowDef="let row; columns: ['card-detail', 'date-detail', 'description-detail', 'amount-detail']">
-                      </tr>
+                      <tr
+                        mat-header-row
+                        *matHeaderRowDef="
+                          ['description-detail', 'amount-detail'];
+                          sticky: false
+                        "
+                      ></tr>
+                      <tr
+                        mat-row
+                        *matRowDef="
+                          let row;
+                          columns: ['description-detail', 'amount-detail']
+                        "
+                      ></tr>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- CARDS-POSTINGS -->
+                <div
+                  *ngIf="row.cardsPostings?.length > 0"
+                  [ngClass]="{
+                    'expanded-detail': true,
+                    'div-expanded-detail1': row.expanded
+                  }"
+                  [@detailExpand]="row.expanded ? 'expanded' : 'collapsed'"
+                >
+                  <div
+                    [ngClass]="{
+                      'table-container mat-elevation-z8': true,
+                      'div-expanded-detail2 table-detail': row.expanded
+                    }"
+                  >
+                    <p class="header-title-detail">Cartões</p>
+                    <table mat-table [dataSource]="row.cardsPostings">
+                      <!-- Cartão Column -->
+                      <ng-container matColumnDef="card-detail">
+                        <th mat-header-cell *matHeaderCellDef>Cartão</th>
+                        <td mat-cell *matCellDef="let row">
+                          <span
+                            class="card-detail"
+                            [ngStyle]="{
+                              backgroundColor: row.card.background,
+                              color: row.card.color
+                            }"
+                          >
+                            {{ row.card.name }}
+                          </span>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                      </ng-container>
+
+                      <!-- Data Column -->
+                      <ng-container matColumnDef="date-detail">
+                        <th mat-header-cell *matHeaderCellDef>Data</th>
+                        <td mat-cell *matCellDef="let row" class="warn">
+                          {{ row.date | date : "dd/MM" }}
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                      </ng-container>
+
+                      <!-- Descrição Column -->
+                      <ng-container matColumnDef="description-detail">
+                        <th mat-header-cell *matHeaderCellDef>Descrição</th>
+                        <td mat-cell *matCellDef="let row" class="warn">
+                          {{ row.description }}
+                          <div class="small-text" *ngIf="row.parcels > 1">
+                            <span class="red" *ngIf="row.parcels > 1"
+                              >({{ row.parcelNumber }}/{{ row.parcels }})
+                            </span>
+                          </div>
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef></td>
+                      </ng-container>
+
+                      <!-- Valor Column -->
+                      <ng-container matColumnDef="amount-detail">
+                        <th mat-header-cell *matHeaderCellDef>Valor</th>
+                        <td mat-cell *matCellDef="let row" class="warn">
+                          {{ row.amount | currency : "" : "" }}
+                        </td>
+                        <td mat-footer-cell *matFooterCellDef>
+                          {{ 0 | currency : "" : "" }}
+                        </td>
+                      </ng-container>
+
+                      <tr
+                        mat-header-row
+                        *matHeaderRowDef="
+                          [
+                            'card-detail',
+                            'date-detail',
+                            'description-detail',
+                            'amount-detail'
+                          ];
+                          sticky: false
+                        "
+                      ></tr>
+                      <tr
+                        mat-row
+                        *matRowDef="
+                          let row;
+                          columns: [
+                            'card-detail',
+                            'date-detail',
+                            'description-detail',
+                            'amount-detail'
+                          ]
+                        "
+                      ></tr>
                     </table>
                   </div>
                 </div>
               </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedCategoriesColumns; sticky: false"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedCategoriesColumns" (click)="toggleRow(row)"></tr>
-            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="height-detail-row"></tr>
-            <tr mat-footer-row *matFooterRowDef="displayedCategoriesColumns; sticky: false"></tr>
+            <tr
+              mat-header-row
+              *matHeaderRowDef="displayedCategoriesColumns; sticky: false"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: displayedCategoriesColumns"
+              (click)="toggleRow(row)"
+            ></tr>
+            <tr
+              mat-row
+              *matRowDef="let row; columns: ['expandedDetail']"
+              class="height-detail-row"
+            ></tr>
+            <tr
+              mat-footer-row
+              *matFooterRowDef="displayedCategoriesColumns; sticky: false"
+            ></tr>
           </table>
         </div>
       </div>
     </mat-expansion-panel>
   </mat-accordion>
-
 </div>

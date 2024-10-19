@@ -42,6 +42,7 @@ import moment from 'moment';
 import { ExpensesDialog } from './expenses-dialog';
 import { IncomesDialog } from './incomes-dialog';
 import { PaymentReceiveDialog } from './payment-receive-dialog';
+import { CardPostingsDialog } from '../cardpostings/cardpostings-dialog';
 
 @Component({
   selector: 'app-budget',
@@ -648,22 +649,7 @@ export class BudgetComponent implements OnInit, AfterViewInit {
         this.hideCategoriesProgress = false;
 
         if (result.deleting) {
-          this.expenseService.delete(result.id).subscribe({
-            next: () => {
-              this.expenses = this.expenses.filter((t) => t.id! != result.id!);
-              this.expensesNoFilter = this.expensesNoFilter.filter(
-                (t) => t.id! != result.id!
-              );
-
-              this.getBudgetTotals();
-              this.getExpensesTotals();
-              this.getExpensesByCategories();
-            },
-            error: () => {
-              this.hideExpensesProgress = true;
-              this.hideCategoriesProgress = true;
-            },
-          });
+          this.deleteExpense(result);
         } else {
           this.expenseService.update(result).subscribe({
             next: () => {
@@ -715,6 +701,25 @@ export class BudgetComponent implements OnInit, AfterViewInit {
           });
         }
       }
+    });
+  }
+
+  private deleteExpense(expense: any) {
+    this.expenseService.delete(expense.id).subscribe({
+      next: () => {
+        this.expenses = this.expenses.filter((t) => t.id! != expense.id!);
+        this.expensesNoFilter = this.expensesNoFilter.filter(
+          (t) => t.id! != expense.id!
+        );
+
+        this.getBudgetTotals();
+        this.getExpensesTotals();
+        this.getExpensesByCategories();
+      },
+      error: () => {
+        this.hideExpensesProgress = true;
+        this.hideCategoriesProgress = true;
+      },
     });
   }
 
@@ -938,6 +943,50 @@ export class BudgetComponent implements OnInit, AfterViewInit {
             this.hideExpensesProgress = true;
           },
           error: () => (this.hideExpensesProgress = true),
+        });
+      }
+    });
+  }
+
+  payWithCard(expense: Expenses) {
+    const dialogRef = this.dialog.open(CardPostingsDialog, {
+      width: '400px',
+      data: {
+        reference: this.reference,
+        // cardId: this.cardId,
+        description: expense.description,
+        parcels: expense.parcels,
+        parcelNumber: expense.parcelNumber,
+        totalAmount: expense.totalToPay,
+        amount: expense.toPay,
+        categoryId: expense.categoryId,
+        peopleId: expense.peopleId,
+        note: expense.note,
+        peopleList: this.peopleList,
+        categoriesList: this.categoriesList,
+        cardsList: this.cardsList,
+        editing: false,
+        adding: true,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        Date.prototype.toJSON = function () {
+          return moment(this).format('YYYY-MM-DDThh:mm:00.000Z');
+        };
+
+        this.cardPostingsService.create(result).subscribe({
+          next: (cardpostings) => {
+            if (cardpostings) {
+              this.deleteExpense(expense);
+            }
+
+            this.categoriesList = result.categoriesList;
+            this.peopleList = result.peopleList;
+
+            this.getCardsPostingsPeople();
+          },
         });
       }
     });

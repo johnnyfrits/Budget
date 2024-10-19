@@ -27,6 +27,7 @@ import { ExpenseService } from 'src/app/services/expense/expense.service';
 export class ExpensesDialog implements OnInit, AfterViewInit {
   cards?: Cards[];
   editing: boolean = false;
+  isScreenInit: boolean = true;
 
   disableGenerateParcelsCheck: boolean = true;
   disableRepeatParcelsCheck: boolean = false;
@@ -76,6 +77,8 @@ export class ExpensesDialog implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.cd.detectChanges();
+
+    this.isScreenInit = false;
   }
 
   cancel(): void {
@@ -111,6 +114,8 @@ export class ExpensesDialog implements OnInit, AfterViewInit {
   onParcelNumberChanged(event: any): void {}
 
   calculateToPay(): void {
+    if (this.isScreenInit) return;
+
     this.expenses.toPay = +(
       this.expenses.totalToPay / this.expenses.parcels!
     ).toFixed(2);

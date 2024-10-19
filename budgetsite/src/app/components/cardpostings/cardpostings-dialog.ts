@@ -29,6 +29,7 @@ export class CardPostingsDialog implements OnInit, AfterViewInit {
 
   disableCheck: boolean = true;
   editing: boolean = false;
+  isScreenInit: boolean = true;
 
   disableGenerateParcelsCheck: boolean = true;
   disableRepeatParcelsCheck: boolean = false;
@@ -61,14 +62,6 @@ export class CardPostingsDialog implements OnInit, AfterViewInit {
     private cd: ChangeDetectorRef
   ) {}
 
-  ngAfterViewInit(): void {
-    if (!this.cardPosting.id) {
-      this.cardPosting.date = this.datepickerinput.date.value._d;
-    }
-
-    this.cd.detectChanges();
-  }
-
   ngOnInit(): void {
     this.disableCheck =
       this.cardPosting.parcels == undefined ||
@@ -81,6 +74,16 @@ export class CardPostingsDialog implements OnInit, AfterViewInit {
       this.cardPosting.parcels === 1;
 
     this.cardPosting.monthsToRepeat = 12;
+  }
+
+  ngAfterViewInit(): void {
+    if (!this.cardPosting.id) {
+      this.cardPosting.date = this.datepickerinput.date.value._d;
+    }
+
+    this.cd.detectChanges();
+
+    this.isScreenInit = false;
   }
 
   cancel(): void {
@@ -131,6 +134,8 @@ export class CardPostingsDialog implements OnInit, AfterViewInit {
   }
 
   calculateAmount(): void {
+    if (this.isScreenInit) return;
+
     this.cardPosting.amount = +(
       this.cardPosting.totalAmount! / this.cardPosting.parcels!
     ).toFixed(2);
